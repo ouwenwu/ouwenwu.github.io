@@ -188,6 +188,159 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">浏览器优化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-22 22:25:52 / 修改时间：22:26:19" itemprop="dateCreated datePublished" datetime="2023-03-22T22:25:52+08:00">2023-03-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">浏览器渲染原理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-22 21:38:42" itemprop="dateCreated datePublished" datetime="2023-03-22T21:38:42+08:00">2023-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-23 11:29:13" itemprop="dateModified" datetime="2023-03-23T11:29:13+08:00">2023-03-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="网页解析过程："><a href="#网页解析过程：" class="headerlink" title="网页解析过程："></a>网页解析过程：</h1><p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322214252101.png" alt="image-20230322214252101"></p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215014488.png" alt="image-20230322215014488"></p>
+<h2 id="HTML解析过程"><a href="#HTML解析过程" class="headerlink" title="HTML解析过程"></a>HTML解析过程</h2><p>默认情况下服务器给浏览器返回index.html文件，因此解析HTML是所有步骤的开始，解析HTML过程会构建Dom Tree</p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215643759.png" alt="image-20230322215643759"></p>
+<h2 id="生成CSS规则"><a href="#生成CSS规则" class="headerlink" title="生成CSS规则"></a>生成CSS规则</h2><p>在解析过程中，如果遇到CSS的link元素，会有浏览器下载对应的CSS文件（不会影响DOM）的解析</p>
+<p>对CSS下载完成后，会对CSS文件进行解析，解析出规则树，即CSSOM</p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322220941332.png" alt="image-20230322220941332"></p>
+<h2 id="构建Render-Tree"><a href="#构建Render-Tree" class="headerlink" title="构建Render Tree"></a>构建Render Tree</h2><p>当DOM Tree和CSSOM Tree有了过后就可以两者结合构建Render Tree了</p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322221500301.png" alt="image-20230322221500301"></p>
+<p>注：link元素不会阻塞DOM Tree的构建，但会阻塞Render Tree的构建</p>
+<p>​        Render Tree和Dom Tree并不是一一对应的关系，对于display为none的元素，不会出现在Render Tree中</p>
+<h2 id="布局和绘制"><a href="#布局和绘制" class="headerlink" title="布局和绘制"></a>布局和绘制</h2><p>渲染树会显示每个节点的样式，但不会给出每个节点的尺寸和位置，布局就是确定渲染树中每个节点的宽度、高度和位置信息</p>
+<p>绘制就是将布局阶段计算的每个frame转为屏幕上实际的像素点，包括将元素的可见部分进行绘制，比如文本、颜色、边框、阴影、替换元素</p>
+<h2 id="回流和重绘（见浏览器优化）"><a href="#回流和重绘（见浏览器优化）" class="headerlink" title="回流和重绘（见浏览器优化）"></a>回流和重绘（见浏览器优化）</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/22/jquery/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -322,10 +475,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-03-21 21:54:12 / 修改时间：22:20:02" itemprop="dateCreated datePublished" datetime="2023-03-21T21:54:12+08:00">2023-03-21</time>
+              <time title="创建时间：2023-03-21 21:54:12" itemprop="dateCreated datePublished" datetime="2023-03-21T21:54:12+08:00">2023-03-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-23 10:06:37" itemprop="dateModified" datetime="2023-03-23T10:06:37+08:00">2023-03-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -367,6 +526,13 @@
 </ul>
 </li>
 </ul>
+<h3 id="默认绑定"><a href="#默认绑定" class="headerlink" title="默认绑定"></a>默认绑定</h3><p>默认绑定this一般情况下是window</p>
+<p>在严格模式下this为undefined</p>
+<p>es6后的class中函数默认为严格模式，即this为undefined</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>)&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> test = <span class="keyword">new</span> <span class="title class_">Test</span>()</span><br><span class="line"><span class="keyword">const</span> bar = test.<span class="property">foo</span></span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<p>babel会将js设置为严格模式——在React框架下，隐式绑定都为undefined</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/babel-standalone@6/babel.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">foo</span>() <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
 <h2 id="二-说出apply、call、bind函数的用法和区别"><a href="#二-说出apply、call、bind函数的用法和区别" class="headerlink" title="二. 说出apply、call、bind函数的用法和区别"></a>二. 说出apply、call、bind函数的用法和区别</h2><p>​      用法：</p>
 <ul>
 <li><p>​    apply</p>
@@ -431,7 +597,7 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="title function_">arrFn</span> = (<span class="params"></span>) =&gt; [<span class="string">&quot;abc&quot;</span>, <span class="string">&quot;cba&quot;</span>]</span><br><span class="line"><span class="keyword">var</span> <span class="title function_">arrFn</span> = (<span class="params"></span>) =&gt; &#123;&#125; <span class="comment">// 注意: 这里是&#123;&#125;执行体</span></span><br><span class="line"><span class="keyword">var</span> <span class="title function_">arrFn</span> = (<span class="params"></span>) =&gt; (&#123; <span class="attr">name</span>: <span class="string">&quot;why&quot;</span> &#125;)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">arrFn</span>())</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="五-完成this的面试题解析"><a href="#五-完成this的面试题解析" class="headerlink" title="五. 完成this的面试题解析"></a>五. 完成this的面试题解析</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;window&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;person&quot;</span>,</span><br><span class="line">  <span class="attr">sayName</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayName</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sss = person.<span class="property">sayName</span>;</span><br><span class="line">  <span class="title function_">sss</span>(); <span class="comment">// window</span></span><br><span class="line">  person.<span class="title function_">sayName</span>(); <span class="comment">// person</span></span><br><span class="line">  (person.<span class="property">sayName</span>)(); <span class="comment">// person</span></span><br><span class="line">  (b = person.<span class="property">sayName</span>)(); <span class="comment">// window </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">sayName</span>();</span><br></pre></td></tr></table></figure>
+<h2 id="四-完成this的面试题解析"><a href="#四-完成this的面试题解析" class="headerlink" title="四. 完成this的面试题解析"></a>四. 完成this的面试题解析</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;window&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;person&quot;</span>,</span><br><span class="line">  <span class="attr">sayName</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayName</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sss = person.<span class="property">sayName</span>;</span><br><span class="line">  <span class="title function_">sss</span>(); <span class="comment">// window</span></span><br><span class="line">  person.<span class="title function_">sayName</span>(); <span class="comment">// person</span></span><br><span class="line">  (person.<span class="property">sayName</span>)(); <span class="comment">// person</span></span><br><span class="line">  (b = person.<span class="property">sayName</span>)(); <span class="comment">// window </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">sayName</span>();</span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">var</span> person1 = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person1&#x27;</span>,</span><br><span class="line">  <span class="attr">foo1</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo2</span>: <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>),</span><br><span class="line">  <span class="attr">foo3</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo4</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person2 = &#123; <span class="attr">name</span>: <span class="string">&#x27;person2&#x27;</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo1(); // person1</span></span><br><span class="line"><span class="comment">// person1.foo1.call(person2); // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo2(); // window</span></span><br><span class="line"><span class="comment">// person1.foo2.call(person2); // window</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo3()(); // window</span></span><br><span class="line"><span class="comment">// person1.foo3.call(person2)(); // window</span></span><br><span class="line"><span class="comment">// person1.foo3().call(person2); // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo4()(); // person1</span></span><br><span class="line"><span class="comment">// person1.foo4.call(person2)(); // person2</span></span><br><span class="line"><span class="comment">// person1.foo4().call(person2); // person1</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span> (name) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo1</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo2</span> = <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>),</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo3</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo4</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo1() // person1</span></span><br><span class="line"><span class="comment">// person1.foo1.call(person2) // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo2() // person1</span></span><br><span class="line"><span class="comment">// person1.foo2.call(person2) // person1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo3()() // window</span></span><br><span class="line"><span class="comment">// person1.foo3.call(person2)() // window</span></span><br><span class="line"><span class="comment">// person1.foo3().call(person2) // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo4()() // person1</span></span><br><span class="line"><span class="comment">// person1.foo4.call(person2)() // person2</span></span><br><span class="line"><span class="comment">// person1.foo4().call(person2) // person1</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span> (name) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">obj</span> = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">    <span class="attr">foo1</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">foo2</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.obj.foo1()() // window</span></span><br><span class="line"><span class="comment">// person1.obj.foo1.call(person2)() // window</span></span><br><span class="line"><span class="comment">// person1.obj.foo1().call(person2) // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.obj.foo2()() // obj</span></span><br><span class="line"><span class="comment">// person1.obj.foo2.call(person2)() // person2</span></span><br><span class="line"><span class="comment">// person1.obj.foo2().call(person2) // obj</span></span><br></pre></td></tr></table></figure>
@@ -477,10 +643,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-03-21 21:24:48 / 修改时间：21:52:47" itemprop="dateCreated datePublished" datetime="2023-03-21T21:24:48+08:00">2023-03-21</time>
+              <time title="创建时间：2023-03-21 21:24:48" itemprop="dateCreated datePublished" datetime="2023-03-21T21:24:48+08:00">2023-03-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-22 21:41:50" itemprop="dateModified" datetime="2023-03-22T21:41:50+08:00">2023-03-22</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -661,7 +833,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -674,7 +846,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
