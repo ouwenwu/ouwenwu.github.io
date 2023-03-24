@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="组件化开发（React二）组件化开发：如果把一个页面的所有处理逻辑放在一起，处理起来会很复杂，因此将一个页面拆分为不同的功能块  一个完整的页面可以划分为很多个组件 每个组件都用于实现页面的一个功块 每一个组件又可以细分 组件本身又可以在很多地方复用   React组件：  类组件与函数组件 根据内部是否有状态需要维护：无状态组件、有状态组件（this.state，不考虑hooks的情况下函数组件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React组件化开发">
+<meta property="og:url" content="http://example.com/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="Ouwenwu">
+<meta property="og:description" content="组件化开发（React二）组件化开发：如果把一个页面的所有处理逻辑放在一起，处理起来会很复杂，因此将一个页面拆分为不同的功能块  一个完整的页面可以划分为很多个组件 每个组件都用于实现页面的一个功块 每一个组件又可以细分 组件本身又可以在很多地方复用   React组件：  类组件与函数组件 根据内部是否有状态需要维护：无状态组件、有状态组件（this.state，不考虑hooks的情况下函数组件">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/image-20230324172119865.png">
+<meta property="og:image" content="http://example.com/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/image-20230324173626696.png">
+<meta property="og:image" content="http://example.com/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/image-20230324174415395.png">
+<meta property="og:image" content="http://example.com/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/image-20230324180859034.png">
+<meta property="article:published_time" content="2023-03-24T09:13:16.000Z">
+<meta property="article:modified_time" content="2023-03-24T10:20:52.367Z">
+<meta property="article:author" content="ouwenwu">
+<meta property="article:tag" content="2023.3">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/image-20230324172119865.png">
+
+<link rel="canonical" href="http://example.com/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>React组件化开发 | Ouwenwu</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Ouwenwu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ouwenwu</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">个人学习日志</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/ouwenwu/ouwenwu.github.io" class="github-corner" title="Ouwenwu Github" aria-label="Ouwenwu Github" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React组件化开发
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-24 17:13:16 / 修改时间：18:20:52" itemprop="dateCreated datePublished" datetime="2023-03-24T17:13:16+08:00">2023-03-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="组件化开发（React二）"><a href="#组件化开发（React二）" class="headerlink" title="组件化开发（React二）"></a>组件化开发（React二）</h1><p><strong><em>组件化开发：</em></strong>如果把一个页面的所有处理逻辑放在一起，处理起来会很复杂，因此将一个页面拆分为不同的功能块</p>
+<ul>
+<li>一个完整的页面可以划分为很多个组件</li>
+<li>每个组件都用于实现页面的一个功块</li>
+<li>每一个组件又可以细分</li>
+<li>组件本身又可以在很多地方复用</li>
+</ul>
+<p><img src="/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/image-20230324172119865.png" alt="image-20230324172119865"></p>
+<p><strong><em>React组件：</em></strong></p>
+<ul>
+<li>类组件与函数组件</li>
+<li>根据内部是否有状态需要维护：无状态组件、有状态组件（this.state，不考虑hooks的情况下函数组件是无状态组件，而类组件不定义this.state也可以看做无状态组件）</li>
+<li>根据组件的不同职责：展示型组件、容器型组件</li>
+</ul>
+<p><strong><em>组件之间有重叠，但都是为了数据逻辑和UI展示的分离</em></strong></p>
+<ul>
+<li>函数组件、无状态组件、展示型组件主要关注UI的展示</li>
+<li>类组件、有状态组件、容器型组件主要关注数据逻辑</li>
+</ul>
+<h1 id="类组件与函数组件"><a href="#类组件与函数组件" class="headerlink" title="类组件与函数组件"></a>类组件与函数组件</h1><h2 id="类组件"><a href="#类组件" class="headerlink" title="类组件"></a>类组件</h2><p><strong><em>定义要求：</em></strong>首字母大写、继承自React.Component、实现render函数</p>
+<ul>
+<li>constructor可选，在其中初始化数据</li>
+<li>this.state中维护组件内部的数据</li>
+<li>render是类组件<strong>唯一必须实现的方法</strong></li>
+</ul>
+<h2 id="函数组件（没有hooks的函数组件）"><a href="#函数组件（没有hooks的函数组件）" class="headerlink" title="函数组件（没有hooks的函数组件）"></a>函数组件（没有hooks的函数组件）</h2><ul>
+<li>没有生命周期、会被挂载、没有生命周期函数</li>
+<li>this关键字不能指向组件实例，因为没有组件实例</li>
+<li>没有内部状态state</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>Hello World<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> root = <span class="title class_">ReactDOM</span>.<span class="title function_">createRoot</span>(<span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#root&#x27;</span>))</span><br><span class="line">root.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">App</span>/&gt;</span></span>)</span><br></pre></td></tr></table></figure>
+<h1 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h1><p><strong><em>生命周期：</em></strong>从创建到销毁的整个过程，了解生命周期在最合适的地方完成想要的功能</p>
+<h2 id="React的生命周期、生命周期函数"><a href="#React的生命周期、生命周期函数" class="headerlink" title="React的生命周期、生命周期函数"></a>React的生命周期、生命周期函数</h2><ul>
+<li>装载阶段：组件第一次在DOM树种被渲染的过程——装载完成：componentDidMount</li>
+<li>更新阶段：组件状态发生变化，重新更新渲染的过程——更新完成：componentDidUpdate</li>
+<li>卸载阶段：组件从DOM树种被移除的过程——即将移除：componentWillUnmount</li>
+</ul>
+<p><img src="/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/image-20230324173626696.png" alt="image-20230324173626696"></p>
+<h3 id="各函数任务及时刻"><a href="#各函数任务及时刻" class="headerlink" title="各函数任务及时刻"></a>各函数任务及时刻</h3><p><strong><em>constructor：</em></strong></p>
+<ul>
+<li>不初始化state或不进行方法绑定，则可以不实现构造函数</li>
+<li>作用一：给this.state赋值对象来初始化state</li>
+<li>作用二：为事件绑定this——调用super()</li>
+</ul>
+<p><strong><em>componentDidMount：</em></strong></p>
+<ul>
+<li>组件挂载到DOM Tree后立马调用</li>
+<li>作用一：进行依赖于DOM的操作</li>
+<li>作用二：发送网络请求的最好位置</li>
+<li>作用三：添加订阅</li>
+</ul>
+<p><strong><em>componentDidUpdate：</em></strong></p>
+<ul>
+<li>组件更新后立即调用，首次渲染不会执行这个方法</li>
+<li>作用一：组件更新后，此处进行DOM相关操作</li>
+<li>作用二：当更新前后props发送了变化，此处发送网络请求</li>
+</ul>
+<p><strong><em>componentWIllUnmount：</em></strong></p>
+<ul>
+<li>组件卸载及销毁之前直接调用</li>
+<li>作用一：进行必要的清理操作</li>
+<li>作用二：清除timer，取消网络请求或取消上面创建的订阅</li>
+</ul>
+<h3 id="不常用生命周期函数"><a href="#不常用生命周期函数" class="headerlink" title="不常用生命周期函数"></a>不常用生命周期函数</h3><ul>
+<li>getDerivedStateFromProps：state 的值在任何 时候都依赖于 props时使用；该方法返回一个对象 来更新state</li>
+<li>getSnapshotBeforeUpdate：在React更新DOM 之前回调的一个函数，可以获取DOM更新前的一 些信息（比如说滚动位置）</li>
+<li>shouldComponentUpdate：该生命周期函数很 常用，但是我们等待讲性能优化时再来详细讲解</li>
+</ul>
+<p><img src="/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/image-20230324174415395.png" alt="image-20230324174415395"></p>
+<h1 id="组件之间的通信"><a href="#组件之间的通信" class="headerlink" title="组件之间的通信"></a>组件之间的通信</h1><h2 id="父组件传值到子组件"><a href="#父组件传值到子组件" class="headerlink" title="父组件传值到子组件"></a>父组件传值到子组件</h2><ul>
+<li>父组件通过 属性=值 的形式来传递给子组件数据</li>
+<li>子组件通过props参数获取父组件传过来的值</li>
+</ul>
+<p><strong><em>默认值设置：</em></strong>ChildComponent.defaultProps</p>
+<p><strong><em>参数类型设置：</em></strong>ChildComponent.propTypes    isRequired代表是否必须</p>
+<p><strong><em>父组件代码：</em></strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ChildComponent</span> <span class="keyword">from</span> <span class="string">&quot;./component/ChildComponent&quot;</span>;</span><br><span class="line"><span class="comment">//编写组件</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">super</span>()</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">state</span> = &#123;</span><br><span class="line">            <span class="attr">message</span>: <span class="string">&quot;I am your father!&quot;</span>,</span><br><span class="line">            <span class="attr">info</span>:<span class="string">&quot;You are my child!&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">render</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> &#123;message,info&#125; = <span class="variable language_">this</span>.<span class="property">state</span></span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;message&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">                <span class="tag">&lt;<span class="name">ChildComponent</span> <span class="attr">info</span> = <span class="string">&#123;info&#125;/</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">App</span></span><br></pre></td></tr></table></figure>
+<p><strong><em>子组件代码：</em></strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; <span class="title class_">Component</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">PropTypes</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;prop-types&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">ChildComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Component</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> ([</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">&quot;1&quot;</span>&gt;</span>&#123;this.props.info&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>,</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">&quot;2&quot;</span>&gt;</span>&#123;this.props.info2&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        ])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">ChildComponent</span>.<span class="property">propTypes</span> = &#123;</span><br><span class="line">    <span class="attr">info</span>: <span class="title class_">PropTypes</span>.<span class="property">string</span>.<span class="property">isRequired</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">ChildComponent</span>.<span class="property">defaultProps</span> = &#123;</span><br><span class="line">    <span class="attr">info</span>:<span class="string">&quot;Tell me who are you!&quot;</span>,</span><br><span class="line">    <span class="attr">info2</span>:<span class="string">&quot;You are my Dad!&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">ChildComponent</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/image-20230324180859034.png" alt="image-20230324180859034"></p>
+<h2 id="子组件传值到父组件"><a href="#子组件传值到父组件" class="headerlink" title="子组件传值到父组件"></a>子组件传值到父组件</h2><ul>
+<li>通过props给子组件传递一个回调函数，在子组件中调用这个函数</li>
+</ul>
+<p><strong><em>父组件代码：</em></strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ChildComponent</span> <span class="keyword">from</span> <span class="string">&quot;./component/ChildComponent&quot;</span>;</span><br><span class="line"><span class="comment">//编写组件</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">super</span>()</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">state</span> = &#123;</span><br><span class="line">            <span class="attr">message</span>: <span class="string">&quot;I am your father!&quot;</span>,</span><br><span class="line">            <span class="attr">info</span>:<span class="string">&quot;You are my child!&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    dataFromChild = <span class="keyword">function</span>(<span class="params">info</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123;</span><br><span class="line">            <span class="attr">message</span>:info</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">render</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> &#123;message,info&#125; = <span class="variable language_">this</span>.<span class="property">state</span></span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;message&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">                <span class="tag">&lt;<span class="name">ChildComponent</span> <span class="attr">info</span> = <span class="string">&#123;info&#125;</span> <span class="attr">dataFromChild</span> = <span class="string">&#123;(message)</span>=&gt;</span> this.dataFromChild(message)&#125;/&gt;</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">App</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong><em>子组件代码：</em></strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; <span class="title class_">Component</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">PropTypes</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;prop-types&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">ChildComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Component</span> &#123;</span><br><span class="line">    sendDataToFather = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">props</span>.<span class="title function_">dataFromChild</span>(<span class="number">555</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> ([</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">&quot;1&quot;</span> <span class="attr">onClick</span> = <span class="string">&#123;()</span>=&gt;</span>&#123;this.sendDataToFather()&#125;&#125;&gt;&#123;this.props.info&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>,</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">&quot;2&quot;</span>&gt;</span>&#123;this.props.info2&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        ])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">ChildComponent</span>.<span class="property">propTypes</span> = &#123;</span><br><span class="line">    <span class="attr">info</span>: <span class="title class_">PropTypes</span>.<span class="property">string</span>.<span class="property">isRequired</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">ChildComponent</span>.<span class="property">defaultProps</span> = &#123;</span><br><span class="line">    <span class="attr">info</span>:<span class="string">&quot;Tell me who are you!&quot;</span>,</span><br><span class="line">    <span class="attr">info2</span>:<span class="string">&quot;You are my Dad!&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">ChildComponent</span></span><br></pre></td></tr></table></figure>
+<p>注：各个地方函数的使用要注意，是否需要this，一般传递过去的函数都是箭头函数，调用的函数一般为function</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">ChildComponent</span> info = &#123;info&#125; dataFromChild = &#123;<span class="function">(<span class="params">message</span>)=&gt;</span> <span class="variable language_">this</span>.<span class="title function_">dataFromChild</span>(message)&#125;/&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">ChildComponent</span> <span class="attr">info</span> = <span class="string">&#123;info&#125;</span> <span class="attr">dataFromChild</span> = <span class="string">&#123;this.dataFromChild&#125;/</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>如果直接传递，那么函数的调用由React确定就不知道this是啥</p>
+<p>传递过去箭头函数，那么我们不关心什么时候调用这个箭头函数，而箭头函数包含的是隐式绑定的this，所以调用的函数需要function，要不然找不到this</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/2023-3/" rel="tag"># 2023.3</a>
+              <a href="/tags/React/" rel="tag"># React</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/24/%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAReact%E9%A1%B9%E7%9B%AE%E5%8F%8AReact%E5%9F%BA%E7%A1%80/" rel="prev" title="搭建一个React项目及React基础">
+      <i class="fa fa-chevron-left"></i> 搭建一个React项目及React基础
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91%EF%BC%88React%E4%BA%8C%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">组件化开发（React二）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E7%BB%84%E4%BB%B6%E4%B8%8E%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">类组件与函数组件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E7%BB%84%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">类组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%EF%BC%88%E6%B2%A1%E6%9C%89hooks%E7%9A%84%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">函数组件（没有hooks的函数组件）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">3.</span> <span class="nav-text">生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#React%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E3%80%81%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">React的生命周期、生命周期函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E5%87%BD%E6%95%B0%E4%BB%BB%E5%8A%A1%E5%8F%8A%E6%97%B6%E5%88%BB"><span class="nav-number">3.1.1.</span> <span class="nav-text">各函数任务及时刻</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%B8%B8%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.2.</span> <span class="nav-text">不常用生命周期函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="nav-number">4.</span> <span class="nav-text">组件之间的通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%88%B6%E7%BB%84%E4%BB%B6%E4%BC%A0%E5%80%BC%E5%88%B0%E5%AD%90%E7%BB%84%E4%BB%B6"><span class="nav-number">4.1.</span> <span class="nav-text">父组件传值到子组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E7%BB%84%E4%BB%B6%E4%BC%A0%E5%80%BC%E5%88%B0%E7%88%B6%E7%BB%84%E4%BB%B6"><span class="nav-number">4.2.</span> <span class="nav-text">子组件传值到父组件</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">ouwenwu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ouwenwu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : 'ouwenwu.github.io',
+      owner       : 'ouwenwu',
+      admin       : [''],
+      id          : 'bb970f724c0aa1f97a867d360c01bee8',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>
