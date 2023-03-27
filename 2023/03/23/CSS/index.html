@@ -27,11 +27,15 @@
 <meta property="og:site_name" content="Ouwenwu">
 <meta property="og:description" content="CSS基础CSS样式 内联样式（元素的style属性中） 内部样式表（HTML的style元素中） 外部样式表（.css文件中，通过link元素导入）  文本text-decoration：none(无装饰线)、underline(下划线)、overline(上划线)、through(中划线&#x2F;删除线) text-transform：capitaliza(每个单词首字母大写)、uppercase(每">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/23/CSS/image-20230325163555417.png">
+<meta property="og:image" content="http://example.com/2023/03/23/CSS/image-20230325163706773.png">
+<meta property="og:image" content="http://example.com/2023/03/23/CSS/image-20230325164329528.png">
 <meta property="article:published_time" content="2023-03-23T13:17:45.000Z">
-<meta property="article:modified_time" content="2023-03-24T07:30:53.234Z">
+<meta property="article:modified_time" content="2023-03-26T07:37:53.633Z">
 <meta property="article:author" content="ouwenwu">
-<meta property="article:tag" content="2023.3">
+<meta property="article:tag" content="CSS">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/03/23/CSS/image-20230325163555417.png">
 
 <link rel="canonical" href="http://example.com/2023/03/23/CSS/">
 
@@ -224,7 +228,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-24 15:30:53" itemprop="dateModified" datetime="2023-03-24T15:30:53+08:00">2023-03-24</time>
+                <time title="修改时间：2023-03-26 15:37:53" itemprop="dateModified" datetime="2023-03-26T15:37:53+08:00">2023-03-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -319,7 +323,43 @@
 <li>border-radius</li>
 </ul>
 <p>注：同样可以用border属性来进行缩写</p>
+<p><strong><em>out-line:</em></strong></p>
+<p>外轮廓不占用空间、border占用空间，外轮廓默认显示在border的外面</p>
+<ul>
+<li>outline-width: 外轮廓的宽度 </li>
+<li>outline-style：取值跟border的样式一样，比如solid、dotted等 </li>
+<li>outline-color: 外轮廓的颜色 </li>
+<li>outline：outline-width、outline-style、outline-color的简写属性，跟border用法类似</li>
+</ul>
+<p><strong>作用：</strong>去除a元素，input元素的focus轮廓效果</p>
 <p><strong><em>margin：</em></strong>与padding值的设置类似</p>
+<h2 id="margin的上下传递（左右不传递）——父子元素"><a href="#margin的上下传递（左右不传递）——父子元素" class="headerlink" title="margin的上下传递（左右不传递）——父子元素"></a>margin的上下传递（左右不传递）——父子元素</h2><h3 id="margin-top传递"><a href="#margin-top传递" class="headerlink" title="margin-top传递"></a>margin-top传递</h3><p><strong><em>html代码：</em></strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>哈哈哈哈<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong><em>样式设置：</em></strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.content</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: orange;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">100px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果块级元素的顶部线和父元素的顶部线重叠，那么这个块级元素的margin-top值会传递给父元素</li>
+</ul>
+<p><img src="/2023/03/23/CSS/image-20230325163555417.png" alt="image-20230325163555417"></p>
+<p>如果没有折叠，应该是块级元素与父元素组件有间隔，但实际上margin-top值传递给了父元素</p>
+<h3 id="margin-bottom传递"><a href="#margin-bottom传递" class="headerlink" title="margin-bottom传递"></a>margin-bottom传递</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">    <span class="attribute">height</span>: auto;</span><br><span class="line">    <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.content</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: orange;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">100px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果块级元素的底部线和父元素的底部线重写，并且父元素的高度是auto，那么这个块级元素的margin-bottom值会传递给父元素</li>
+</ul>
+<p><img src="/2023/03/23/CSS/image-20230325163706773.png" alt="image-20230325163706773"></p>
+<p>如果没有折叠，应该是块级元素与父元素组件有间隔，但实际上margin-bottom值传递给了父元素</p>
+<h3 id="防止margin传递"><a href="#防止margin传递" class="headerlink" title="防止margin传递"></a>防止margin传递</h3><ul>
+<li>给父元素设置padding-top\padding-bottom （必须额外添加padding）</li>
+<li>给父元素设置border   （有时候boder影响样式，设置boder透明依然会占据空间）</li>
+<li>触发BFC: 设置overflow为auto</li>
+</ul>
+<h2 id="margin的上下折叠——兄弟父子都有"><a href="#margin的上下折叠——兄弟父子都有" class="headerlink" title="margin的上下折叠——兄弟父子都有"></a>margin的上下折叠——兄弟父子都有</h2><ul>
+<li>垂直方向上相邻的2个margin（margin-top、margin-bottom）有可能会合并为1个margin，这种现象叫做collapse（折叠）</li>
+<li>水平方向上的margin（margin-left、margin-right）永远不会collapse</li>
+<li>折叠后最终值的计算规则：  两个值进行比较，取较大的值</li>
+<li>防止上下折叠：只设置其中一个元素的margin</li>
+</ul>
+<p><img src="/2023/03/23/CSS/image-20230325164329528.png" alt="image-20230325164329528"></p>
 
     </div>
 
@@ -329,7 +369,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/2023-3/" rel="tag"># 2023.3</a>
+              <a href="/tags/CSS/" rel="tag"># CSS</a>
           </div>
 
         
@@ -404,7 +444,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CSS%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">CSS基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CSS%E6%A0%B7%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">CSS样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC"><span class="nav-number">1.2.</span> <span class="nav-text">文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E4%BD%93"><span class="nav-number">1.3.</span> <span class="nav-text">字体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">1.4.</span> <span class="nav-text">常见选择器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#css%E8%AE%BE%E7%BD%AE%E4%B8%8D%E7%94%9F%E6%95%88%EF%BC%9A"><span class="nav-number">1.4.1.</span> <span class="nav-text">css设置不生效：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">盒子模型</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CSS%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">CSS基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CSS%E6%A0%B7%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">CSS样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC"><span class="nav-number">1.2.</span> <span class="nav-text">文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E4%BD%93"><span class="nav-number">1.3.</span> <span class="nav-text">字体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">1.4.</span> <span class="nav-text">常见选择器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#css%E8%AE%BE%E7%BD%AE%E4%B8%8D%E7%94%9F%E6%95%88%EF%BC%9A"><span class="nav-number">1.4.1.</span> <span class="nav-text">css设置不生效：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">盒子模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#margin%E7%9A%84%E4%B8%8A%E4%B8%8B%E4%BC%A0%E9%80%92%EF%BC%88%E5%B7%A6%E5%8F%B3%E4%B8%8D%E4%BC%A0%E9%80%92%EF%BC%89%E2%80%94%E2%80%94%E7%88%B6%E5%AD%90%E5%85%83%E7%B4%A0"><span class="nav-number">2.1.</span> <span class="nav-text">margin的上下传递（左右不传递）——父子元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#margin-top%E4%BC%A0%E9%80%92"><span class="nav-number">2.1.1.</span> <span class="nav-text">margin-top传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#margin-bottom%E4%BC%A0%E9%80%92"><span class="nav-number">2.1.2.</span> <span class="nav-text">margin-bottom传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B2%E6%AD%A2margin%E4%BC%A0%E9%80%92"><span class="nav-number">2.1.3.</span> <span class="nav-text">防止margin传递</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#margin%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%8A%98%E5%8F%A0%E2%80%94%E2%80%94%E5%85%84%E5%BC%9F%E7%88%B6%E5%AD%90%E9%83%BD%E6%9C%89"><span class="nav-number">2.2.</span> <span class="nav-text">margin的上下折叠——兄弟父子都有</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -418,20 +458,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
