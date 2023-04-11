@@ -188,6 +188,296 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/25/%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/25/%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/" class="post-title-link" itemprop="url">事件总线</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-25 12:40:46 / 修改时间：16:24:00" itemprop="dateCreated datePublished" datetime="2023-03-25T12:40:46+08:00">2023-03-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="事件总线（EventBus）"><a href="#事件总线（EventBus）" class="headerlink" title="事件总线（EventBus）"></a>事件总线（EventBus）</h1><p>事件总线是一种观察者模式，包括三个角色</p>
+<ul>
+<li><strong><em>发布者：</em></strong>发布事件</li>
+<li><strong><em>订阅者：</em></strong>订阅事件，并进行响应</li>
+<li><strong><em>时间总线：</em></strong>无论发布者还是订阅者都通过事件总线作为中台</li>
+</ul>
+<p><strong><em>目的：</em></strong>开发过程中不同组件之间通信 <a href="/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/">组件通信</a></p>
+<h2 id="事件总线的实现"><a href="#事件总线的实现" class="headerlink" title="事件总线的实现"></a>事件总线的实现</h2><ul>
+<li>事件的监听方法on</li>
+<li>事件的发射方法emit</li>
+<li>事件的取消监听off</li>
+</ul>
+<p>由于一个EventBus对象会在多个地方使用，所以将其中的属性和函数定义为静态的</p>
+<p>也可采用实例化的方法，那样需要把这个实例放在全局变量中，如在React在根节点定义Context</p>
+<p><strong><em>EventBus的实现：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EventBus</span>&#123;</span><br><span class="line">    <span class="keyword">static</span> eventMap = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="title function_">on</span>(<span class="params">eventName, eventFn</span>)&#123;</span><br><span class="line">        (<span class="variable language_">this</span>.<span class="property">eventMap</span>[eventName] || (<span class="variable language_">this</span>.<span class="property">eventMap</span>[eventName] = []))&amp;&amp;<span class="variable language_">this</span>.<span class="property">eventMap</span>[eventName].<span class="title function_">push</span>(eventFn)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="title function_">emit</span>(<span class="params">eventName, ...args</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="variable language_">this</span>.<span class="property">eventMap</span>[eventName])&#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(eventName,<span class="string">&quot;没有监听&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> fun <span class="keyword">of</span> <span class="variable language_">this</span>.<span class="property">eventMap</span>[eventName])&#123;</span><br><span class="line">            fun.<span class="title function_">apply</span>(<span class="variable language_">this</span>,args)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="title function_">off</span>(<span class="params">eventName, eventFn</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> eventFns = <span class="variable language_">this</span>.<span class="property">eventMap</span>[eventName]</span><br><span class="line">        <span class="keyword">if</span>(!eventFns)&#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(eventName,<span class="string">&quot;没有监听&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;eventFns.<span class="property">length</span>;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(eventFn===eventFns[i])&#123;</span><br><span class="line">                eventFns.<span class="title function_">splice</span>(i,<span class="number">1</span>)</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">eventMap</span>)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><em>EventBus的使用：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> function1 = <span class="keyword">function</span>(<span class="params">...args</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;function1&quot;</span>, <span class="variable language_">this</span>.<span class="property">eventMap</span>, args)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> function2 = <span class="keyword">function</span>(<span class="params">...args</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;function2&quot;</span>, <span class="variable language_">this</span>.<span class="property">eventMap</span>, args)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">EventBus</span>.<span class="title function_">on</span>(<span class="string">&quot;click&quot;</span>,function1)</span><br><span class="line"><span class="title class_">EventBus</span>.<span class="title function_">on</span>(<span class="string">&quot;click&quot;</span>,function2)</span><br><span class="line"></span><br><span class="line"><span class="title class_">EventBus</span>.<span class="title function_">on</span>(<span class="string">&quot;click2&quot;</span>,function1)</span><br><span class="line"></span><br><span class="line"><span class="title class_">EventBus</span>.<span class="title function_">emit</span>(<span class="string">&quot;click&quot;</span>, <span class="string">&quot;oww&quot;</span>, <span class="string">&quot;18&quot;</span>)</span><br><span class="line"><span class="title class_">EventBus</span>.<span class="title function_">emit</span>(<span class="string">&quot;click2&quot;</span>, <span class="string">&quot;oww1&quot;</span>, <span class="string">&quot;22&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">EventBus</span>.<span class="title function_">off</span>(<span class="string">&quot;click&quot;</span>,function2)</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/25/%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/image-20230325134633475.png" alt="image-20230325134633475"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/24/%E5%A0%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/24/%E5%A0%86/" class="post-title-link" itemprop="url">堆</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-24 19:22:13 / 修改时间：21:27:40" itemprop="dateCreated datePublished" datetime="2023-03-24T19:22:13+08:00">2023-03-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="堆："><a href="#堆：" class="headerlink" title="堆："></a>堆：</h1><ul>
+<li>堆是一种<strong>完全二叉树</strong>，复习一下完全二叉树的定义，完全二叉树的形式是指除了最后一层之外，其他所有层的结点都是满的，而最后一层的所有结点都靠左边。</li>
+<li>若设二叉树的深度为h，除第 h 层外，其它各层 (1～h-1) 的结点数都达到最大个数，第 h 层所有的结点都连续集中在最左边，这就是完全二叉树。</li>
+</ul>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324192427183.png" alt="image-20230324192427183"></p>
+<p><strong><em>完全二叉树：</em></strong>对于任意一个父节点的序号n来说（这里n从0算），它的子节点的序号一定是2n+1,2n+2，因此我们可以直接用数组来表示一个堆。</p>
+<p><strong><em>堆的创建：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Heap</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">array</span> = []</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">length</span> = <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324192636065.png" alt="image-20230324192636065"></p>
+<h2 id="大顶堆-最大堆："><a href="#大顶堆-最大堆：" class="headerlink" title="大顶堆/最大堆："></a>大顶堆/最大堆：</h2><p>对于任意一个父节点来说，其子节点都小于这个父节点</p>
+<h3 id="最大堆的插入："><a href="#最大堆的插入：" class="headerlink" title="最大堆的插入："></a>最大堆的插入：</h3><ul>
+<li>当一个元素要插入时，先放到堆尾，根据堆的特性，对位置进行调整。</li>
+<li>父节点要大于直接点，找到插入节点的父节点，比父节点值大则交换位置，否则插入成功</li>
+<li>交换后，继续检测该节点与现在父节点的大小，如果大则交换位置，一直上浮到根节点</li>
+</ul>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324193433568.png" alt="image-20230324193433568"></p>
+<p><strong><em>JavaScript实现：</em></strong>length可以用this.array.length替代</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">insert</span>(<span class="params">x</span>)&#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>.<span class="title function_">push</span>(x)</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>===<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> x_index = <span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>-<span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> parent_index = x_index</span><br><span class="line">    <span class="keyword">while</span>(parent_index!==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> parent_index = x_index%<span class="number">2</span>===<span class="number">0</span>?(x_index-<span class="number">2</span>):(x_index-<span class="number">1</span>)</span><br><span class="line">        parent_index = parent_index/<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">this</span>.<span class="property">array</span>[parent_index]&lt;x)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">array</span>[x_index] = <span class="variable language_">this</span>.<span class="property">array</span>[parent_index]</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">array</span>[parent_index] = x</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        x_index = parent_index</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 循环最大次数k即为树的深度：2^0+2^1+...+2^k = n 即k=logn 时间复杂度为O(logN)</span></span><br></pre></td></tr></table></figure>
+<h3 id="最大堆的删除"><a href="#最大堆的删除" class="headerlink" title="最大堆的删除"></a>最大堆的删除</h3><ul>
+<li>堆的删除一般是值删除堆顶元素，先删除堆顶元素</li>
+<li>要保证堆一直为完全二叉树，不能直接拿子节点的较大值，而是将末尾元素拿到堆顶，再下沉</li>
+<li>下沉即先比较该节点与左子节点，如果子节点更大，则交换，如果子节点更小，则与右节点比较</li>
+<li>直至到最深层，或者比左右子节点都大</li>
+</ul>
+<p><strong><em>JavaScript实现：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">pop</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>[<span class="number">0</span>] = <span class="variable language_">this</span>.<span class="property">array</span>[<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>-<span class="number">1</span>]</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>.<span class="title function_">pop</span>()</span><br><span class="line">    <span class="keyword">let</span> x_index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> left_index = <span class="number">2</span> * x_index + <span class="number">1</span></span><br><span class="line">        <span class="keyword">let</span> right_index = <span class="number">2</span> * x_index + <span class="number">2</span></span><br><span class="line">        left_index = left_index&gt;=<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>?<span class="attr">x_index</span>:left_index</span><br><span class="line">        right_index = right_index&gt;=<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>?<span class="attr">x_index</span>:right_index</span><br><span class="line">        <span class="keyword">let</span> large_child_index = <span class="variable language_">this</span>.<span class="property">array</span>[x_index]&lt;<span class="variable language_">this</span>.<span class="property">array</span>[left_index]?<span class="attr">left_index</span>:x_index</span><br><span class="line">        large_child_index = large_child_index!==x_index?<span class="attr">large_child_index</span>:(<span class="variable language_">this</span>.<span class="property">array</span>[x_index]&lt;<span class="variable language_">this</span>.<span class="property">array</span>[right_index]?<span class="attr">right_index</span>:x_index)</span><br><span class="line">        <span class="keyword">if</span>(large_child_index===x_index) <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">let</span> temp = <span class="variable language_">this</span>.<span class="property">array</span>[x_index]</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">array</span>[x_index] = <span class="variable language_">this</span>.<span class="property">array</span>[large_child_index]</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">array</span>[large_child_index] = temp</span><br><span class="line">        x_index = large_child_index</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 最大循环次数k即为树的深度 k = logn 时间复杂度为O(logN)</span></span><br></pre></td></tr></table></figure>
+<h1 id="小顶堆-最小堆"><a href="#小顶堆-最小堆" class="headerlink" title="小顶堆/最小堆"></a>小顶堆/最小堆</h1><p>插入与删除与最大堆类似</p>
+<p><strong><em>插入JavaScript实现：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">insert</span>(<span class="params">x</span>)&#123;</span><br><span class="line">    <span class="keyword">debugger</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>.<span class="title function_">push</span>(x)</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>===<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> x_index = <span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>-<span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> parent_index = x_index</span><br><span class="line">    <span class="keyword">while</span>(parent_index!==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> parent_index = x_index%<span class="number">2</span>===<span class="number">0</span>?(x_index-<span class="number">2</span>):(x_index-<span class="number">1</span>)</span><br><span class="line">        parent_index = parent_index/<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">this</span>.<span class="property">array</span>[parent_index]&gt;x)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">array</span>[x_index] = <span class="variable language_">this</span>.<span class="property">array</span>[parent_index]</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">array</span>[parent_index] = x</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        x_index = parent_index</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324210219667.png" alt="image-20230324210219667"></p>
+<p><strong><em>删除JavaScript实现：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">pop</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">debugger</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>[<span class="number">0</span>] = <span class="variable language_">this</span>.<span class="property">array</span>[<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>-<span class="number">1</span>]</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>.<span class="title function_">pop</span>()</span><br><span class="line">    <span class="keyword">let</span> x_index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> left_index = <span class="number">2</span> * x_index + <span class="number">1</span></span><br><span class="line">        <span class="keyword">let</span> right_index = <span class="number">2</span> * x_index + <span class="number">2</span></span><br><span class="line">        left_index = left_index&gt;=<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>?<span class="attr">x_index</span>:left_index</span><br><span class="line">        right_index = right_index&gt;=<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>?<span class="attr">x_index</span>:right_index</span><br><span class="line">        <span class="keyword">let</span> small_child_index = <span class="variable language_">this</span>.<span class="property">array</span>[x_index]&gt;<span class="variable language_">this</span>.<span class="property">array</span>[left_index]?<span class="attr">left_index</span>:x_index</span><br><span class="line">        small_child_index = small_child_index!==x_index?<span class="attr">small_child_index</span>:(<span class="variable language_">this</span>.<span class="property">array</span>[x_index]&gt;<span class="variable language_">this</span>.<span class="property">array</span>[right_index]?<span class="attr">right_index</span>:x_index)</span><br><span class="line">        <span class="keyword">if</span>(small_child_index===x_index) <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">let</span> temp = <span class="variable language_">this</span>.<span class="property">array</span>[x_index]</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">array</span>[x_index] = <span class="variable language_">this</span>.<span class="property">array</span>[small_child_index]</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">array</span>[small_child_index] = temp</span><br><span class="line">        x_index = small_child_index</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324210321704.png" alt="image-20230324210321704"></p>
+<h1 id="解决前K个高频元素-低频元素题"><a href="#解决前K个高频元素-低频元素题" class="headerlink" title="解决前K个高频元素/低频元素题"></a>解决前K个高频元素/低频元素题</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/top-k-frequent-elements/">LeetCode链接</a></p>
+<p>给定一个非空的整数数组，返回其中出现频率前 k 高的元素。</p>
+<p>示例 1:</p>
+<ul>
+<li>输入: nums = [1,1,1,2,2,3], k = 2</li>
+<li>输出: [1,2]</li>
+</ul>
+<p>示例 2:</p>
+<ul>
+<li>输入: nums = [1], k = 1</li>
+<li>输出: [1]</li>
+</ul>
+<p>提示：</p>
+<ul>
+<li>你可以假设给定的 k 总是合理的，且 1 ≤ k ≤ 数组中不相同的元素的个数。</li>
+<li>你的算法的时间复杂度必须优于 $O(n \log n)$ , n 是数组的大小。</li>
+<li>题目数据保证答案唯一，换句话说，数组中前 k 个高频元素的集合是唯一的。</li>
+<li>你可以按任意顺序返回答案。</li>
+</ul>
+<p><strong><em>步骤：</em></strong></p>
+<ul>
+<li>获取到每个数据出现的频率，使用哈希表，这里可以用map，key是数字，value是次数</li>
+<li>对频率排序</li>
+<li>找出前K个高频元素</li>
+</ul>
+<p>注：</p>
+<ul>
+<li>如果使用快速排序的时间复杂度为O(n)</li>
+<li>仅维护大小为K的小顶堆，小顶堆的堆顶始终是最小值，如果堆长度小于K则继续往队礼添加，如果长度大于K则弹出堆顶的最小值</li>
+</ul>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324211848724.png" alt="image-20230324211848724"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// js 没有堆 需要自己构造</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Heap</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">compareFn</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">compareFn</span> = compareFn;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">queue</span> = [];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加</span></span><br><span class="line">    <span class="title function_">push</span>(<span class="params">item</span>) &#123;</span><br><span class="line">        <span class="comment">// 推入元素</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">queue</span>.<span class="title function_">push</span>(item);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 上浮</span></span><br><span class="line">        <span class="keyword">let</span> index = <span class="variable language_">this</span>.<span class="title function_">size</span>() - <span class="number">1</span>; <span class="comment">// 记录推入元素下标</span></span><br><span class="line">        <span class="keyword">let</span> parent = <span class="title class_">Math</span>.<span class="title function_">floor</span>((index - <span class="number">1</span>) / <span class="number">2</span>); <span class="comment">// 记录父节点下标</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (parent &gt;= <span class="number">0</span> &amp;&amp; <span class="variable language_">this</span>.<span class="title function_">compare</span>(parent, index) &gt; <span class="number">0</span>) &#123; <span class="comment">// 注意compare参数顺序</span></span><br><span class="line">            [<span class="variable language_">this</span>.<span class="property">queue</span>[index], <span class="variable language_">this</span>.<span class="property">queue</span>[parent]] = [<span class="variable language_">this</span>.<span class="property">queue</span>[parent], <span class="variable language_">this</span>.<span class="property">queue</span>[index]];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 更新下标</span></span><br><span class="line">            index = parent;</span><br><span class="line">            parent = <span class="title class_">Math</span>.<span class="title function_">floor</span>((index - <span class="number">1</span>) / <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取堆顶元素并移除</span></span><br><span class="line">    <span class="title function_">pop</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">// 堆顶元素</span></span><br><span class="line">        <span class="keyword">const</span> out = <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 移除堆顶元素 填入最后一个元素</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="number">0</span>] = <span class="variable language_">this</span>.<span class="property">queue</span>.<span class="title function_">pop</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 下沉</span></span><br><span class="line">        <span class="keyword">let</span> index = <span class="number">0</span>; <span class="comment">// 记录下沉元素下标</span></span><br><span class="line">        <span class="keyword">let</span> left = <span class="number">1</span>; <span class="comment">// left 是左子节点下标 left + 1 则是右子节点下标</span></span><br><span class="line">        <span class="keyword">let</span> searchChild = <span class="variable language_">this</span>.<span class="title function_">compare</span>(left, left + <span class="number">1</span>) &gt; <span class="number">0</span> ? left + <span class="number">1</span> : left;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (searchChild !== <span class="literal">undefined</span> &amp;&amp; <span class="variable language_">this</span>.<span class="title function_">compare</span>(index, searchChild) &gt; <span class="number">0</span>) &#123; <span class="comment">// 注意compare参数顺序</span></span><br><span class="line">            [<span class="variable language_">this</span>.<span class="property">queue</span>[index], <span class="variable language_">this</span>.<span class="property">queue</span>[searchChild]] = [<span class="variable language_">this</span>.<span class="property">queue</span>[searchChild], <span class="variable language_">this</span>.<span class="property">queue</span>[index]];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 更新下标</span></span><br><span class="line">            index = searchChild;</span><br><span class="line">            left = <span class="number">2</span> * index + <span class="number">1</span>;</span><br><span class="line">            searchChild = <span class="variable language_">this</span>.<span class="title function_">compare</span>(left, left + <span class="number">1</span>) &gt; <span class="number">0</span> ? left + <span class="number">1</span> : left;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> out;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">size</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">queue</span>.<span class="property">length</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用传入的 compareFn 比较两个位置的元素</span></span><br><span class="line">    <span class="title function_">compare</span>(<span class="params">index1, index2</span>) &#123;</span><br><span class="line">        <span class="comment">// 处理下标越界问题</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">queue</span>[index1] === <span class="literal">undefined</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">queue</span>[index2] === <span class="literal">undefined</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">compareFn</span>(<span class="variable language_">this</span>.<span class="property">queue</span>[index1], <span class="variable language_">this</span>.<span class="property">queue</span>[index2]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> topKFrequent = <span class="keyword">function</span> (<span class="params">nums, k</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> nums) &#123;</span><br><span class="line">        map.<span class="title function_">set</span>(num, (map.<span class="title function_">get</span>(num) || <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建小顶堆</span></span><br><span class="line">    <span class="keyword">const</span> heap= <span class="keyword">new</span> <span class="title class_">Heap</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a[<span class="number">1</span>] - b[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// entry 是一个长度为2的数组，0位置存储key，1位置存储value</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> entry <span class="keyword">of</span> map.<span class="title function_">entries</span>()) &#123;</span><br><span class="line">        heap.<span class="title function_">push</span>(entry);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (heap.<span class="title function_">size</span>() &gt; k) &#123;</span><br><span class="line">            heap.<span class="title function_">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// return heap.queue.map(e =&gt; e[0]);</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> res = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = heap.<span class="title function_">size</span>() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        res[i] = heap.<span class="title function_">pop</span>()[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>由于key和value是要绑定的，所以元素不能是简单的数组，而应该是包含key和value的二维数组，同时为了使得代码重用，将比较函数抽取出来，当做参数传递</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/24/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/24/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" class="post-title-link" itemprop="url">时间复杂度-空间复杂度</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-24 18:56:00 / 修改时间：19:21:45" itemprop="dateCreated datePublished" datetime="2023-03-24T18:56:00+08:00">2023-03-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p><strong><em>时间复杂度：</em></strong>时间增长趋势 T(n) = O(f(n))</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;=n;i++)&#123;</span><br><span class="line">	x++</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// let i=0   1</span></span><br><span class="line"><span class="comment">// i&lt;=n; i++; x++ 各n次</span></span><br><span class="line"><span class="comment">// 结果为 O(1+3n) = O(n)   O(n)算n趋近无限大，所以常数忽略</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;=n;i++)&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">let</span> j=<span class="number">0</span>;j&lt;=n;j++)&#123;</span><br><span class="line">		x++</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 时间复杂度：O(n)*O(n)=O(n^2)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;=n;i++)&#123;</span><br><span class="line">	x++</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;=n;i++)&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">let</span> j=<span class="number">0</span>;j&lt;=n;j++)&#123;</span><br><span class="line">		x++</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 时间复杂度 O(n+n^2) = O(n^2)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> x = <span class="number">0</span></span><br><span class="line"><span class="keyword">let</span> y = <span class="number">1</span></span><br><span class="line"><span class="keyword">let</span> temp = x</span><br><span class="line">x = y</span><br><span class="line">y = temp</span><br><span class="line"><span class="comment">// 时间复杂度不随着任何一个变量增大而增大，复杂度为O(1)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> i = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span>(i&lt;n)&#123;</span><br><span class="line">    i = i*<span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 循环次数k：2^k = n k=logn O(logn)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> j=<span class="number">0</span>;j&lt;=n;j++)&#123;</span><br><span class="line">	<span class="keyword">let</span> i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(i&lt;n)&#123;</span><br><span class="line">        i = i*<span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 时间复杂度O(n)*O(logn) = O(nlogn)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;=n;i++)&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">let</span> j=<span class="number">0</span>;j&lt;=m;j++)&#123;</span><br><span class="line">		x++</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 时间复杂度O(n)*O(m) = O(nm)</span></span><br></pre></td></tr></table></figure>
+<h1 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h1><p><strong><em>空间复杂度：</em></strong>内存空间增长的趋势</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">0</span></span><br><span class="line"><span class="keyword">let</span> y = <span class="number">1</span></span><br><span class="line"><span class="keyword">let</span> temp = x</span><br><span class="line">x = y</span><br><span class="line">y = temp</span><br><span class="line"><span class="comment">// x和y无论多大多不会影响空间占用 O(1)</span></span><br><span class="line"><span class="keyword">let</span> arr = []</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">	arr.<span class="title function_">push</span>(i)</span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">// 占用空间与n成正比，O(n)</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/24/React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1058,7 +1348,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-24 19:20:34" itemprop="dateModified" datetime="2023-03-24T19:20:34+08:00">2023-03-24</time>
+                <time title="修改时间：2023-04-05 10:19:04" itemprop="dateModified" datetime="2023-04-05T10:19:04+08:00">2023-04-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1102,7 +1392,7 @@
 <p><strong><em>注：</em></strong>全局上下文的VO对象就是GO、函数执行上下文的VO对象是AO</p>
 <h3 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h3><p>js在执行代码前，会在堆内存中创建一个全局对象：Global Object（GO）</p>
 <ul>
-<li>该对象  所有的作用域（scope）都可以访问； </li>
+<li>该对象所有的作用域（scope）都可以访问； </li>
 <li>里面会包含Date、Array、String、Number、setTimeout、setInterval等等； </li>
 <li>其中还有一个window属性指向自己；</li>
 </ul>
@@ -1176,7 +1466,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-24 19:21:40" itemprop="dateModified" datetime="2023-03-24T19:21:40+08:00">2023-03-24</time>
+                <time title="修改时间：2023-04-04 20:13:17" itemprop="dateModified" datetime="2023-04-04T20:13:17+08:00">2023-04-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1267,7 +1557,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-24 19:21:32" itemprop="dateModified" datetime="2023-03-24T19:21:32+08:00">2023-03-24</time>
+                <time title="修改时间：2023-04-04 20:14:50" itemprop="dateModified" datetime="2023-04-04T20:14:50+08:00">2023-04-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1449,329 +1739,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/21/this%E6%8C%87%E5%90%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ouwenwu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ouwenwu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/21/this%E6%8C%87%E5%90%91/" class="post-title-link" itemprop="url">this指向</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-21 21:54:12" itemprop="dateCreated datePublished" datetime="2023-03-21T21:54:12+08:00">2023-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-24 19:21:02" itemprop="dateModified" datetime="2023-03-24T19:21:02+08:00">2023-03-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="this的绑定"><a href="#this的绑定" class="headerlink" title="this的绑定"></a>this的绑定</h1><h2 id="一-整理this的绑定规则"><a href="#一-整理this的绑定规则" class="headerlink" title="一. 整理this的绑定规则"></a>一. 整理this的绑定规则</h2><ul>
-<li><p>默认绑定：独立函数调用，函数没有被绑定到某个对象上进行调用</p>
-</li>
-<li><p>隐式绑定：通过某个对象发起的函数调用，在调用对象内部有一个对函数的引用。</p>
-</li>
-<li><p>显式绑定：明确this指向的对象，第一个参数相同并要求传入一个对象。</p>
-<ul>
-<li>apply/call</li>
-<li>bind</li>
-</ul>
-</li>
-<li><p>new绑定：</p>
-<ul>
-<li>创建一个全新对象</li>
-<li>新对象被执行prototype链接</li>
-<li>新对象绑定到函数调用的this</li>
-<li>如果函数没有返回其他对象，表达式会返回这个对象</li>
-</ul>
-</li>
-</ul>
-<h3 id="默认绑定"><a href="#默认绑定" class="headerlink" title="默认绑定"></a>默认绑定</h3><p>默认绑定this一般情况下是window</p>
-<p>在严格模式下this为undefined</p>
-<p>es6后的class中函数默认为严格模式，即this为undefined</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>)&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> test = <span class="keyword">new</span> <span class="title class_">Test</span>()</span><br><span class="line"><span class="keyword">const</span> bar = test.<span class="property">foo</span></span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
-<p>babel会将js设置为严格模式——在React框架下，隐式绑定都为undefined</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/babel-standalone@6/babel.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">foo</span>() <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
-<h2 id="二-说出apply、call、bind函数的用法和区别"><a href="#二-说出apply、call、bind函数的用法和区别" class="headerlink" title="二. 说出apply、call、bind函数的用法和区别"></a>二. 说出apply、call、bind函数的用法和区别</h2><p>​      用法：</p>
-<ul>
-<li><p>​    apply</p>
-<p>​     第一个参数: 绑定this</p>
-<p>​    第二个参数: 传入额外的实参, 以数组的形式</p>
-</li>
-<li><p>​    call</p>
-<p>​    第一个参数: 绑定this</p>
-<p>​    参数列表: 后续的参数以多参数的形式传递, 会作为实参</p>
-</li>
-<li><p>​    bind(不希望obj对象身上有函数)</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">var</span> bar = foo.<span class="title function_">bind</span>(obj)</span><br><span class="line">​    <span class="title function_">bar</span>() <span class="comment">// this -&gt; obj</span></span><br></pre></td></tr></table></figure>
-<p>区别：</p>
-</li>
-<li><p>call、apply和bind都可以改变函数的this指向</p>
-</li>
-<li><p>call、apply和bind第一个参数的是this要指向的对象</p>
-</li>
-<li><p>call、apply和bind都可以后续为函数传参，apply是将参数并成一个数组，call和bind是将参数依次列出</p>
-</li>
-<li><p>call、apply都是直接调用，bind生成的this指向改变函数需要手动调用。</p>
-</li>
-</ul>
-<p>​        绑定优先级：</p>
-<p>​        默认绑定的优先级最低、显示绑定的优先级高于隐式绑定、new绑定的优先级高于隐式绑定、new绑定优先级高于bind</p>
-<p>​        new绑定和call、apply不可以一起使用</p>
-<p>​        注：</p>
-<p>​        显示绑定传入null或undefined，显示绑定会忽略使用默认规则</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">foo.<span class="title function_">call</span>(<span class="literal">null</span>)</span><br><span class="line">foo.<span class="title function_">call</span>(<span class="literal">undefined</span>)</span><br><span class="line"><span class="keyword">var</span> bar = foo.<span class="title function_">bind</span>(<span class="literal">null</span>)</span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// 都是windows</span></span><br></pre></td></tr></table></figure>
-<h2 id="三-说出箭头函数的各种用法和简写"><a href="#三-说出箭头函数的各种用法和简写" class="headerlink" title="三. 说出箭头函数的各种用法和简写"></a>三. 说出箭头函数的各种用法和简写</h2><ul>
-<li><p>基本写法</p>
-<ul>
-<li><p>()：函数的参数</p>
-</li>
-<li><p>{}:函数的执行体</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var foo3 = (name, age) =&gt; &#123;</span><br><span class="line">    console.log(&quot;箭头函数的函数体&quot;)</span><br><span class="line">    console.log(name, age)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>优化写法</p>
-<ul>
-<li><p>只有一个参数时, 可以省略()</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">names.<span class="title function_">forEach</span>(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(item)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>只有一行代码时, 可以省略{}</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">names.<span class="title function_">forEach</span>(<span class="function"><span class="params">item</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(item))</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p>只要一行代码时, 表达式的返回值会作为箭头函数默认返回值, 所以可以省略return</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> newNums = nums.<span class="title function_">filter</span>(<span class="function"><span class="params">item</span> =&gt;</span> item % <span class="number">2</span> === <span class="number">0</span>)</span><br><span class="line"><span class="keyword">var</span> newNums = nums.<span class="title function_">filter</span>(<span class="function"><span class="params">item</span> =&gt;</span> item % <span class="number">2</span> === <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p>如果箭头函数默认返回的是对象, 在省略{}的时候, 对象必须使用()包裹 () =&gt; ({name: “why”})</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="title function_">arrFn</span> = (<span class="params"></span>) =&gt; [<span class="string">&quot;abc&quot;</span>, <span class="string">&quot;cba&quot;</span>]</span><br><span class="line"><span class="keyword">var</span> <span class="title function_">arrFn</span> = (<span class="params"></span>) =&gt; &#123;&#125; <span class="comment">// 注意: 这里是&#123;&#125;执行体</span></span><br><span class="line"><span class="keyword">var</span> <span class="title function_">arrFn</span> = (<span class="params"></span>) =&gt; (&#123; <span class="attr">name</span>: <span class="string">&quot;why&quot;</span> &#125;)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">arrFn</span>())</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="四-完成this的面试题解析"><a href="#四-完成this的面试题解析" class="headerlink" title="四. 完成this的面试题解析"></a>四. 完成this的面试题解析</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;window&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;person&quot;</span>,</span><br><span class="line">  <span class="attr">sayName</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayName</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sss = person.<span class="property">sayName</span>;</span><br><span class="line">  <span class="title function_">sss</span>(); <span class="comment">// window</span></span><br><span class="line">  person.<span class="title function_">sayName</span>(); <span class="comment">// person</span></span><br><span class="line">  (person.<span class="property">sayName</span>)(); <span class="comment">// person</span></span><br><span class="line">  (b = person.<span class="property">sayName</span>)(); <span class="comment">// window </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">sayName</span>();</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">var</span> person1 = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person1&#x27;</span>,</span><br><span class="line">  <span class="attr">foo1</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo2</span>: <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>),</span><br><span class="line">  <span class="attr">foo3</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo4</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person2 = &#123; <span class="attr">name</span>: <span class="string">&#x27;person2&#x27;</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo1(); // person1</span></span><br><span class="line"><span class="comment">// person1.foo1.call(person2); // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo2(); // window</span></span><br><span class="line"><span class="comment">// person1.foo2.call(person2); // window</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo3()(); // window</span></span><br><span class="line"><span class="comment">// person1.foo3.call(person2)(); // window</span></span><br><span class="line"><span class="comment">// person1.foo3().call(person2); // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo4()(); // person1</span></span><br><span class="line"><span class="comment">// person1.foo4.call(person2)(); // person2</span></span><br><span class="line"><span class="comment">// person1.foo4().call(person2); // person1</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span> (name) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo1</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo2</span> = <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>),</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo3</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo4</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo1() // person1</span></span><br><span class="line"><span class="comment">// person1.foo1.call(person2) // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo2() // person1</span></span><br><span class="line"><span class="comment">// person1.foo2.call(person2) // person1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo3()() // window</span></span><br><span class="line"><span class="comment">// person1.foo3.call(person2)() // window</span></span><br><span class="line"><span class="comment">// person1.foo3().call(person2) // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo4()() // person1</span></span><br><span class="line"><span class="comment">// person1.foo4.call(person2)() // person2</span></span><br><span class="line"><span class="comment">// person1.foo4().call(person2) // person1</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span> (name) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">obj</span> = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">    <span class="attr">foo1</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">foo2</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.obj.foo1()() // window</span></span><br><span class="line"><span class="comment">// person1.obj.foo1.call(person2)() // window</span></span><br><span class="line"><span class="comment">// person1.obj.foo1().call(person2) // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.obj.foo2()() // obj</span></span><br><span class="line"><span class="comment">// person1.obj.foo2.call(person2)() // person2</span></span><br><span class="line"><span class="comment">// person1.obj.foo2().call(person2) // obj</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/21/%E8%8A%82%E6%B5%81%E4%B8%8E%E6%8A%96%E5%8A%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ouwenwu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ouwenwu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/21/%E8%8A%82%E6%B5%81%E4%B8%8E%E6%8A%96%E5%8A%A8/" class="post-title-link" itemprop="url">节流与抖动</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-21 21:24:48" itemprop="dateCreated datePublished" datetime="2023-03-21T21:24:48+08:00">2023-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-24 19:21:14" itemprop="dateModified" datetime="2023-03-24T19:21:14+08:00">2023-03-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="防抖与节流"><a href="#防抖与节流" class="headerlink" title="防抖与节流"></a>防抖与节流</h1><h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p>当事件触发时，相应的函数并不会立即触发，而是会等待一定的时间</p>
-<p>当事件密集触发时，函数的触发会被频繁的推迟</p>
-<h3 id="防抖的应用场景："><a href="#防抖的应用场景：" class="headerlink" title="防抖的应用场景："></a>防抖的应用场景：</h3><p>输入框中频繁的输入内容，搜索或提交信息</p>
-<p>平凡的点击按钮，触发某个事件</p>
-<p>用户缩放浏览器的resize事件</p>
-<p>如：输入macbook时，输入m联想，连续输入macbook不联想，在输入完一段时间后联想</p>
-<h3 id="防抖的实现："><a href="#防抖的实现：" class="headerlink" title="防抖的实现："></a>防抖的实现：</h3><p>以input输入为例：</p>
-<p>html代码：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;cancel&quot;</span>&gt;</span>取消<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>基本实现：</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/21/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ouwenwu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ouwenwu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/21/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-03-21 16:03:06 / 修改时间：19:22:48" itemprop="dateCreated datePublished" datetime="2023-03-21T16:03:06+08:00">2023-03-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<p><a href="www.baidu.com">asasa</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1837,7 +1808,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1850,7 +1821,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
