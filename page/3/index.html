@@ -188,6 +188,314 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">浏览器优化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-22 22:25:52" itemprop="dateCreated datePublished" datetime="2023-03-22T22:25:52+08:00">2023-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-04-04 20:13:17" itemprop="dateModified" datetime="2023-04-04T20:13:17+08:00">2023-04-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="回流reflow和重绘repaint"><a href="#回流reflow和重绘repaint" class="headerlink" title="回流reflow和重绘repaint"></a>回流reflow和重绘repaint</h1><h2 id="回流"><a href="#回流" class="headerlink" title="回流"></a>回流</h2><p>第一次确定节点的大小和位置，称为布局</p>
+<p>后续对节点的大小、位置修改并重新计算称为回流</p>
+<h3 id="引起回流的情况"><a href="#引起回流的情况" class="headerlink" title="引起回流的情况"></a>引起回流的情况</h3><ul>
+<li>DOM结构发生变化（添加或删除节点）</li>
+<li>改变布局（修改width、height、padding、font-size等）</li>
+<li>修改窗口大小</li>
+<li>调用getComputedStyle方法获取尺寸、位置星系、</li>
+</ul>
+<h3 id="避免回流的方法"><a href="#避免回流的方法" class="headerlink" title="避免回流的方法"></a>避免回流的方法</h3><p>修改样式时尽量一次性修改，比如通过cssText修改，或者通过添加class修改，而不是对css的各种属性分次修改</p>
+<p>避免频繁的操作DOM，可以使用虚拟DOM，或在父元素中要操作的DOM完成，再一次性更新到DOM中</p>
+<h4 id="composite合成"><a href="#composite合成" class="headerlink" title="composite合成"></a>composite合成</h4><p>绘制的过程中，浏览器会将布局后的元素绘制到多个图层中</p>
+<p>默认情况下，标准流中的内容被绘制在同一个图层，对于某些特殊的属性，会创建一个新的图层，这些图层可以利用GPU加速绘制</p>
+<p>可以形成新的合成层的属性：3D transforms、video、canvas、iframe、opacity、position：fixed、will-change、animation或transition设置了opacity、transform</p>
+<p>分层确实可以提高性能，但以内存管理为代价，因此不能作为Web性能优化的一部分过渡使用</p>
+<h2 id="重绘"><a href="#重绘" class="headerlink" title="重绘"></a>重绘</h2><p>第一次渲染内容称为绘制</p>
+<p>后续重新渲染称为重绘</p>
+<h3 id="引起重绘的情况"><a href="#引起重绘的情况" class="headerlink" title="引起重绘的情况"></a>引起重绘的情况</h3><p>修改背景颜色、文字颜色、边框颜色、样式等</p>
+<p>注：回流一定引起重绘、因此回流是一件很消耗性能的事情，所以开发中要避免回流</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">浏览器渲染原理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-22 21:38:42" itemprop="dateCreated datePublished" datetime="2023-03-22T21:38:42+08:00">2023-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-04-04 20:14:50" itemprop="dateModified" datetime="2023-04-04T20:14:50+08:00">2023-04-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="网页解析过程："><a href="#网页解析过程：" class="headerlink" title="网页解析过程："></a>网页解析过程：</h1><p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322214252101.png" alt="image-20230322214252101"></p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215014488.png" alt="image-20230322215014488"></p>
+<h2 id="HTML解析过程"><a href="#HTML解析过程" class="headerlink" title="HTML解析过程"></a>HTML解析过程</h2><p>默认情况下服务器给浏览器返回index.html文件，因此解析HTML是所有步骤的开始，解析HTML过程会构建Dom Tree</p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215643759.png" alt="image-20230322215643759"></p>
+<h2 id="生成CSS规则"><a href="#生成CSS规则" class="headerlink" title="生成CSS规则"></a>生成CSS规则</h2><p>在解析过程中，如果遇到CSS的link元素，会有浏览器下载对应的CSS文件（不会影响DOM）的解析</p>
+<p>对CSS下载完成后，会对CSS文件进行解析，解析出规则树，即CSSOM</p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322220941332.png" alt="image-20230322220941332"></p>
+<h2 id="构建Render-Tree"><a href="#构建Render-Tree" class="headerlink" title="构建Render Tree"></a>构建Render Tree</h2><p>当DOM Tree和CSSOM Tree有了过后就可以两者结合构建Render Tree了</p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322221500301.png" alt="image-20230322221500301"></p>
+<p>注：link元素不会阻塞DOM Tree的构建，但会阻塞Render Tree的构建</p>
+<p>​        Render Tree和Dom Tree并不是一一对应的关系，对于display为none的元素，不会出现在Render Tree中</p>
+<h2 id="布局和绘制"><a href="#布局和绘制" class="headerlink" title="布局和绘制"></a>布局和绘制</h2><p>渲染树会显示每个节点的样式，但不会给出每个节点的尺寸和位置，布局就是确定渲染树中每个节点的宽度、高度和位置信息</p>
+<p>绘制就是将布局阶段计算的每个frame转为屏幕上实际的像素点，包括将元素的可见部分进行绘制，比如文本、颜色、边框、阴影、替换元素</p>
+<h2 id="script元素和页面解析的关系"><a href="#script元素和页面解析的关系" class="headerlink" title="script元素和页面解析的关系"></a>script元素和页面解析的关系</h2><p>在HTML解析过程中，遇到script元素是不能继续构建DOM Tree的；会首先下载JavaScript代码，并执行脚本，等脚本执行结束后，继续解析HTML，构建DOM Tree</p>
+<p><strong><em>原因：</em></strong> JavaScript的一个作用是操作DOM，并修改DOM，如果等DOM Tree构建完成后执行JavaScript，会引起严重的回流和重绘，影像性能</p>
+<p><strong><em>但是：</em></strong> 目前的Vue/React开发模式，脚本比HTML页面更重，等到JavaScript解析会造成页面阻塞，在脚本执行完成钱，用户在界面上看不到任何东西</p>
+<h3 id="script解析优化：defer、async"><a href="#script解析优化：defer、async" class="headerlink" title="script解析优化：defer、async"></a>script解析优化：defer、async</h3><p><strong><em>defer：</em></strong> 浏览器不需要等到脚本下载，继续解析HTML，构建DOM Tree  </p>
+<p>​              不会阻塞DOm Tree的构建，等到DOM Tree构建完成后，在DOMContentLoaded事件之前执行代码</p>
+<p>​               带多个defer的脚本按顺序执行</p>
+<p>​               从某种角度来说，defer可以提高性能，并且推荐放到head元素中</p>
+<p>​                注：defer仅适用于外部脚本，对于script默认内容会忽略</p>
+<p><strong><em>async：</em></strong>  脚本完全独立</p>
+<p>​                浏览器不会因async阻塞</p>
+<p>​                async不能保证不同脚本之间的顺序，独立下载、运行</p>
+<p>​                async不能保证在DOMcontentLoaded之前或之后运行</p>
+<p><strong><em>defer通常用于文档解析后会操作DOM的JavaScript代码，并且对多个script文件有顺序要求的</em></strong></p>
+<p><strong><em>async通常用于独立的脚本，对其他脚本，DOM没有依赖的</em></strong></p>
+<h2 id="回流和重绘（见浏览器优化）"><a href="#回流和重绘（见浏览器优化）" class="headerlink" title="回流和重绘（见浏览器优化）"></a>回流和重绘（见浏览器优化）</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/22/jquery/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/22/jquery/" class="post-title-link" itemprop="url">jquery</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-22 19:44:31" itemprop="dateCreated datePublished" datetime="2023-03-22T19:44:31+08:00">2023-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-24 19:20:41" itemprop="dateModified" datetime="2023-03-24T19:20:41+08:00">2023-03-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="jQuery是一个快速、小型且功能丰富的JavaScript"><a href="#jQuery是一个快速、小型且功能丰富的JavaScript" class="headerlink" title="jQuery是一个快速、小型且功能丰富的JavaScript"></a>jQuery是一个快速、小型且功能丰富的JavaScript</h1><p>优点：丰富的功能（DOM操作、过滤器、时间、动画、Ajax等）、编写更少可读的代码提高开发人员的工作效率、跨浏览器支持（IE9+）</p>
+<p>缺点：jQuery代码库一直在增长（jQuery1.5超过200KB）、不支持组件化开发、jQuery更适合组件化开发，当涉及到复杂的项目时，能力有限</p>
+<h2 id="jQuery使用"><a href="#jQuery使用" class="headerlink" title="jQuery使用"></a>jQuery使用</h2><h3 id="jQuery监听文档加载"><a href="#jQuery监听文档加载" class="headerlink" title="jQuery监听文档加载"></a>jQuery监听文档加载</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$( <span class="variable language_">document</span> ).<span class="title function_">ready</span>( handler )  ：  <span class="comment">//deprecated </span></span><br><span class="line">$( <span class="string">&quot;document&quot;</span> ).<span class="title function_">ready</span>( handler ) ：  <span class="comment">//deprecated </span></span><br><span class="line">$().<span class="title function_">ready</span>( handler ) ：<span class="comment">//deprecated </span></span><br><span class="line">$( handler ) ：<span class="comment">//推荐用这种写法，其它可以使用但是不推荐</span></span><br></pre></td></tr></table></figure>
+<h3 id="jQuery与其他库变量名冲突（jQuery别名-的冲突）"><a href="#jQuery与其他库变量名冲突（jQuery别名-的冲突）" class="headerlink" title="jQuery与其他库变量名冲突（jQuery别名$的冲突）"></a>jQuery与其他库变量名冲突（jQuery别名$的冲突）</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jQuery.<span class="title function_">noConflict</span>()</span><br></pre></td></tr></table></figure>
+<h3 id="jQuery对象（类数组对象——可通过索引访问）"><a href="#jQuery对象（类数组对象——可通过索引访问）" class="headerlink" title="jQuery对象（类数组对象——可通过索引访问）"></a>jQuery对象（类数组对象——可通过索引访问）</h3><ul>
+<li>如果传入假值：返回一个空的集合。 </li>
+<li>如果传入选择器：返回在在documnet中所匹配到元素的集合。 </li>
+<li>如果传入元素：返回包含该元素的集合。 </li>
+<li>如果传入HTML字符串，返回包含新创建元素的集合。 </li>
+<li>如果传入回调函数：返回的是包含document元素集合, 并且当文档加载完成会回调该函数。 </li>
+<li>因为函数也是对象，所以该函数还包含了很多已封装好的方法。如：jQuery.noConflict、jQuery.ready等</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>:<span class="string">&quot;oww&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> obj1 = $()  <span class="comment">// 创建空对象</span></span><br><span class="line"><span class="keyword">const</span> obj2 = $(obj) <span class="comment">// 通过j对象创建jQuery对象</span></span><br><span class="line"><span class="keyword">const</span> obj3 = $(<span class="string">&#x27;li&#x27;</span>) <span class="comment">// 通过选择器创建jQuery对象</span></span><br></pre></td></tr></table></figure>
+<p>jQuery对象与Element对象的区别：jQuery会包含所选择到的对象，可以通过$(element)和obj3[index]之间相互转换，转换后具有不同的函数</p>
+<h4 id="jQuery选择器"><a href="#jQuery选择器" class="headerlink" title="jQuery选择器"></a>jQuery选择器</h4><p>常规选择器：通用选择器（*）、属性/后代/基本（id、class、元素）/兄弟/交集/伪元素（伪类不行）/可见选择器（:visible,:hidden）、jQuery扩展选择器（:eq(),:odd,:even:first:last）—eq是用索引、odd奇数、even偶数</p>
+<h3 id="jQuery过滤器"><a href="#jQuery过滤器" class="headerlink" title="jQuery过滤器"></a>jQuery过滤器</h3><ul>
+<li>eq(index):  从匹配元素的集合中，取索引处的元素， eq全称(equal 等于)，返回jQuery对象。 </li>
+<li>first() : 从匹配元素的集合中，取第一个元素，返回jQuery对象。 </li>
+<li>last(): 从匹配元素的集合中，取最后一个元素，返回jQuery对象。 </li>
+<li>not(selector):  从匹配元素的集合中，删除匹配的元素，返回jQuery对象。 </li>
+<li>filter(selector): 从匹配元素的集合中，过滤出匹配的元素，返回jQuery对象。 </li>
+<li>.find(selector): 从匹配元素集合中，找到匹配的后代元素，返回jQuery对象。 </li>
+<li>is(selector|element| . ): 根据选择器、元素等检查当前匹配到元素的集合。集合中至少有一个与给定参数匹配则返回true。   8.odd() :将匹配到元素的集合减少为集合中的奇数，从零开始编号，返回jQuery对象。 </li>
+<li>even()：将匹配到元素的集合减少到集合中的偶数，从零开始编号，返回jQuery对象。 </li>
+<li>支持链式调用</li>
+<li>on添加监听</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> $li = $(<span class="string">&#x27;li&#x27;</span>)</span><br><span class="line">$li.<span class="title function_">click</span>(<span class="function">(<span class="params">event</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;1&quot;</span>, event)</span><br><span class="line">&#125;)</span><br><span class="line">$li.<span class="title function_">on</span>(<span class="string">&#x27;click&#x27;</span>,<span class="function">(<span class="params">event</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;2&quot;</span>, event)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="../../public/images/jquery-click监听.png" alt></p>
+<h3 id="jQuery函数"><a href="#jQuery函数" class="headerlink" title="jQuery函数"></a>jQuery函数</h3><h4 id="jQuery对文本的操作"><a href="#jQuery对文本的操作" class="headerlink" title="jQuery对文本的操作"></a>jQuery对文本的操作</h4><p>.text()、.text(text)</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;active list div&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span>1<span class="tag">&lt;/<span class="name">pp</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span>&gt;</span>2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>3<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>4<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>5<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>6<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>7<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>8<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span>9<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> $li = $(<span class="string">&#x27;li&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">typeof</span> $li.<span class="title function_">text</span>()) <span class="comment">// string 会把其本身和子元素的text拼接为1个string</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>($li.<span class="title function_">text</span>()) <span class="comment">// 123456789</span></span><br><span class="line">$li.<span class="title function_">text</span>(<span class="string">&quot;aaa&quot;</span>) <span class="comment">// 更改所有选择元素的text</span></span><br></pre></td></tr></table></figure>
+<p>.html、.html(htmlString)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> $li = $(<span class="string">&#x27;li&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>($li.<span class="title function_">html</span>())  <span class="comment">// &lt;p&gt;1&lt;/p&gt; 获取选中第一个元素的html</span></span><br><span class="line">$li.<span class="title function_">html</span>(<span class="string">&quot;&lt;span&gt;10&lt;span&gt;&quot;</span>) <span class="comment">//给所有选中元素设置innerHtml</span></span><br></pre></td></tr></table></figure>
+<p>.val()、.val(value)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> $li = $(<span class="string">&#x27;li&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>($li.<span class="title function_">odd</span>().<span class="title function_">val</span>()) <span class="comment">// 2 获取选中第一个元素的value</span></span><br><span class="line">$li.<span class="title function_">val</span>(<span class="number">12</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="jQuery对css的操作"><a href="#jQuery对css的操作" class="headerlink" title="jQuery对css的操作"></a>jQuery对css的操作</h4><p>.width()、.height()、.css(prppertyName) 获取选中第一个元素的指定样式属性值</p>
+<p>.css(propertyName,value)、.css({propertyName1:value1,propertyName2，value2})  为每一个匹配到的元素设置属性</p>
+<h4 id="jQuery对class的操作"><a href="#jQuery对class的操作" class="headerlink" title="jQuery对class的操作"></a>jQuery对class的操作</h4><p>.addClass(className)、.addClass(classNames)、.addClass(funcntion)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> $li = $(<span class="string">&#x27;li&#x27;</span>)</span><br><span class="line">$li.<span class="title function_">addClass</span>(<span class="keyword">function</span>(<span class="params">index</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(index%<span class="number">2</span>===<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&quot;active1&quot;</span>)</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&quot;active2&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;) <span class="comment">// 通过this手动给选中的元素添加类</span></span><br><span class="line">$li.<span class="title function_">addClass</span>(<span class="function">(<span class="params">index</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(index%<span class="number">2</span>===<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;active1&quot;</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;active2&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;) <span class="comment">// 通过返回类名，jQuery给元素添加类</span></span><br></pre></td></tr></table></figure>
+<p>.hasClass(className) 判断匹配到的元素是否分配了该类</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> $div = $(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>($div.<span class="title function_">hasClass</span>(<span class="string">&quot;active&quot;</span>)) <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>($div.<span class="title function_">hasClass</span>(<span class="string">&quot;active list&quot;</span>)) <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>($div.<span class="title function_">hasClass</span>(<span class="string">&quot;active div&quot;</span>)) <span class="comment">// false 该方法是判断所选中元素是否包含要查询的类的字符串</span></span><br></pre></td></tr></table></figure>
+<p>.removeClass()、.removeClass(className)、.removeClass(classNames)、.removeClass(function)  删除指定的类</p>
+<p>.toggleClass()、.toggleClass(className[,state])、.toggleClass(classNames[,state]) 删除或添加指定的类</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/21/this%E6%8C%87%E5%90%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -572,20 +880,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
