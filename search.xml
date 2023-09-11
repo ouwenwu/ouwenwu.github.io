@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CSS元素的定位与浮动</title>
-    <url>/2023/04/20/CSS%E5%85%83%E7%B4%A0%E7%9A%84%E5%AE%9A%E4%BD%8D%E4%B8%8E%E6%B5%AE%E5%8A%A8/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>CSS</title>
     <url>/2023/03/23/CSS/</url>
     <content><![CDATA[<h1 id="CSS基础"><a href="#CSS基础" class="headerlink" title="CSS基础"></a>CSS基础</h1><h2 id="CSS样式"><a href="#CSS样式" class="headerlink" title="CSS样式"></a>CSS样式</h2><ul>
@@ -236,53 +231,60 @@
       </tags>
   </entry>
   <entry>
-    <title>JavaScript运行原理</title>
-    <url>/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p><strong><em>浏览器内核（以webkit为例）：</em></strong>WebCore负责解析HTML、布局、渲染等；JavaScriptCore：解析、执行JavaScript代码</p>
-<p><strong><em>ECMAScript3：</em></strong>用这个来学习JavaScript执行、作用域、作用域链、闭包等概念</p>
-<p><strong><em>ECMAScript5：</em></strong>用这个来学习块级作用域、let、const等概念</p>
-<p>两者概念描述不一样，整体思路一致</p>
-<h1 id="V8引擎的执行原理"><a href="#V8引擎的执行原理" class="headerlink" title="V8引擎的执行原理"></a>V8引擎的执行原理</h1><p>V8是用C++编写的开源高性能JavaScript和WebAssembly引擎，可以用于Chrome和Node.js</p>
-<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323184747752.png" alt="image-20230323184747752"></p>
-<p><strong><em>Parse：</em></strong>将JavaScript代码转换为AST（抽象语法树）——函数在没调用的时候，不会被转换为抽象语法树</p>
-<p><strong><em>Ignition：</em></strong>将AST转换为字节码</p>
-<p><strong><em>TurboFan：</em></strong>将字节码编译为可以直接运行的机器码</p>
-<ul>
-<li>如果一个函数被多次调用，就会被标记为热点函数，就会被TurboFan转换为机器码，提高代码的执行性能</li>
-<li>机器码也会被还原为ByteCode，如果后续执行函数的过程中，类型发生了变化，之前的机器码不能进行准确的运算，就会逆向转换为字节码</li>
+    <title>JavaScript属性对象增强</title>
+    <url>/2023/03/26/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/</url>
+    <content><![CDATA[<h1 id="对象属性操作的控制"><a href="#对象属性操作的控制" class="headerlink" title="对象属性操作的控制"></a>对象属性操作的控制</h1><ul>
+<li><strong>Object.defineProperty</strong>可以对对象的属性加以限制，例如不能通过delete删除，不能通过for-in/Object.keys遍历</li>
+<li><strong>Object.defineProperty</strong>方法会直接在一个对象上定义一个新的属性，或者修改一个对象的现有属性，并返回该对象</li>
 </ul>
-<h2 id="JavaScript执行过程"><a href="#JavaScript执行过程" class="headerlink" title="JavaScript执行过程"></a>JavaScript执行过程</h2><p><strong><em>执行上下文栈（ECS）：</em></strong>js引擎内部有一个执行上下文栈，是执行代码的调用栈</p>
-<p><strong><em>全局执行上下文：</em></strong>全局代码块为了执行会生成一个全局执行上下文（GEC），并放入ECS中</p>
-<p><strong><em>函数执行上下文：</em></strong>执行到一个函数值，会根据函数体创建一个函数执行上下文（FEC），并放入到ECS中</p>
-<p><strong><em>AO对象：</em></strong>当进入一个函数执行上下文时，会创建一个AO对象，AO对象使用arguments作为初始化，初始值是传入的参数</p>
-<p><strong><em>VO对象：</em></strong>每一个执行上下文都会关联一个VO（Variable Object）对象，变量和函数的声明会被添加到这个VO对象中</p>
-<p><strong><em>注：</em></strong>全局上下文的VO对象就是GO、函数执行上下文的VO对象是AO</p>
-<h3 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h3><p>js在执行代码前，会在堆内存中创建一个全局对象：Global Object（GO）</p>
+<p><strong><em>Object.defineProperty参数：</em></strong>Object.defineProperty(obj, prop, descriptor)</p>
 <ul>
-<li>该对象所有的作用域（scope）都可以访问； </li>
-<li>里面会包含Date、Array、String、Number、setTimeout、setInterval等等； </li>
-<li>其中还有一个window属性指向自己；</li>
+<li>obj：要定义的对象</li>
+<li>prop：要定义或修改的属性的名称或Symbol</li>
+<li>descriptor：要定义或修改的属性描述符</li>
 </ul>
-<p>在parser转成AST的过程中，会将全局定义的变量、函数等放入GlobalObject中，但不会赋值（变量的作用域提升）</p>
+<h2 id="属性描述符分类"><a href="#属性描述符分类" class="headerlink" title="属性描述符分类"></a>属性描述符分类</h2><p><img src="/2023/03/26/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327092658898.png" alt="image-20230327092658898"></p>
+<p><strong><em>Configuratble：</em></strong>属性是否可以通过delete删除属性，是否可以修改它的特性，或者是否可以将它修改为存取属性描述符</p>
 <ul>
-<li>JavaScript可以在变量声明前访问，但是值是undefined，浏览器会对函数进行特殊处理，使得其可以在定义前调用</li>
+<li>通过对象定义某个属性，其Configurable为true</li>
+<li>通过属性描述符定义属性时，属性的Configurable默认为false</li>
 </ul>
-<p>在代码执行过程中，对变量赋值或者执行其他的函数</p>
-<p>全局代码执行前：</p>
-<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191418551.png" alt="image-20230323191418551"></p>
-<p>全局代码执行后：</p>
-<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191040277.png" alt="image-20230323191040277"></p>
-<p>函数执行前：</p>
-<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191504578.png" alt="image-20230323191504578"></p>
-<p>函数执行后：</p>
-<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191448418.png" alt="image-20230323191448418"></p>
-<h1 id="作用域和作用域链"><a href="#作用域和作用域链" class="headerlink" title="作用域和作用域链"></a>作用域和作用域链</h1><p><strong><em>作用域链：</em></strong>当进入到一个执行上下文时，执行上下文会关联一个作用域链，并根据代码类型，添加一系列的对象</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">age</span>)&#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">bar</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(age)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> baz = <span class="title function_">foo</span>(<span class="number">18</span>)</span><br><span class="line"><span class="title function_">baz</span>()</span><br></pre></td></tr></table></figure>
-<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323192141405.png" alt="image-20230323192141405"></p>
+<p><strong><em>Enumerable：</em></strong>属性是否可以通过for-in或者Object.keys()返回属性</p>
 <ul>
-<li>其作用域链中有两个，分别是foo的作用域、全局作用域</li>
+<li>通过对象定义时，属性的Enumerable为true</li>
+<li>通过属性描述符定义属性时，属性的Enumerable默认为false</li>
 </ul>
-<p>注：作用域链是在函数声明是产生的，与调用时刻无关</p>
+<p><strong><em>Writable：</em></strong>属性是否可以修改值</p>
+<ul>
+<li>通过对象定义时，属性的Writable为true</li>
+<li>通过属性描述符定义属性时，属性的Writable默认为false</li>
+</ul>
+<p><strong><em>value：</em></strong>属性的value值，读取属性会返回该值，修改属性时，会对其进行更改</p>
+<ul>
+<li>默认情况下这个值是undefined</li>
+</ul>
+<p><strong><em>get：</em></strong>获取属性时会执行的函数，默认为undefined</p>
+<p><strong><em>set：</em></strong>设置属性时会执行的函数，默认为undefined</p>
+<p>注：get/set与value/Writable不可共存</p>
+<h1 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h1><p>同时定义多个属性：Object.defineProperties()</p>
+<p><img src="/2023/03/26/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327093656890.png" alt="image-20230327093656890"></p>
+<p><strong><em>获取对象的属性描述符：</em></strong></p>
+<ul>
+<li>getOwnPropertyDescriptor</li>
+<li>getOwnPropertyDescriptors</li>
+</ul>
+<p><strong><em>禁止对象扩充新属性：</em></strong>preventExtensions  Object.preventExtensions(obj)</p>
+<ul>
+<li>给一个对象添加新的属性会失败</li>
+</ul>
+<p><strong><em>密封属性，不允许配置和删除属性：</em></strong>seal  Object.seal(obj)</p>
+<ul>
+<li>实际上是调用preventExtensions</li>
+<li>将现有属性的Configurable设置为false</li>
+</ul>
+<p><strong><em>冻结属性，不允许修改现有属性：</em></strong>freeze   Object.freeze(obj)</p>
+<p>实际上是调用seal</p>
+<p>将现有属性的Writable设置为false</p>
 ]]></content>
       <categories>
         <category>前端</category>
@@ -290,6 +292,50 @@
       <tags>
         <tag>JavaScript</tag>
         <tag>JS高级</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSS元素的定位与浮动</title>
+    <url>/2023/04/20/CSS%E5%85%83%E7%B4%A0%E7%9A%84%E5%AE%9A%E4%BD%8D%E4%B8%8E%E6%B5%AE%E5%8A%A8/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>ContextCapture使用及集群</title>
+    <url>/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<h1 id="一、本地使用"><a href="#一、本地使用" class="headerlink" title="一、本地使用"></a>一、本地使用</h1><h2 id="1-一般使用"><a href="#1-一般使用" class="headerlink" title="1.一般使用"></a>1.一般使用</h2><p><strong><em>新建项目：</em></strong></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907161016140.png" alt="image-20230907161016140"></p>
+<p><strong><em>引擎设置：</em></strong>确保项目的jobs路径和引擎监听的jobs路径相同</p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907162128310.png" alt="image-20230907162128310"></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907162234601.png" alt="image-20230907162234601"></p>
+<p><strong><em>导入图片：</em></strong></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907161046985.png" alt="image-20230907161046985"></p>
+<p><strong><em>空三：</em></strong>block名上右键</p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907162010342.png" alt="image-20230907162010342"></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907164531702.png" alt="image-20230907164531702"></p>
+<p><strong><em>重建：</em></strong>空三后的block上右键</p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907164632789.png" alt="image-20230907164632789"></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907164809754.png" alt="image-20230907164809754"></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907164831639.png" alt="image-20230907164831639"></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907164924132.png" alt="image-20230907164924132"></p>
+<h2 id="2-导入其他软件的空三结果"><a href="#2-导入其他软件的空三结果" class="headerlink" title="2.导入其他软件的空三结果"></a>2.导入其他软件的空三结果</h2><p><strong><em>注意导入的xml文件中图片的路径要和导入图片的路径一样，也就是需要更改一下这个路径，在3D view里去看一下是否图片可以找到</em></strong></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907170005855.png" alt="image-20230907170005855"></p>
+<h1 id="二、集群使用"><a href="#二、集群使用" class="headerlink" title="二、集群使用"></a>二、集群使用</h1><p><strong><em>集群三个部分：</em></strong>Master机器+文件存储机器+工作机器（引擎）</p>
+<h2 id="1-集群项目的建立"><a href="#1-集群项目的建立" class="headerlink" title="1.集群项目的建立"></a>1.集群项目的建立</h2><p><strong><em>项目路径要为网络路径</em></strong></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907171142785.png" alt="image-20230907171142785"></p>
+<p><strong><em>引擎设置：</em></strong></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907171421385.png" alt="image-20230907171421385"></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907171459799.png" alt="image-20230907171459799"></p>
+<p><strong><em>其余和非集群类似</em></strong></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907171558691.png" alt="image-20230907171558691"></p>
+<h2 id="2-特殊处理方法（特殊问题）"><a href="#2-特殊处理方法（特殊问题）" class="headerlink" title="2.特殊处理方法（特殊问题）"></a>2.特殊处理方法（特殊问题）</h2><h3 id="2-1-带宽限制"><a href="#2-1-带宽限制" class="headerlink" title="2.1.带宽限制"></a>2.1.带宽限制</h3><p><strong><em>集群所有的机器都会在文件存储机器上面读写，因此有一定的带宽限制，开的集群机器数目不能太多，可以适当超过带宽限制一点点</em></strong></p>
+<p><img src="/2023/09/07/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907172028754.png" alt="image-20230907172028754"></p>
+<h2 id="2-2-项目太大，导致提交项目后有一定的问题"><a href="#2-2-项目太大，导致提交项目后有一定的问题" class="headerlink" title="2.2.项目太大，导致提交项目后有一定的问题"></a>2.2.项目太大，导致提交项目后有一定的问题</h2><p>分tiles提交，一次只提交一部分tiles</p>
+]]></content>
+      <categories>
+        <category>三维建模</category>
+      </categories>
+      <tags>
+        <tag>ContextCapture</tag>
       </tags>
   </entry>
   <entry>
@@ -356,6 +402,63 @@
       </categories>
       <tags>
         <tag>Photoscan/Metashape</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JavaScript运行原理</title>
+    <url>/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p><strong><em>浏览器内核（以webkit为例）：</em></strong>WebCore负责解析HTML、布局、渲染等；JavaScriptCore：解析、执行JavaScript代码</p>
+<p><strong><em>ECMAScript3：</em></strong>用这个来学习JavaScript执行、作用域、作用域链、闭包等概念</p>
+<p><strong><em>ECMAScript5：</em></strong>用这个来学习块级作用域、let、const等概念</p>
+<p>两者概念描述不一样，整体思路一致</p>
+<h1 id="V8引擎的执行原理"><a href="#V8引擎的执行原理" class="headerlink" title="V8引擎的执行原理"></a>V8引擎的执行原理</h1><p>V8是用C++编写的开源高性能JavaScript和WebAssembly引擎，可以用于Chrome和Node.js</p>
+<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323184747752.png" alt="image-20230323184747752"></p>
+<p><strong><em>Parse：</em></strong>将JavaScript代码转换为AST（抽象语法树）——函数在没调用的时候，不会被转换为抽象语法树</p>
+<p><strong><em>Ignition：</em></strong>将AST转换为字节码</p>
+<p><strong><em>TurboFan：</em></strong>将字节码编译为可以直接运行的机器码</p>
+<ul>
+<li>如果一个函数被多次调用，就会被标记为热点函数，就会被TurboFan转换为机器码，提高代码的执行性能</li>
+<li>机器码也会被还原为ByteCode，如果后续执行函数的过程中，类型发生了变化，之前的机器码不能进行准确的运算，就会逆向转换为字节码</li>
+</ul>
+<h2 id="JavaScript执行过程"><a href="#JavaScript执行过程" class="headerlink" title="JavaScript执行过程"></a>JavaScript执行过程</h2><p><strong><em>执行上下文栈（ECS）：</em></strong>js引擎内部有一个执行上下文栈，是执行代码的调用栈</p>
+<p><strong><em>全局执行上下文：</em></strong>全局代码块为了执行会生成一个全局执行上下文（GEC），并放入ECS中</p>
+<p><strong><em>函数执行上下文：</em></strong>执行到一个函数值，会根据函数体创建一个函数执行上下文（FEC），并放入到ECS中</p>
+<p><strong><em>AO对象：</em></strong>当进入一个函数执行上下文时，会创建一个AO对象，AO对象使用arguments作为初始化，初始值是传入的参数</p>
+<p><strong><em>VO对象：</em></strong>每一个执行上下文都会关联一个VO（Variable Object）对象，变量和函数的声明会被添加到这个VO对象中</p>
+<p><strong><em>注：</em></strong>全局上下文的VO对象就是GO、函数执行上下文的VO对象是AO</p>
+<h3 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h3><p>js在执行代码前，会在堆内存中创建一个全局对象：Global Object（GO）</p>
+<ul>
+<li>该对象所有的作用域（scope）都可以访问； </li>
+<li>里面会包含Date、Array、String、Number、setTimeout、setInterval等等； </li>
+<li>其中还有一个window属性指向自己；</li>
+</ul>
+<p>在parser转成AST的过程中，会将全局定义的变量、函数等放入GlobalObject中，但不会赋值（变量的作用域提升）</p>
+<ul>
+<li>JavaScript可以在变量声明前访问，但是值是undefined，浏览器会对函数进行特殊处理，使得其可以在定义前调用</li>
+</ul>
+<p>在代码执行过程中，对变量赋值或者执行其他的函数</p>
+<p>全局代码执行前：</p>
+<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191418551.png" alt="image-20230323191418551"></p>
+<p>全局代码执行后：</p>
+<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191040277.png" alt="image-20230323191040277"></p>
+<p>函数执行前：</p>
+<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191504578.png" alt="image-20230323191504578"></p>
+<p>函数执行后：</p>
+<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191448418.png" alt="image-20230323191448418"></p>
+<h1 id="作用域和作用域链"><a href="#作用域和作用域链" class="headerlink" title="作用域和作用域链"></a>作用域和作用域链</h1><p><strong><em>作用域链：</em></strong>当进入到一个执行上下文时，执行上下文会关联一个作用域链，并根据代码类型，添加一系列的对象</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">age</span>)&#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">bar</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(age)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> baz = <span class="title function_">foo</span>(<span class="number">18</span>)</span><br><span class="line"><span class="title function_">baz</span>()</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/23/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323192141405.png" alt="image-20230323192141405"></p>
+<ul>
+<li>其作用域链中有两个，分别是foo的作用域、全局作用域</li>
+</ul>
+<p>注：作用域链是在函数声明是产生的，与调用时刻无关</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>JS高级</tag>
       </tags>
   </entry>
   <entry>
@@ -574,6 +677,54 @@
       </tags>
   </entry>
   <entry>
+    <title>ar-app使用教程</title>
+    <url>/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="ar-app使用教程"><a href="#ar-app使用教程" class="headerlink" title="ar-app使用教程"></a>ar-app使用教程</h1><p><strong><em>ar_app文件夹：</em></strong></p>
+<p><img src="/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230911090458858-16944013591941.png" alt="image-20230911090458858"></p>
+<p><strong><em>数据与输出文件夹：</em></strong>建议按以下路径放置，可以更改</p>
+<p><img src="/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230911090809952-16944013762242.png" alt="image-20230911090809952"></p>
+<h2 id="ar-app使用"><a href="#ar-app使用" class="headerlink" title="ar_app使用"></a>ar_app使用</h2><p><img src="/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230911095706333-16944013919213.png" alt="image-20230911095706333"></p>
+<p>其中：</p>
+<h3 id="—input-path：输入路径"><a href="#—input-path：输入路径" class="headerlink" title="—input_path：输入路径"></a>—input_path：输入路径</h3><p><strong><em>路径下有两个文件夹：</em></strong></p>
+<ul>
+<li>mapping：构建库的图片（不可动）</li>
+<li>query：存储定位图片的临时文件夹（需要定期删除里面的图片）</li>
+</ul>
+<p><img src="/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230911103431355-16944014043194.png" alt="image-20230911103431355"></p>
+<h3 id="—output-path：输出路径"><a href="#—output-path：输出路径" class="headerlink" title="—output_path：输出路径"></a>—output_path：输出路径</h3><p><strong><em>里面有若干定位所需要的文件，不可更改</em></strong></p>
+<p><img src="/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230911103637786-16944014159535.png" alt="image-20230911103637786"></p>
+<h3 id="—host：本机IP"><a href="#—host：本机IP" class="headerlink" title="—host：本机IP"></a>—host：本机IP</h3><p><strong><em>本机电脑IP地址，服务发布的位置</em></strong></p>
+<h3 id="—port：服务运行的IP"><a href="#—port：服务运行的IP" class="headerlink" title="—port：服务运行的IP"></a>—port：服务运行的IP</h3><h3 id="—number-retrieval：定位前图片检索的张数"><a href="#—number-retrieval：定位前图片检索的张数" class="headerlink" title="—number_retrieval：定位前图片检索的张数"></a>—number_retrieval：定位前图片检索的张数</h3><p>数量可以设置为100，可以根据定位效果调整，这个对定位效率影响较小</p>
+<h3 id="—init-match-num：初始化图片用于定位需要的图片数目"><a href="#—init-match-num：初始化图片用于定位需要的图片数目" class="headerlink" title="—init_match_num：初始化图片用于定位需要的图片数目"></a>—init_match_num：初始化图片用于定位需要的图片数目</h3><p>这个对初始化定位速率影响较大，数量越多，定位精度越高，但定位效率越低</p>
+<h3 id="—navigation-match-num：导航过程中用于定位的图片数目"><a href="#—navigation-match-num：导航过程中用于定位的图片数目" class="headerlink" title="—navigation_match_num：导航过程中用于定位的图片数目"></a>—navigation_match_num：导航过程中用于定位的图片数目</h3><p>这个对导航定位数量影响较大，如上所述，可以根据精度和定位效率要求进行更改，默认为10</p>
+<h1 id="发起请求与返回"><a href="#发起请求与返回" class="headerlink" title="发起请求与返回"></a>发起请求与返回</h1><ul>
+<li><strong><em>请求地址：</em></strong><a href="http://host:ip/upLoadImg_api">http://host:ip/upLoadImg_api</a></li>
+<li><strong><em>使用方法如下所示：</em></strong></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"> wx.<span class="title function_">uploadFile</span>(&#123;</span><br><span class="line">     <span class="attr">filePath</span>: res.<span class="property">tempFilePath</span>,</span><br><span class="line">     <span class="attr">name</span>: <span class="string">&#x27;image&#x27;</span>,</span><br><span class="line">     <span class="attr">url</span>: <span class="string">&#x27;http://10.104.31.14:5001/upLoadImg_api&#x27;</span>,</span><br><span class="line">     <span class="attr">success</span>:<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">         <span class="keyword">let</span> x_y_data = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(res.<span class="property">data</span>)</span><br><span class="line">         <span class="keyword">if</span>(x_y_data.<span class="property">status</span> === <span class="string">&quot;floor&quot;</span>)&#123;</span><br><span class="line">         wx.<span class="title function_">showLoading</span>(&#123;</span><br><span class="line">             <span class="attr">title</span>: <span class="string">&#x27;行走楼梯中&#x27;</span>,</span><br><span class="line">             <span class="attr">mask</span>: <span class="title class_">True</span></span><br><span class="line">         &#125;)</span><br><span class="line">         &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">             <span class="variable language_">this</span>.<span class="title function_">addPointToMap</span>(x_y_data.<span class="property">x</span>, x_y_data.<span class="property">y</span>,<span class="string">&quot;image&quot;</span>)</span><br><span class="line">             wx.<span class="title function_">hideLoading</span>()</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">this</span>.<span class="property">is_end</span> === <span class="literal">false</span>)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">upLoadImage</span>()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">fail</span>:<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">    	<span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">&quot;http://192.168.20.146:5001/upLoadImg_api&quot;</span></span><br><span class="line">src_dir = <span class="string">&quot;cz_1&quot;</span></span><br><span class="line">images = os.listdir(src_dir)</span><br><span class="line">images = <span class="built_in">sorted</span>(images, key=<span class="keyword">lambda</span> x: <span class="built_in">int</span>(x.split(<span class="string">&quot;.&quot;</span>)[<span class="number">0</span>]))</span><br><span class="line"><span class="keyword">for</span> image <span class="keyword">in</span> images:</span><br><span class="line">    file = os.path.join(src_dir, image)</span><br><span class="line">    files = &#123;<span class="string">&#x27;image&#x27;</span>: <span class="built_in">open</span>(file, <span class="string">&#x27;rb&#x27;</span>)&#125;</span><br><span class="line">    start_time = time.time()</span><br><span class="line">    r = requests.post(url=url, files=files)</span><br><span class="line">    end_time = time.time()</span><br><span class="line">    <span class="built_in">print</span>(end_time-start_time, r.content)</span><br></pre></td></tr></table></figure>
+<h1 id="返回值："><a href="#返回值：" class="headerlink" title="返回值："></a>返回值：</h1><figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"></span><br><span class="line">	x<span class="punctuation">:</span>x坐标<span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">	y<span class="punctuation">:</span>坐标<span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">	status<span class="punctuation">:</span><span class="string">&quot;floor&quot;</span>时表示定位失误</span><br><span class="line"></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>ar导航定位</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2023/03/21/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p><a href="www.baidu.com">asasa</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>React中的CSS</title>
     <url>/2023/03/28/React%E4%B8%AD%E7%9A%84CSS/</url>
     <content><![CDATA[<h1 id="React中的过渡动画"><a href="#React中的过渡动画" class="headerlink" title="React中的过渡动画"></a>React中的过渡动画</h1><ul>
@@ -748,85 +899,6 @@
       </tags>
   </entry>
   <entry>
-    <title>JavaScript属性对象增强</title>
-    <url>/2023/03/26/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/</url>
-    <content><![CDATA[<h1 id="对象属性操作的控制"><a href="#对象属性操作的控制" class="headerlink" title="对象属性操作的控制"></a>对象属性操作的控制</h1><ul>
-<li><strong>Object.defineProperty</strong>可以对对象的属性加以限制，例如不能通过delete删除，不能通过for-in/Object.keys遍历</li>
-<li><strong>Object.defineProperty</strong>方法会直接在一个对象上定义一个新的属性，或者修改一个对象的现有属性，并返回该对象</li>
-</ul>
-<p><strong><em>Object.defineProperty参数：</em></strong>Object.defineProperty(obj, prop, descriptor)</p>
-<ul>
-<li>obj：要定义的对象</li>
-<li>prop：要定义或修改的属性的名称或Symbol</li>
-<li>descriptor：要定义或修改的属性描述符</li>
-</ul>
-<h2 id="属性描述符分类"><a href="#属性描述符分类" class="headerlink" title="属性描述符分类"></a>属性描述符分类</h2><p><img src="/2023/03/26/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327092658898.png" alt="image-20230327092658898"></p>
-<p><strong><em>Configuratble：</em></strong>属性是否可以通过delete删除属性，是否可以修改它的特性，或者是否可以将它修改为存取属性描述符</p>
-<ul>
-<li>通过对象定义某个属性，其Configurable为true</li>
-<li>通过属性描述符定义属性时，属性的Configurable默认为false</li>
-</ul>
-<p><strong><em>Enumerable：</em></strong>属性是否可以通过for-in或者Object.keys()返回属性</p>
-<ul>
-<li>通过对象定义时，属性的Enumerable为true</li>
-<li>通过属性描述符定义属性时，属性的Enumerable默认为false</li>
-</ul>
-<p><strong><em>Writable：</em></strong>属性是否可以修改值</p>
-<ul>
-<li>通过对象定义时，属性的Writable为true</li>
-<li>通过属性描述符定义属性时，属性的Writable默认为false</li>
-</ul>
-<p><strong><em>value：</em></strong>属性的value值，读取属性会返回该值，修改属性时，会对其进行更改</p>
-<ul>
-<li>默认情况下这个值是undefined</li>
-</ul>
-<p><strong><em>get：</em></strong>获取属性时会执行的函数，默认为undefined</p>
-<p><strong><em>set：</em></strong>设置属性时会执行的函数，默认为undefined</p>
-<p>注：get/set与value/Writable不可共存</p>
-<h1 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h1><p>同时定义多个属性：Object.defineProperties()</p>
-<p><img src="/2023/03/26/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327093656890.png" alt="image-20230327093656890"></p>
-<p><strong><em>获取对象的属性描述符：</em></strong></p>
-<ul>
-<li>getOwnPropertyDescriptor</li>
-<li>getOwnPropertyDescriptors</li>
-</ul>
-<p><strong><em>禁止对象扩充新属性：</em></strong>preventExtensions  Object.preventExtensions(obj)</p>
-<ul>
-<li>给一个对象添加新的属性会失败</li>
-</ul>
-<p><strong><em>密封属性，不允许配置和删除属性：</em></strong>seal  Object.seal(obj)</p>
-<ul>
-<li>实际上是调用preventExtensions</li>
-<li>将现有属性的Configurable设置为false</li>
-</ul>
-<p><strong><em>冻结属性，不允许修改现有属性：</em></strong>freeze   Object.freeze(obj)</p>
-<p>实际上是调用seal</p>
-<p>将现有属性的Writable设置为false</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
-        <tag>JS高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2023/03/21/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<p><a href="www.baidu.com">asasa</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>jquery</title>
     <url>/2023/03/22/jquery/</url>
     <content><![CDATA[<h1 id="jQuery是一个快速、小型且功能丰富的JavaScript"><a href="#jQuery是一个快速、小型且功能丰富的JavaScript" class="headerlink" title="jQuery是一个快速、小型且功能丰富的JavaScript"></a>jQuery是一个快速、小型且功能丰富的JavaScript</h1><p>优点：丰富的功能（DOM操作、过滤器、时间、动画、Ajax等）、编写更少可读的代码提高开发人员的工作效率、跨浏览器支持（IE9+）</p>
@@ -879,97 +951,6 @@
       </categories>
       <tags>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>react项目的配置与搭建</title>
-    <url>/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h1 id="React创建与配置"><a href="#React创建与配置" class="headerlink" title="React创建与配置"></a>React创建与配置</h1><h2 id="React创建项目"><a href="#React创建项目" class="headerlink" title="React创建项目"></a>React创建项目</h2><h3 id="React脚手架搭建项目"><a href="#React脚手架搭建项目" class="headerlink" title="React脚手架搭建项目"></a>React脚手架搭建项目</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create-react-app name</span><br></pre></td></tr></table></figure>
-<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405102510876.png" alt="image-20230405102510876"></p>
-<p><strong><em>删除默认生成的文件：</em></strong></p>
-<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405102711804.png" alt="image-20230405102711804"></p>
-<h3 id="项目目录结构配置"><a href="#项目目录结构配置" class="headerlink" title="项目目录结构配置"></a>项目目录结构配置</h3><p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405103045842.png" alt="image-20230405103045842"></p>
-<h3 id="项目基本配置"><a href="#项目基本配置" class="headerlink" title="项目基本配置"></a>项目基本配置</h3><h4 id="配置项目的icon"><a href="#配置项目的icon" class="headerlink" title="配置项目的icon"></a>配置项目的icon</h4><p>直接把需要使用的icon替换public下面的favicon.ico</p>
-<h4 id="配置项目的标题"><a href="#配置项目的标题" class="headerlink" title="配置项目的标题"></a>配置项目的标题</h4><p>设置html文件下的title属性</p>
-<h4 id="配置jsconfig-json文件"><a href="#配置jsconfig-json文件" class="headerlink" title="配置jsconfig.json文件"></a>配置jsconfig.json文件</h4><p>配置后编写项目的智能提示会好很多</p>
-<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405103730430.png" alt="image-20230405103730430"></p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;es5&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;module&quot;</span><span class="punctuation">:</span> <span class="string">&quot;esnext&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;baseUrl&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;moduleResolution&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;paths&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;@/*&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;src/*&quot;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;jsx&quot;</span><span class="punctuation">:</span><span class="string">&quot;preserve&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;lib&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="string">&quot;ESNext&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;DOM&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;DOM.Iterable&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;ScriptHost&quot;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-<h4 id="项目的别名配置"><a href="#项目的别名配置" class="headerlink" title="项目的别名配置"></a>项目的别名配置</h4><p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405103925434.png" alt="image-20230405103925434"></p>
-<h5 id="采用craco配置"><a href="#采用craco配置" class="headerlink" title="采用craco配置"></a>采用craco配置</h5><p><strong><em>webpack的配置：</em></strong></p>
-<ul>
-<li>craco会使项目的配置与webpack的配置融合</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install @craco/craco@alpha -D</span><br></pre></td></tr></table></figure>
-<ul>
-<li>craco.config.js的配置</li>
-</ul>
-<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405104646852.png" alt="image-20230405104646852"></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">resolve</span> = pathName=&gt;path.<span class="title function_">resolve</span>(__dirname, pathName)</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">webpack</span>:&#123;</span><br><span class="line">        <span class="attr">alias</span>:&#123;</span><br><span class="line">            <span class="string">&quot;@&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src&quot;</span>),</span><br><span class="line">            <span class="string">&quot;components&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src/components&quot;</span>),</span><br><span class="line">            <span class="string">&quot;utils&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src/utils&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要是craco生效，项目启动必须以craco启动，才能和webpack的配置融合——修改package.json中的scripts</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;craco start&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;craco build&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;test&quot;</span><span class="punctuation">:</span> <span class="string">&quot;craco test&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;eject&quot;</span><span class="punctuation">:</span> <span class="string">&quot;react-scripts eject&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
-<p>此时就可以用别名去写路径，避免长串的../../</p>
-<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405104959491.png" alt="image-20230405104959491"></p>
-<p><strong><em>项目的less配置：</em></strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm i craco-less@2.1.0-alpha.0 --save -D</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">CraLessPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;craco-less&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">resolve</span> = pathName=&gt;path.<span class="title function_">resolve</span>(__dirname, pathName)</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="comment">//less</span></span><br><span class="line">    <span class="attr">plugins</span>:[</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">plugin</span>:<span class="title class_">CraLessPlugin</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="comment">// webpack</span></span><br><span class="line">    <span class="attr">webpack</span>:&#123;</span><br><span class="line">        <span class="attr">alias</span>:&#123;</span><br><span class="line">            <span class="string">&quot;@&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src&quot;</span>),</span><br><span class="line">            <span class="string">&quot;components&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src/components&quot;</span>),</span><br><span class="line">            <span class="string">&quot;utils&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src/utils&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="CSS样式的重置"><a href="#CSS样式的重置" class="headerlink" title="CSS样式的重置"></a>CSS样式的重置</h2><p><strong><em>对默认样式进行重置：</em></strong></p>
-<ul>
-<li>normalize.css</li>
-<li>reset.css</li>
-</ul>
-<p><strong><em>normalize.css：</em></strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install normalize.css --save</span><br></pre></td></tr></table></figure>
-<p>在index.js中导入</p>
-<p><strong><em>reset.css：</em></strong></p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 把需要重置的元素名称放在这里 */</span></span><br><span class="line"><span class="selector-tag">body</span>,<span class="selector-tag">p</span>,<span class="selector-tag">button</span>,<span class="selector-tag">input</span>,<span class="selector-tag">dd</span>,<span class="selector-tag">dl</span>,<span class="selector-tag">dt</span>,<span class="selector-tag">form</span>&#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">a</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#484848</span>;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">img</span> &#123;</span><br><span class="line">    <span class="attribute">vertical-align</span>: top;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span>, <span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="React全家桶配置"><a href="#React全家桶配置" class="headerlink" title="React全家桶配置"></a>React全家桶配置</h2><h3 id="路由配置"><a href="#路由配置" class="headerlink" title="路由配置"></a>路由配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install react-router-dom --save</span><br></pre></td></tr></table></figure>
-<p><strong><em>index.js：</em></strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; <span class="title class_">Suspense</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ReactDOM</span> <span class="keyword">from</span> <span class="string">&#x27;react-dom/client&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;@/App&#x27;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;normalize.css&quot;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;@/assets/css/reset.css&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">HashRouter</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react-router-dom&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> root = <span class="title class_">ReactDOM</span>.<span class="title function_">createRoot</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;root&#x27;</span>));</span><br><span class="line">root.<span class="title function_">render</span>(</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">React.StrictMode</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    &#123;/* 懒加载是异步的，因此需要在保证异步未完成时提供一个可替换方案，可以是字符串也可以是组件 */&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">Suspense</span> <span class="attr">fallback</span>=<span class="string">&quot;locding&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">HashRouter</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">App</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">HashRouter</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Suspense</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">React.StrictMode</span>&gt;</span></span></span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><strong><em>router/index.js：</em></strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&quot;react&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Navigate</span> &#125; <span class="keyword">from</span> <span class="string">&quot;react-router-dom&quot;</span></span><br><span class="line"><span class="comment">// 懒加载的实现</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Detail</span> = <span class="title class_">React</span>.<span class="title function_">lazy</span>(<span class="function">()=&gt;</span><span class="keyword">import</span>(<span class="string">&quot;@/viewer/detail&quot;</span>))</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Entire</span> = <span class="title class_">React</span>.<span class="title function_">lazy</span>(<span class="function">()=&gt;</span><span class="keyword">import</span>(<span class="string">&quot;@/viewer/entire&quot;</span>))</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Home</span> = <span class="title class_">React</span>.<span class="title function_">lazy</span>(<span class="function">()=&gt;</span><span class="keyword">import</span>(<span class="string">&quot;@/viewer/home&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> routes = [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">path</span>:<span class="string">&quot;/&quot;</span>,</span><br><span class="line">        <span class="attr">element</span>:<span class="language-xml"><span class="tag">&lt;<span class="name">Navigate</span> <span class="attr">to</span>=<span class="string">&quot;/home&quot;</span> /&gt;</span></span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">path</span>:<span class="string">&quot;/home&quot;</span>,</span><br><span class="line">        <span class="attr">element</span>:<span class="language-xml"><span class="tag">&lt;<span class="name">Home</span>/&gt;</span></span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">path</span>:<span class="string">&quot;/entire&quot;</span>,</span><br><span class="line">        <span class="attr">element</span>:<span class="language-xml"><span class="tag">&lt;<span class="name">Entire</span>/&gt;</span></span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">path</span>:<span class="string">&quot;/detail&quot;</span>,</span><br><span class="line">        <span class="attr">element</span>:<span class="language-xml"><span class="tag">&lt;<span class="name">Detail</span>/&gt;</span></span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> routes</span><br></pre></td></tr></table></figure>
-<p><a href="/2023/04/01/react%E4%B8%AD%E7%9A%84%E8%B7%AF%E7%94%B1%E8%AE%BE%E7%BD%AE/">react中的路由设置</a></p>
-<h3 id="Redux状态管理"><a href="#Redux状态管理" class="headerlink" title="Redux状态管理"></a>Redux状态管理</h3><ul>
-<li>普通方式：目前使用效率依然非常高</li>
-<li>@reduxjs/toolkit方式：推荐方式，未来的趋势</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install @reduxjs/toolkit react-redux --save</span><br></pre></td></tr></table></figure>
-<p><strong><em>普通方式：</em></strong></p>
-<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405114121514.png" alt="image-20230405114121514"></p>
-<ul>
-<li><strong>reducer.js代码：</strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> initialState = &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">reducer</span>(<span class="params">state=initialState, action</span>)&#123;</span><br><span class="line">    <span class="keyword">switch</span>(action.<span class="property">type</span>)&#123;</span><br><span class="line">        <span class="attr">default</span>:</span><br><span class="line">            <span class="keyword">return</span> state</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> reducer</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>index.js代码：</strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> reducer <span class="keyword">from</span> <span class="string">&quot;./reducer&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> reducer</span><br></pre></td></tr></table></figure>
-<p><strong><em>@reduxjs/toolkit方式：</em></strong></p>
-<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405114538084.png" alt="image-20230405114538084"></p>
-<ul>
-<li><strong>home.js代码</strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createSlice &#125; <span class="keyword">from</span> <span class="string">&quot;@reduxjs/toolkit&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> honeSlice = <span class="title function_">createSlice</span>(&#123;</span><br><span class="line">    <span class="attr">name</span>:<span class="string">&quot;home&quot;</span>,</span><br><span class="line">    <span class="attr">initialState</span>:&#123;</span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">reducers</span>:&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> honeSlice.<span class="property">reducer</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>index.js代码</strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; configureStore &#125; <span class="keyword">from</span> <span class="string">&quot;@reduxjs/toolkit&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> homeReducer <span class="keyword">from</span> <span class="string">&quot;./modules/home&quot;</span></span><br><span class="line"><span class="keyword">import</span> entireReducer <span class="keyword">from</span> <span class="string">&quot;./modules/entire&quot;</span></span><br><span class="line"><span class="keyword">const</span> store = <span class="title function_">configureStore</span>(&#123;</span><br><span class="line">    <span class="attr">reducer</span>:&#123;</span><br><span class="line">        <span class="attr">home</span>:homeReducer,</span><br><span class="line">        <span class="attr">entire</span>:entireReducer</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store</span><br></pre></td></tr></table></figure>
-<p><a href="/2023/03/30/React%E4%B8%8ERedux/">React与Redux</a></p>
-<h3 id="网络请求配置"><a href="#网络请求配置" class="headerlink" title="网络请求配置"></a>网络请求配置</h3><p><strong><em>发起网络请求库：</em></strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install axios --save</span><br></pre></td></tr></table></figure>
-<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405120733930.png" alt="image-20230405120733930"></p>
-<p><strong><em>index.js代码：</em></strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> owwRequest <span class="keyword">from</span> <span class="string">&quot;./request&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> owwRequest</span><br></pre></td></tr></table></figure>
-<p><strong><em>request/index.js代码：</em></strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&quot;axios&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;<span class="variable constant_">BASE_URL</span>, <span class="variable constant_">TIMEOPUT</span>&#125; <span class="keyword">from</span> <span class="string">&quot;./config&quot;</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OwwRequest</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">baseURL, timeout</span>)&#123;</span><br><span class="line">        <span class="comment">// 获取axios实例</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">instance</span> = axios.<span class="title function_">create</span>(&#123;</span><br><span class="line">            baseURL,</span><br><span class="line">            timeout</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="comment">// 发起网络请求后的拦截</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">instance</span>.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(<span class="function"><span class="params">res</span>=&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> res.<span class="property">data</span></span><br><span class="line">        &#125;,<span class="function"><span class="params">err</span>=&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> err</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">request</span>(<span class="params">config</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">instance</span>.<span class="title function_">request</span>(config)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">get</span>(<span class="params">config</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">request</span>(&#123;...config, <span class="attr">method</span>:<span class="string">&quot;get&quot;</span>&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">post</span>(<span class="params">config</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">request</span>(&#123;...config, <span class="attr">method</span>:<span class="string">&quot;post&quot;</span>&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">OwwRequest</span>(<span class="variable constant_">BASE_URL</span>, <span class="variable constant_">TIMEOPUT</span>)</span><br></pre></td></tr></table></figure>
-<p><strong><em>request/config.js：</em></strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable constant_">BASE_URL</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable constant_">TIMEOPUT</span> = <span class="number">10000</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
-        <tag>React</tag>
       </tags>
   </entry>
   <entry>
@@ -1478,6 +1459,97 @@
       </tags>
   </entry>
   <entry>
+    <title>react项目的配置与搭建</title>
+    <url>/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="React创建与配置"><a href="#React创建与配置" class="headerlink" title="React创建与配置"></a>React创建与配置</h1><h2 id="React创建项目"><a href="#React创建项目" class="headerlink" title="React创建项目"></a>React创建项目</h2><h3 id="React脚手架搭建项目"><a href="#React脚手架搭建项目" class="headerlink" title="React脚手架搭建项目"></a>React脚手架搭建项目</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create-react-app name</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405102510876.png" alt="image-20230405102510876"></p>
+<p><strong><em>删除默认生成的文件：</em></strong></p>
+<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405102711804.png" alt="image-20230405102711804"></p>
+<h3 id="项目目录结构配置"><a href="#项目目录结构配置" class="headerlink" title="项目目录结构配置"></a>项目目录结构配置</h3><p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405103045842.png" alt="image-20230405103045842"></p>
+<h3 id="项目基本配置"><a href="#项目基本配置" class="headerlink" title="项目基本配置"></a>项目基本配置</h3><h4 id="配置项目的icon"><a href="#配置项目的icon" class="headerlink" title="配置项目的icon"></a>配置项目的icon</h4><p>直接把需要使用的icon替换public下面的favicon.ico</p>
+<h4 id="配置项目的标题"><a href="#配置项目的标题" class="headerlink" title="配置项目的标题"></a>配置项目的标题</h4><p>设置html文件下的title属性</p>
+<h4 id="配置jsconfig-json文件"><a href="#配置jsconfig-json文件" class="headerlink" title="配置jsconfig.json文件"></a>配置jsconfig.json文件</h4><p>配置后编写项目的智能提示会好很多</p>
+<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405103730430.png" alt="image-20230405103730430"></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;es5&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;module&quot;</span><span class="punctuation">:</span> <span class="string">&quot;esnext&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;baseUrl&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;moduleResolution&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;paths&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;@/*&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;src/*&quot;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;jsx&quot;</span><span class="punctuation">:</span><span class="string">&quot;preserve&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;lib&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="string">&quot;ESNext&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;DOM&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;DOM.Iterable&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;ScriptHost&quot;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="项目的别名配置"><a href="#项目的别名配置" class="headerlink" title="项目的别名配置"></a>项目的别名配置</h4><p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405103925434.png" alt="image-20230405103925434"></p>
+<h5 id="采用craco配置"><a href="#采用craco配置" class="headerlink" title="采用craco配置"></a>采用craco配置</h5><p><strong><em>webpack的配置：</em></strong></p>
+<ul>
+<li>craco会使项目的配置与webpack的配置融合</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install @craco/craco@alpha -D</span><br></pre></td></tr></table></figure>
+<ul>
+<li>craco.config.js的配置</li>
+</ul>
+<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405104646852.png" alt="image-20230405104646852"></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">resolve</span> = pathName=&gt;path.<span class="title function_">resolve</span>(__dirname, pathName)</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">webpack</span>:&#123;</span><br><span class="line">        <span class="attr">alias</span>:&#123;</span><br><span class="line">            <span class="string">&quot;@&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src&quot;</span>),</span><br><span class="line">            <span class="string">&quot;components&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src/components&quot;</span>),</span><br><span class="line">            <span class="string">&quot;utils&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src/utils&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要是craco生效，项目启动必须以craco启动，才能和webpack的配置融合——修改package.json中的scripts</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;craco start&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;craco build&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;test&quot;</span><span class="punctuation">:</span> <span class="string">&quot;craco test&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;eject&quot;</span><span class="punctuation">:</span> <span class="string">&quot;react-scripts eject&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+<p>此时就可以用别名去写路径，避免长串的../../</p>
+<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405104959491.png" alt="image-20230405104959491"></p>
+<p><strong><em>项目的less配置：</em></strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm i craco-less@2.1.0-alpha.0 --save -D</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">CraLessPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;craco-less&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">resolve</span> = pathName=&gt;path.<span class="title function_">resolve</span>(__dirname, pathName)</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="comment">//less</span></span><br><span class="line">    <span class="attr">plugins</span>:[</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">plugin</span>:<span class="title class_">CraLessPlugin</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="comment">// webpack</span></span><br><span class="line">    <span class="attr">webpack</span>:&#123;</span><br><span class="line">        <span class="attr">alias</span>:&#123;</span><br><span class="line">            <span class="string">&quot;@&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src&quot;</span>),</span><br><span class="line">            <span class="string">&quot;components&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src/components&quot;</span>),</span><br><span class="line">            <span class="string">&quot;utils&quot;</span>:<span class="title function_">resolve</span>(<span class="string">&quot;src/utils&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="CSS样式的重置"><a href="#CSS样式的重置" class="headerlink" title="CSS样式的重置"></a>CSS样式的重置</h2><p><strong><em>对默认样式进行重置：</em></strong></p>
+<ul>
+<li>normalize.css</li>
+<li>reset.css</li>
+</ul>
+<p><strong><em>normalize.css：</em></strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install normalize.css --save</span><br></pre></td></tr></table></figure>
+<p>在index.js中导入</p>
+<p><strong><em>reset.css：</em></strong></p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 把需要重置的元素名称放在这里 */</span></span><br><span class="line"><span class="selector-tag">body</span>,<span class="selector-tag">p</span>,<span class="selector-tag">button</span>,<span class="selector-tag">input</span>,<span class="selector-tag">dd</span>,<span class="selector-tag">dl</span>,<span class="selector-tag">dt</span>,<span class="selector-tag">form</span>&#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">a</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#484848</span>;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">img</span> &#123;</span><br><span class="line">    <span class="attribute">vertical-align</span>: top;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span>, <span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="React全家桶配置"><a href="#React全家桶配置" class="headerlink" title="React全家桶配置"></a>React全家桶配置</h2><h3 id="路由配置"><a href="#路由配置" class="headerlink" title="路由配置"></a>路由配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install react-router-dom --save</span><br></pre></td></tr></table></figure>
+<p><strong><em>index.js：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; <span class="title class_">Suspense</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ReactDOM</span> <span class="keyword">from</span> <span class="string">&#x27;react-dom/client&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;@/App&#x27;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;normalize.css&quot;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;@/assets/css/reset.css&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">HashRouter</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react-router-dom&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> root = <span class="title class_">ReactDOM</span>.<span class="title function_">createRoot</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;root&#x27;</span>));</span><br><span class="line">root.<span class="title function_">render</span>(</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">React.StrictMode</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    &#123;/* 懒加载是异步的，因此需要在保证异步未完成时提供一个可替换方案，可以是字符串也可以是组件 */&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">Suspense</span> <span class="attr">fallback</span>=<span class="string">&quot;locding&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">HashRouter</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">App</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">HashRouter</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Suspense</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">React.StrictMode</span>&gt;</span></span></span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong><em>router/index.js：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&quot;react&quot;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Navigate</span> &#125; <span class="keyword">from</span> <span class="string">&quot;react-router-dom&quot;</span></span><br><span class="line"><span class="comment">// 懒加载的实现</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Detail</span> = <span class="title class_">React</span>.<span class="title function_">lazy</span>(<span class="function">()=&gt;</span><span class="keyword">import</span>(<span class="string">&quot;@/viewer/detail&quot;</span>))</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Entire</span> = <span class="title class_">React</span>.<span class="title function_">lazy</span>(<span class="function">()=&gt;</span><span class="keyword">import</span>(<span class="string">&quot;@/viewer/entire&quot;</span>))</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Home</span> = <span class="title class_">React</span>.<span class="title function_">lazy</span>(<span class="function">()=&gt;</span><span class="keyword">import</span>(<span class="string">&quot;@/viewer/home&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> routes = [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">path</span>:<span class="string">&quot;/&quot;</span>,</span><br><span class="line">        <span class="attr">element</span>:<span class="language-xml"><span class="tag">&lt;<span class="name">Navigate</span> <span class="attr">to</span>=<span class="string">&quot;/home&quot;</span> /&gt;</span></span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">path</span>:<span class="string">&quot;/home&quot;</span>,</span><br><span class="line">        <span class="attr">element</span>:<span class="language-xml"><span class="tag">&lt;<span class="name">Home</span>/&gt;</span></span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">path</span>:<span class="string">&quot;/entire&quot;</span>,</span><br><span class="line">        <span class="attr">element</span>:<span class="language-xml"><span class="tag">&lt;<span class="name">Entire</span>/&gt;</span></span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">path</span>:<span class="string">&quot;/detail&quot;</span>,</span><br><span class="line">        <span class="attr">element</span>:<span class="language-xml"><span class="tag">&lt;<span class="name">Detail</span>/&gt;</span></span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> routes</span><br></pre></td></tr></table></figure>
+<p><a href="/2023/04/01/react%E4%B8%AD%E7%9A%84%E8%B7%AF%E7%94%B1%E8%AE%BE%E7%BD%AE/">react中的路由设置</a></p>
+<h3 id="Redux状态管理"><a href="#Redux状态管理" class="headerlink" title="Redux状态管理"></a>Redux状态管理</h3><ul>
+<li>普通方式：目前使用效率依然非常高</li>
+<li>@reduxjs/toolkit方式：推荐方式，未来的趋势</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install @reduxjs/toolkit react-redux --save</span><br></pre></td></tr></table></figure>
+<p><strong><em>普通方式：</em></strong></p>
+<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405114121514.png" alt="image-20230405114121514"></p>
+<ul>
+<li><strong>reducer.js代码：</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> initialState = &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">reducer</span>(<span class="params">state=initialState, action</span>)&#123;</span><br><span class="line">    <span class="keyword">switch</span>(action.<span class="property">type</span>)&#123;</span><br><span class="line">        <span class="attr">default</span>:</span><br><span class="line">            <span class="keyword">return</span> state</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> reducer</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>index.js代码：</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> reducer <span class="keyword">from</span> <span class="string">&quot;./reducer&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> reducer</span><br></pre></td></tr></table></figure>
+<p><strong><em>@reduxjs/toolkit方式：</em></strong></p>
+<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405114538084.png" alt="image-20230405114538084"></p>
+<ul>
+<li><strong>home.js代码</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createSlice &#125; <span class="keyword">from</span> <span class="string">&quot;@reduxjs/toolkit&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> honeSlice = <span class="title function_">createSlice</span>(&#123;</span><br><span class="line">    <span class="attr">name</span>:<span class="string">&quot;home&quot;</span>,</span><br><span class="line">    <span class="attr">initialState</span>:&#123;</span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">reducers</span>:&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> honeSlice.<span class="property">reducer</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>index.js代码</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; configureStore &#125; <span class="keyword">from</span> <span class="string">&quot;@reduxjs/toolkit&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> homeReducer <span class="keyword">from</span> <span class="string">&quot;./modules/home&quot;</span></span><br><span class="line"><span class="keyword">import</span> entireReducer <span class="keyword">from</span> <span class="string">&quot;./modules/entire&quot;</span></span><br><span class="line"><span class="keyword">const</span> store = <span class="title function_">configureStore</span>(&#123;</span><br><span class="line">    <span class="attr">reducer</span>:&#123;</span><br><span class="line">        <span class="attr">home</span>:homeReducer,</span><br><span class="line">        <span class="attr">entire</span>:entireReducer</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store</span><br></pre></td></tr></table></figure>
+<p><a href="/2023/03/30/React%E4%B8%8ERedux/">React与Redux</a></p>
+<h3 id="网络请求配置"><a href="#网络请求配置" class="headerlink" title="网络请求配置"></a>网络请求配置</h3><p><strong><em>发起网络请求库：</em></strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install axios --save</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/04/05/react%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%90%AD%E5%BB%BA/image-20230405120733930.png" alt="image-20230405120733930"></p>
+<p><strong><em>index.js代码：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> owwRequest <span class="keyword">from</span> <span class="string">&quot;./request&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> owwRequest</span><br></pre></td></tr></table></figure>
+<p><strong><em>request/index.js代码：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&quot;axios&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;<span class="variable constant_">BASE_URL</span>, <span class="variable constant_">TIMEOPUT</span>&#125; <span class="keyword">from</span> <span class="string">&quot;./config&quot;</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OwwRequest</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">baseURL, timeout</span>)&#123;</span><br><span class="line">        <span class="comment">// 获取axios实例</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">instance</span> = axios.<span class="title function_">create</span>(&#123;</span><br><span class="line">            baseURL,</span><br><span class="line">            timeout</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="comment">// 发起网络请求后的拦截</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">instance</span>.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(<span class="function"><span class="params">res</span>=&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> res.<span class="property">data</span></span><br><span class="line">        &#125;,<span class="function"><span class="params">err</span>=&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> err</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">request</span>(<span class="params">config</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">instance</span>.<span class="title function_">request</span>(config)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">get</span>(<span class="params">config</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">request</span>(&#123;...config, <span class="attr">method</span>:<span class="string">&quot;get&quot;</span>&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">post</span>(<span class="params">config</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">request</span>(&#123;...config, <span class="attr">method</span>:<span class="string">&quot;post&quot;</span>&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">OwwRequest</span>(<span class="variable constant_">BASE_URL</span>, <span class="variable constant_">TIMEOPUT</span>)</span><br></pre></td></tr></table></figure>
+<p><strong><em>request/config.js：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable constant_">BASE_URL</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable constant_">TIMEOPUT</span> = <span class="number">10000</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>React</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>react中的hooks</title>
     <url>/2023/04/03/react%E4%B8%AD%E7%9A%84hooks/</url>
     <content><![CDATA[<h1 id="为什么需要Hook"><a href="#为什么需要Hook" class="headerlink" title="为什么需要Hook"></a>为什么需要Hook</h1><p><strong><em>不编写class的情况下使用state以及其他的React特性</em></strong></p>
@@ -1812,6 +1884,67 @@
       </tags>
   </entry>
   <entry>
+    <title>tensorflow（一）</title>
+    <url>/2023/07/02/tensorflow/</url>
+    <content><![CDATA[<h1 id="深度学习原理"><a href="#深度学习原理" class="headerlink" title="深度学习原理"></a>深度学习原理</h1><p><strong><em>梯度下降</em></strong></p>
+<h1 id="深度学习简单实现"><a href="#深度学习简单实现" class="headerlink" title="深度学习简单实现"></a>深度学习简单实现</h1><h2 id="最基础线性规划实现"><a href="#最基础线性规划实现" class="headerlink" title="最基础线性规划实现"></a>最基础线性规划实现</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> datasets</span><br><span class="line">(x, y), (x_val, y_val) = datasets.mnist.load_data()</span><br><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">x = tf.convert_to_tensor(x, dtype=tf.float32) / <span class="number">255.</span></span><br><span class="line">y = tf.convert_to_tensor(y, dtype=tf.int32)</span><br><span class="line"><span class="built_in">print</span>(x.shape, y.shape)</span><br><span class="line"><span class="comment"># 将x、y转为tensorflow的db</span></span><br><span class="line">train_dataset = tf.data.Dataset.from_tensor_slices((x, y))</span><br><span class="line"><span class="comment"># 设置batch</span></span><br><span class="line">train_dataset = train_dataset.batch(<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># [b, 784] =&gt; [b, 256] =&gt; [b, 128] =&gt; [b, 10]</span></span><br><span class="line"><span class="comment"># []</span></span><br><span class="line"><span class="comment"># 这是在计算过程中需要的参数，也是梯度下降时要变化的东西</span></span><br><span class="line">w1 = tf.Variable(tf.random.truncated_normal([<span class="number">784</span>, <span class="number">256</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b1 = tf.Variable(tf.zeros([<span class="number">256</span>]))</span><br><span class="line">w2 = tf.Variable(tf.random.truncated_normal([<span class="number">256</span>, <span class="number">128</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b2 = tf.Variable(tf.zeros([<span class="number">128</span>]))</span><br><span class="line">w3 = tf.Variable(tf.random.truncated_normal([<span class="number">128</span>, <span class="number">10</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b3 = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br><span class="line"></span><br><span class="line">lr = <span class="number">1e-3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> step, (x, y) <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_dataset):</span><br><span class="line">    <span class="comment"># x:[128, 28, 28]</span></span><br><span class="line">    <span class="comment"># y:[128]</span></span><br><span class="line">    <span class="comment"># [b, 28, 28] =&gt; [b, 28*28]</span></span><br><span class="line">    x = tf.reshape(x, [-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        <span class="comment"># x:[b, 28*28]</span></span><br><span class="line">        <span class="comment"># h1 = x@w1 + b1</span></span><br><span class="line">        <span class="comment"># [b, 784]@[784, 256] + [256]=&gt;[b,256] + [256] =&gt; [b, 256]</span></span><br><span class="line">        h1 = x@w1 + b1</span><br><span class="line">        h1 = tf.nn.relu(h1)</span><br><span class="line">        <span class="comment"># [b, 256] =&gt; [b, 128]</span></span><br><span class="line">        h2 = h1@w2 + b2</span><br><span class="line">        h2 = tf.nn.relu(h2)</span><br><span class="line">        <span class="comment"># [b, 128] =&gt; [b, 10]</span></span><br><span class="line">        out = h2@w3 + b3</span><br><span class="line"></span><br><span class="line">        <span class="comment"># compute loss</span></span><br><span class="line">        <span class="comment"># out: [b, 10]</span></span><br><span class="line">        <span class="comment"># y:[b] =&gt; [b, 10]</span></span><br><span class="line">        y = tf.one_hot(y, depth=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># mse = mean(sum(y-out)^2)</span></span><br><span class="line">        <span class="comment"># [b,10]</span></span><br><span class="line">        loss = tf.square(y-out)</span><br><span class="line">        <span class="comment"># mean: scalar</span></span><br><span class="line">        loss = tf.reduce_mean(loss)</span><br><span class="line">	<span class="comment"># 梯度计算</span></span><br><span class="line">    grads = tape.gradient(loss, [w1, b1, w2, b2, w3, b3])</span><br><span class="line">    <span class="comment"># 梯度更新</span></span><br><span class="line">    <span class="comment"># w1 = w1 - lr * grads[0]</span></span><br><span class="line">    w1.assign_sub(lr * grads[<span class="number">0</span>])</span><br><span class="line">    b1.assign_sub(lr * grads[<span class="number">1</span>])</span><br><span class="line">    w2.assign_sub(lr * grads[<span class="number">2</span>])</span><br><span class="line">    b2.assign_sub(lr * grads[<span class="number">3</span>])</span><br><span class="line">    w3.assign_sub(lr * grads[<span class="number">4</span>])</span><br><span class="line">    b3.assign_sub(lr * grads[<span class="number">5</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> step % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(step, <span class="string">&#x27;loss&#x27;</span>, <span class="built_in">float</span>(loss))</span><br></pre></td></tr></table></figure>
+<h2 id="使用tensorflow的部分接口实现"><a href="#使用tensorflow的部分接口实现" class="headerlink" title="使用tensorflow的部分接口实现"></a>使用tensorflow的部分接口实现</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> datasets, optimizers, Sequential, layers</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">data_pre_process</span>(<span class="params">x, y</span>):</span><br><span class="line">    x = tf.cast(x, dtype=tf.float32) / <span class="number">255.</span></span><br><span class="line">    y = tf.cast(y, dtype=tf.int32)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x, y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dataLoader</span>():</span><br><span class="line">    (x, y), (x_val, y_val) = datasets.fashion_mnist.load_data()</span><br><span class="line">    db = tf.data.Dataset.from_tensor_slices((x, y))</span><br><span class="line">    db = db.<span class="built_in">map</span>(data_pre_process).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line">    db_val = tf.data.Dataset.from_tensor_slices((x_val, y_val))</span><br><span class="line">    db_val = db_val.<span class="built_in">map</span>(data_pre_process).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> db, db_val</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 数据加载</span></span><br><span class="line">    db, db_val = dataLoader()</span><br><span class="line"></span><br><span class="line">    model = Sequential([</span><br><span class="line">        layers.Dense(<span class="number">256</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">128</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">64</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">32</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">10</span>, activation=tf.nn.relu),</span><br><span class="line">    ])</span><br><span class="line">    model.build(input_shape=[<span class="literal">None</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">    model.summary()</span><br><span class="line"></span><br><span class="line">    optimizers = optimizers.Adam(lr=<span class="number">1e-3</span>)</span><br><span class="line">    <span class="comment"># 迭代</span></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">30</span>):</span><br><span class="line">        <span class="comment"># 每次迭代过程中会根据batchsize分块计算</span></span><br><span class="line">        <span class="keyword">for</span> step, (x, y) <span class="keyword">in</span> <span class="built_in">enumerate</span>(db):</span><br><span class="line">            x = tf.reshape(x, [-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">            <span class="comment"># 梯度计算</span></span><br><span class="line">            <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">                logits = model(x)</span><br><span class="line">                y_onehot = tf.one_hot(y, depth=<span class="number">10</span>)</span><br><span class="line">                loss_mse = tf.reduce_mean(tf.losses.MSE(y_onehot, logits))</span><br><span class="line">                loss_ce = tf.reduce_mean(tf.losses.categorical_crossentropy(y_onehot, logits, from_logits=<span class="literal">True</span>))</span><br><span class="line"></span><br><span class="line">            grads = tape.gradient(loss_ce, model.trainable_variables)</span><br><span class="line">            <span class="comment"># 梯度更新</span></span><br><span class="line">            optimizers.apply_gradients(<span class="built_in">zip</span>(grads, model.trainable_variables))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> step % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">                <span class="built_in">print</span>(epoch, step, <span class="string">&#x27;loss:&#x27;</span>, <span class="built_in">float</span>(loss_ce), <span class="built_in">float</span>(loss_mse))</span><br><span class="line">        <span class="comment"># 测试/验证集精度计算</span></span><br><span class="line">        total_correct = <span class="number">0</span></span><br><span class="line">        total_num = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> x, y <span class="keyword">in</span> db_val:</span><br><span class="line">            x = tf.reshape(x, [-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">            logits = model(x)</span><br><span class="line">            prob = tf.nn.softmax(logits, axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">            pred = tf.argmax(prob, axis=<span class="number">1</span>)</span><br><span class="line">            pred = tf.cast(pred, dtype=tf.int32)</span><br><span class="line"></span><br><span class="line">            correct = tf.equal(pred, y)</span><br><span class="line">            correct = tf.reduce_sum(tf.cast(correct, dtype=tf.int32))</span><br><span class="line">            total_correct += <span class="built_in">int</span>(correct)</span><br><span class="line">            total_num += x.shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        acc = total_correct/total_num</span><br><span class="line">        <span class="built_in">print</span>(epoch, <span class="string">&#x27;test acc:&#x27;</span>, <span class="built_in">float</span>(acc))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="tensorflow高级api使用"><a href="#tensorflow高级api使用" class="headerlink" title="tensorflow高级api使用"></a>tensorflow高级api使用</h2><p>所有的深度学习都包含上面几个步骤</p>
+<ul>
+<li>加载数据</li>
+<li>迭代</li>
+<li>梯度更新</li>
+<li>测试/验证精度计算</li>
+</ul>
+<p>因此，tensorflow将上面的固定步骤写在同一的接口中方便使用</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> datasets, optimizers, Sequential, layers</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">data_pre_process</span>(<span class="params">x, y</span>):</span><br><span class="line">    x = tf.cast(x, dtype=tf.float32) / <span class="number">255.</span></span><br><span class="line">    y = tf.cast(y, dtype=tf.int32)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x, y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dataLoader</span>():</span><br><span class="line">    (x, y), (x_val, y_val) = datasets.fashion_mnist.load_data()</span><br><span class="line">    x = x.reshape(<span class="number">60000</span>, <span class="number">28</span>*<span class="number">28</span>)</span><br><span class="line">    y = tf.one_hot(y, depth=<span class="number">10</span>)</span><br><span class="line">    db = tf.data.Dataset.from_tensor_slices((x, y))</span><br><span class="line">    db = db.<span class="built_in">map</span>(data_pre_process).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line">    db_val = tf.data.Dataset.from_tensor_slices((x_val, y_val))</span><br><span class="line">    db_val = db_val.<span class="built_in">map</span>(data_pre_process).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> db, db_val</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    db, db_val = dataLoader()</span><br><span class="line"></span><br><span class="line">    model = Sequential([</span><br><span class="line">        layers.Dense(<span class="number">256</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">128</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">64</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">32</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">10</span>, activation=tf.nn.relu),</span><br><span class="line">    ])</span><br><span class="line">    model.build(input_shape=[<span class="literal">None</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">    model.summary()</span><br><span class="line">    <span class="comment"># compile中会提供若干参数，如梯度优化方式、误差计算方式、精度评定方式，当然还有更多参数，请阅读文档</span></span><br><span class="line">    model.<span class="built_in">compile</span>(optimizer=optimizers.Adam(lr=<span class="number">0.0001</span>), loss=tf.losses.CategoricalCrossentropy(from_logits=<span class="literal">True</span>),</span><br><span class="line">                  metrics=[<span class="string">&#x27;accuracy&#x27;</span>])</span><br><span class="line">	<span class="comment"># fit即开始训练，需要输入db和要迭代的次数，注意db中的x和y要和model的输入与输出维度一致</span></span><br><span class="line">    model.fit(db, epochs=<span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><h2 id="过拟合和欠拟合"><a href="#过拟合和欠拟合" class="headerlink" title="过拟合和欠拟合"></a>过拟合和欠拟合</h2><p><strong><em>过拟合：</em></strong>训练精度很高，测试精度不够（可能）</p>
+<p><strong><em>欠拟合：</em></strong>训练精度不够，测试精度也不够（可能）——模型复杂度不够</p>
+<h3 id="过拟合解决"><a href="#过拟合解决" class="headerlink" title="过拟合解决"></a>过拟合解决</h3><ul>
+<li>更多数据</li>
+<li>更简单的模型</li>
+<li>数据增强</li>
+</ul>
+<h4 id="Regularization"><a href="#Regularization" class="headerlink" title="Regularization"></a>Regularization</h4><p><img src="/2023/07/02/tensorflow/image-20230702195941412.png" alt="image-20230702195941412"></p>
+<p>前面是误差，后面是参数的范式，参数的一范式越小说明参数越接近于0，那么拟合出来的模型就越平滑，出现过拟合的可能性就越小</p>
+<p><img src="/2023/07/02/tensorflow/image-20230702200316610.png" alt="image-20230702200316610"></p>
+<p>两张regularization方式，分别是一范数二范数</p>
+<h4 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h4><p><img src="/2023/07/02/tensorflow/image-20230702200957049.png" alt="image-20230702200957049"></p>
+<p>动量设置，参数更改的不仅仅由当前梯度的影像，还与上一次梯度的方向有关</p>
+<h4 id="Learning-rate"><a href="#Learning-rate" class="headerlink" title="Learning rate"></a>Learning rate</h4><p><img src="/2023/07/02/tensorflow/image-20230702201327476.png" alt="image-20230702201327476"></p>
+<p>学习率一般刚开始比较大，后续慢慢变小，前期学习率大变化快，后续会较慢</p>
+<h4 id="提前取消"><a href="#提前取消" class="headerlink" title="提前取消"></a>提前取消</h4><p>如果出现了训练精度还在提高，测试精度不提高了，说明已经过拟合，可以停止训练</p>
+<h4 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h4><p><img src="/2023/07/02/tensorflow/image-20230703092847561.png" alt="image-20230703092847561"></p>
+<p>每一次训练都有一些连线可能中断</p>
+<p>tensorflow和pytorch的dropout参数是相反的</p>
+<p>dropout在做test时不能使用——要手动取消</p>
+<h1 id="为什么要卷积"><a href="#为什么要卷积" class="headerlink" title="为什么要卷积"></a>为什么要卷积</h1><p><strong><em>为什么要卷积？不使用简单的Dense层？</em></strong></p>
+<ul>
+<li>数据存储需求大</li>
+</ul>
+<p>视野？滑动窗口？这个窗口是卷积核？cv里面锐化模糊边缘提取的卷积核</p>
+<p><strong><em>卷积核的个数，也就是con2d中的两个参数：</em></strong></p>
+<ul>
+<li>卷积核的大小问题</li>
+</ul>
+<p>[c, 3, 3]一个卷积核可以将一张图片卷积到一个channels为1的新层次，c为图片的通道数</p>
+<p><img src="/2023/07/02/tensorflow/image-20230703095053915.png" alt="image-20230703095053915"></p>
+<p>如图，这个[3, 3, 3]依次对三个通道做乘法，然后将结果加起来得到一个一通道的数据，这个一通道的数据代表着原图像在某一层次上的特征</p>
+<p>有时候我们需要更多的特征，这时候就需要[N, c, 3, 3]这样N个卷积来提取特征，就会得到N个通道的特征</p>
+<p>如下面的(64, 3)其中的64就是上面的N代表着64个通道的特征，3是卷积核的大小，也就是[c, 3, 3]中的3，c会默认与图片的通道数相同，所以不需要额外设置</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conv1 = Conv2D(<span class="number">64</span>, <span class="number">3</span>, activation=<span class="string">&#x27;relu&#x27;</span>, padding=<span class="string">&#x27;same&#x27;</span>)(inputs)</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/07/02/tensorflow/image-20230702203217415.png" alt="image-20230702203217415"></p>
+<h1 id="为什么要下采样（池化）"><a href="#为什么要下采样（池化）" class="headerlink" title="为什么要下采样（池化）"></a>为什么要下采样（池化）</h1><p>不同的程度可以获取到不同层级的特征</p>
+<p><img src="/2023/07/02/tensorflow/image-20230703095836625.png" alt="image-20230703095836625"></p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>tensorflow</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>事件总线</title>
     <url>/2023/03/25/%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/</url>
     <content><![CDATA[<h1 id="事件总线（EventBus）"><a href="#事件总线（EventBus）" class="headerlink" title="事件总线（EventBus）"></a>事件总线（EventBus）</h1><p>事件总线是一种观察者模式，包括三个角色</p>
@@ -1840,22 +1973,6 @@
       <tags>
         <tag>JavaScript</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>二叉树</title>
-    <url>/2023/03/27/%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
-    <content><![CDATA[<h1 id="一、二叉树种类"><a href="#一、二叉树种类" class="headerlink" title="一、二叉树种类"></a>一、二叉树种类</h1><h2 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h2><h2 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h2><h2 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h2><p>左节点小于中间节点，右节点大于中间节点</p>
-<h2 id="平衡二叉搜索树"><a href="#平衡二叉搜索树" class="headerlink" title="平衡二叉搜索树"></a>平衡二叉搜索树</h2><p>左节点小于中间节点，右节点大于中间节点，且左右子树的高度绝对值小于1</p>
-<p>c++中map、set、multimap、multiset的底层是通过平衡二叉树实现，那么在插入节点，查询节点的时间复杂度是O(logn)</p>
-<p>map中的key和set中的元素都是有序的</p>
-<h1 id="二、二叉树存储方式"><a href="#二、二叉树存储方式" class="headerlink" title="二、二叉树存储方式"></a>二、二叉树存储方式</h1><h2 id="链式存储"><a href="#链式存储" class="headerlink" title="链式存储"></a>链式存储</h2><h2 id="线式存储"><a href="#线式存储" class="headerlink" title="线式存储"></a>线式存储</h2><p>左孩子：i*2+1</p>
-<p>右孩子：i*2+2</p>
-<h1 id="三、二叉树的遍历"><a href="#三、二叉树的遍历" class="headerlink" title="三、二叉树的遍历"></a>三、二叉树的遍历</h1><h2 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h2><p>前序、中序、后序遍历——迭代法、递归法</p>
-<h2 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h2><p>层序遍历——迭代法</p>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
   </entry>
   <entry>
     <title>this指向</title>
@@ -1963,6 +2080,22 @@
         <tag>JavaScript</tag>
         <tag>JS高级</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>二叉树</title>
+    <url>/2023/03/27/%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+    <content><![CDATA[<h1 id="一、二叉树种类"><a href="#一、二叉树种类" class="headerlink" title="一、二叉树种类"></a>一、二叉树种类</h1><h2 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h2><h2 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h2><h2 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h2><p>左节点小于中间节点，右节点大于中间节点</p>
+<h2 id="平衡二叉搜索树"><a href="#平衡二叉搜索树" class="headerlink" title="平衡二叉搜索树"></a>平衡二叉搜索树</h2><p>左节点小于中间节点，右节点大于中间节点，且左右子树的高度绝对值小于1</p>
+<p>c++中map、set、multimap、multiset的底层是通过平衡二叉树实现，那么在插入节点，查询节点的时间复杂度是O(logn)</p>
+<p>map中的key和set中的元素都是有序的</p>
+<h1 id="二、二叉树存储方式"><a href="#二、二叉树存储方式" class="headerlink" title="二、二叉树存储方式"></a>二、二叉树存储方式</h1><h2 id="链式存储"><a href="#链式存储" class="headerlink" title="链式存储"></a>链式存储</h2><h2 id="线式存储"><a href="#线式存储" class="headerlink" title="线式存储"></a>线式存储</h2><p>左孩子：i*2+1</p>
+<p>右孩子：i*2+2</p>
+<h1 id="三、二叉树的遍历"><a href="#三、二叉树的遍历" class="headerlink" title="三、二叉树的遍历"></a>三、二叉树的遍历</h1><h2 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h2><p>前序、中序、后序遍历——迭代法、递归法</p>
+<h2 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h2><p>层序遍历——迭代法</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
   </entry>
   <entry>
     <title>内存管理和闭包</title>
@@ -2158,6 +2291,16 @@
       <categories>
         <category>算法</category>
       </categories>
+  </entry>
+  <entry>
+    <title>常见error</title>
+    <url>/2023/07/31/%E5%B8%B8%E8%A7%81error/</url>
+    <content><![CDATA[<h1 id="python中常见错误"><a href="#python中常见错误" class="headerlink" title="python中常见错误"></a>python中常见错误</h1><h2 id="opencv相关"><a href="#opencv相关" class="headerlink" title="opencv相关"></a>opencv相关</h2><h3 id="最基础的imread、imwrite都不能使用"><a href="#最基础的imread、imwrite都不能使用" class="headerlink" title="最基础的imread、imwrite都不能使用"></a>最基础的imread、imwrite都不能使用</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cv2.error: OpenCV(4.2.0) C:\projects\opencv-python\opencv\modules\highgui\src\window.cpp:651: error: (-2:Unspecified error) The <span class="keyword">function</span> is not implemented.</span><br></pre></td></tr></table></figure>
+<p><strong><em>解决办法：</em></strong>降低python版本为3.7</p>
+]]></content>
+      <tags>
+        <tag>常见的错误</tag>
+      </tags>
   </entry>
   <entry>
     <title>常见手写函数</title>
@@ -2416,6 +2559,24 @@
       </tags>
   </entry>
   <entry>
+    <title>手势识别-mmpose</title>
+    <url>/2023/07/31/%E6%89%8B%E5%8A%BF%E8%AF%86%E5%88%AB-mmpose/</url>
+    <content><![CDATA[<h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p><a href="https://mmpose.readthedocs.io/zh_CN/latest/installation.html">安装 — MMPose 1.1.0 文档</a></p>
+<p><strong><em>注意：</em></strong>python版本使用3.7的，要不然opencv会出错，什么原因不知道</p>
+<p><a href>错误明细</a></p>
+<h1 id="手势识别运行"><a href="#手势识别运行" class="headerlink" title="手势识别运行"></a>手势识别运行</h1><ul>
+<li>图片手势识别</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python demo/topdown_demo_with_mmdet.py demo/mmdetection_cfg/cascade_rcnn_x101_64x4d_fpn_1class.py cascade_rcnn_x101_64x4d_fpn_20e_onehand10k-dac19597_20201030.pth configs/hand_2d_keypoint/topdown_heatmap/onehand10k/td-hm_hrnetv2-w18_8xb64-210e_onehand10k-256x256.py hrnetv2_w18_onehand10k_256x256-30bc9c6b_20210330.pth --input tests/data/onehand10k/9.jpg --show --draw-heatmap</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>手势识别</category>
+      </categories>
+      <tags>
+        <tag>mmpose</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>搭建一个React项目及React基础</title>
     <url>/2023/03/24/%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAReact%E9%A1%B9%E7%9B%AE%E5%8F%8AReact%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<p><strong><em>官网：</em></strong><a href="https://zh-hans.reactjs.org/">https://zh-hans.reactjs.org/</a></p>
@@ -2537,6 +2698,45 @@
       </tags>
   </entry>
   <entry>
+    <title>浏览器渲染原理</title>
+    <url>/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h1 id="网页解析过程："><a href="#网页解析过程：" class="headerlink" title="网页解析过程："></a>网页解析过程：</h1><p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322214252101.png" alt="image-20230322214252101"></p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215014488.png" alt="image-20230322215014488"></p>
+<h2 id="HTML解析过程"><a href="#HTML解析过程" class="headerlink" title="HTML解析过程"></a>HTML解析过程</h2><p>默认情况下服务器给浏览器返回index.html文件，因此解析HTML是所有步骤的开始，解析HTML过程会构建Dom Tree</p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215643759.png" alt="image-20230322215643759"></p>
+<h2 id="生成CSS规则"><a href="#生成CSS规则" class="headerlink" title="生成CSS规则"></a>生成CSS规则</h2><p>在解析过程中，如果遇到CSS的link元素，会有浏览器下载对应的CSS文件（不会影响DOM）的解析</p>
+<p>对CSS下载完成后，会对CSS文件进行解析，解析出规则树，即CSSOM</p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322220941332.png" alt="image-20230322220941332"></p>
+<h2 id="构建Render-Tree"><a href="#构建Render-Tree" class="headerlink" title="构建Render Tree"></a>构建Render Tree</h2><p>当DOM Tree和CSSOM Tree有了过后就可以两者结合构建Render Tree了</p>
+<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322221500301.png" alt="image-20230322221500301"></p>
+<p>注：link元素不会阻塞DOM Tree的构建，但会阻塞Render Tree的构建</p>
+<p>​        Render Tree和Dom Tree并不是一一对应的关系，对于display为none的元素，不会出现在Render Tree中</p>
+<h2 id="布局和绘制"><a href="#布局和绘制" class="headerlink" title="布局和绘制"></a>布局和绘制</h2><p>渲染树会显示每个节点的样式，但不会给出每个节点的尺寸和位置，布局就是确定渲染树中每个节点的宽度、高度和位置信息</p>
+<p>绘制就是将布局阶段计算的每个frame转为屏幕上实际的像素点，包括将元素的可见部分进行绘制，比如文本、颜色、边框、阴影、替换元素</p>
+<h2 id="script元素和页面解析的关系"><a href="#script元素和页面解析的关系" class="headerlink" title="script元素和页面解析的关系"></a>script元素和页面解析的关系</h2><p>在HTML解析过程中，遇到script元素是不能继续构建DOM Tree的；会首先下载JavaScript代码，并执行脚本，等脚本执行结束后，继续解析HTML，构建DOM Tree</p>
+<p><strong><em>原因：</em></strong> JavaScript的一个作用是操作DOM，并修改DOM，如果等DOM Tree构建完成后执行JavaScript，会引起严重的回流和重绘，影像性能</p>
+<p><strong><em>但是：</em></strong> 目前的Vue/React开发模式，脚本比HTML页面更重，等到JavaScript解析会造成页面阻塞，在脚本执行完成钱，用户在界面上看不到任何东西</p>
+<h3 id="script解析优化：defer、async"><a href="#script解析优化：defer、async" class="headerlink" title="script解析优化：defer、async"></a>script解析优化：defer、async</h3><p><strong><em>defer：</em></strong> 浏览器不需要等到脚本下载，继续解析HTML，构建DOM Tree  </p>
+<p>​              不会阻塞DOm Tree的构建，等到DOM Tree构建完成后，在DOMContentLoaded事件之前执行代码</p>
+<p>​               带多个defer的脚本按顺序执行</p>
+<p>​               从某种角度来说，defer可以提高性能，并且推荐放到head元素中</p>
+<p>​                注：defer仅适用于外部脚本，对于script默认内容会忽略</p>
+<p><strong><em>async：</em></strong>  脚本完全独立</p>
+<p>​                浏览器不会因async阻塞</p>
+<p>​                async不能保证不同脚本之间的顺序，独立下载、运行</p>
+<p>​                async不能保证在DOMcontentLoaded之前或之后运行</p>
+<p><strong><em>defer通常用于文档解析后会操作DOM的JavaScript代码，并且对多个script文件有顺序要求的</em></strong></p>
+<p><strong><em>async通常用于独立的脚本，对其他脚本，DOM没有依赖的</em></strong></p>
+<h2 id="回流和重绘（见浏览器优化）"><a href="#回流和重绘（见浏览器优化）" class="headerlink" title="回流和重绘（见浏览器优化）"></a>回流和重绘（见浏览器优化）</h2>]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>JS高级</tag>
+        <tag>HTML</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>时间复杂度-空间复杂度</title>
     <url>/2023/03/24/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/</url>
     <content><![CDATA[<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p><strong><em>时间复杂度：</em></strong>时间增长趋势 T(n) = O(f(n))</p>
@@ -2598,45 +2798,6 @@
       <tags>
         <tag>JavaScript</tag>
         <tag>JS高级</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>浏览器渲染原理</title>
-    <url>/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<h1 id="网页解析过程："><a href="#网页解析过程：" class="headerlink" title="网页解析过程："></a>网页解析过程：</h1><p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322214252101.png" alt="image-20230322214252101"></p>
-<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215014488.png" alt="image-20230322215014488"></p>
-<h2 id="HTML解析过程"><a href="#HTML解析过程" class="headerlink" title="HTML解析过程"></a>HTML解析过程</h2><p>默认情况下服务器给浏览器返回index.html文件，因此解析HTML是所有步骤的开始，解析HTML过程会构建Dom Tree</p>
-<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215643759.png" alt="image-20230322215643759"></p>
-<h2 id="生成CSS规则"><a href="#生成CSS规则" class="headerlink" title="生成CSS规则"></a>生成CSS规则</h2><p>在解析过程中，如果遇到CSS的link元素，会有浏览器下载对应的CSS文件（不会影响DOM）的解析</p>
-<p>对CSS下载完成后，会对CSS文件进行解析，解析出规则树，即CSSOM</p>
-<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322220941332.png" alt="image-20230322220941332"></p>
-<h2 id="构建Render-Tree"><a href="#构建Render-Tree" class="headerlink" title="构建Render Tree"></a>构建Render Tree</h2><p>当DOM Tree和CSSOM Tree有了过后就可以两者结合构建Render Tree了</p>
-<p><img src="/2023/03/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322221500301.png" alt="image-20230322221500301"></p>
-<p>注：link元素不会阻塞DOM Tree的构建，但会阻塞Render Tree的构建</p>
-<p>​        Render Tree和Dom Tree并不是一一对应的关系，对于display为none的元素，不会出现在Render Tree中</p>
-<h2 id="布局和绘制"><a href="#布局和绘制" class="headerlink" title="布局和绘制"></a>布局和绘制</h2><p>渲染树会显示每个节点的样式，但不会给出每个节点的尺寸和位置，布局就是确定渲染树中每个节点的宽度、高度和位置信息</p>
-<p>绘制就是将布局阶段计算的每个frame转为屏幕上实际的像素点，包括将元素的可见部分进行绘制，比如文本、颜色、边框、阴影、替换元素</p>
-<h2 id="script元素和页面解析的关系"><a href="#script元素和页面解析的关系" class="headerlink" title="script元素和页面解析的关系"></a>script元素和页面解析的关系</h2><p>在HTML解析过程中，遇到script元素是不能继续构建DOM Tree的；会首先下载JavaScript代码，并执行脚本，等脚本执行结束后，继续解析HTML，构建DOM Tree</p>
-<p><strong><em>原因：</em></strong> JavaScript的一个作用是操作DOM，并修改DOM，如果等DOM Tree构建完成后执行JavaScript，会引起严重的回流和重绘，影像性能</p>
-<p><strong><em>但是：</em></strong> 目前的Vue/React开发模式，脚本比HTML页面更重，等到JavaScript解析会造成页面阻塞，在脚本执行完成钱，用户在界面上看不到任何东西</p>
-<h3 id="script解析优化：defer、async"><a href="#script解析优化：defer、async" class="headerlink" title="script解析优化：defer、async"></a>script解析优化：defer、async</h3><p><strong><em>defer：</em></strong> 浏览器不需要等到脚本下载，继续解析HTML，构建DOM Tree  </p>
-<p>​              不会阻塞DOm Tree的构建，等到DOM Tree构建完成后，在DOMContentLoaded事件之前执行代码</p>
-<p>​               带多个defer的脚本按顺序执行</p>
-<p>​               从某种角度来说，defer可以提高性能，并且推荐放到head元素中</p>
-<p>​                注：defer仅适用于外部脚本，对于script默认内容会忽略</p>
-<p><strong><em>async：</em></strong>  脚本完全独立</p>
-<p>​                浏览器不会因async阻塞</p>
-<p>​                async不能保证不同脚本之间的顺序，独立下载、运行</p>
-<p>​                async不能保证在DOMcontentLoaded之前或之后运行</p>
-<p><strong><em>defer通常用于文档解析后会操作DOM的JavaScript代码，并且对多个script文件有顺序要求的</em></strong></p>
-<p><strong><em>async通常用于独立的脚本，对其他脚本，DOM没有依赖的</em></strong></p>
-<h2 id="回流和重绘（见浏览器优化）"><a href="#回流和重绘（见浏览器优化）" class="headerlink" title="回流和重绘（见浏览器优化）"></a>回流和重绘（见浏览器优化）</h2>]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>JS高级</tag>
-        <tag>HTML</tag>
       </tags>
   </entry>
   <entry>
