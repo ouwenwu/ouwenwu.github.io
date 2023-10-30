@@ -188,6 +188,139 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/24/%E5%A0%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/24/%E5%A0%86/" class="post-title-link" itemprop="url">堆</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-24 19:22:13 / 修改时间：21:27:40" itemprop="dateCreated datePublished" datetime="2023-03-24T19:22:13+08:00">2023-03-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="堆："><a href="#堆：" class="headerlink" title="堆："></a>堆：</h1><ul>
+<li>堆是一种<strong>完全二叉树</strong>，复习一下完全二叉树的定义，完全二叉树的形式是指除了最后一层之外，其他所有层的结点都是满的，而最后一层的所有结点都靠左边。</li>
+<li>若设二叉树的深度为h，除第 h 层外，其它各层 (1～h-1) 的结点数都达到最大个数，第 h 层所有的结点都连续集中在最左边，这就是完全二叉树。</li>
+</ul>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324192427183.png" alt="image-20230324192427183"></p>
+<p><strong><em>完全二叉树：</em></strong>对于任意一个父节点的序号n来说（这里n从0算），它的子节点的序号一定是2n+1,2n+2，因此我们可以直接用数组来表示一个堆。</p>
+<p><strong><em>堆的创建：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Heap</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">array</span> = []</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">length</span> = <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324192636065.png" alt="image-20230324192636065"></p>
+<h2 id="大顶堆-最大堆："><a href="#大顶堆-最大堆：" class="headerlink" title="大顶堆/最大堆："></a>大顶堆/最大堆：</h2><p>对于任意一个父节点来说，其子节点都小于这个父节点</p>
+<h3 id="最大堆的插入："><a href="#最大堆的插入：" class="headerlink" title="最大堆的插入："></a>最大堆的插入：</h3><ul>
+<li>当一个元素要插入时，先放到堆尾，根据堆的特性，对位置进行调整。</li>
+<li>父节点要大于直接点，找到插入节点的父节点，比父节点值大则交换位置，否则插入成功</li>
+<li>交换后，继续检测该节点与现在父节点的大小，如果大则交换位置，一直上浮到根节点</li>
+</ul>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324193433568.png" alt="image-20230324193433568"></p>
+<p><strong><em>JavaScript实现：</em></strong>length可以用this.array.length替代</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">insert</span>(<span class="params">x</span>)&#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>.<span class="title function_">push</span>(x)</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>===<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> x_index = <span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>-<span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> parent_index = x_index</span><br><span class="line">    <span class="keyword">while</span>(parent_index!==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> parent_index = x_index%<span class="number">2</span>===<span class="number">0</span>?(x_index-<span class="number">2</span>):(x_index-<span class="number">1</span>)</span><br><span class="line">        parent_index = parent_index/<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">this</span>.<span class="property">array</span>[parent_index]&lt;x)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">array</span>[x_index] = <span class="variable language_">this</span>.<span class="property">array</span>[parent_index]</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">array</span>[parent_index] = x</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        x_index = parent_index</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 循环最大次数k即为树的深度：2^0+2^1+...+2^k = n 即k=logn 时间复杂度为O(logN)</span></span><br></pre></td></tr></table></figure>
+<h3 id="最大堆的删除"><a href="#最大堆的删除" class="headerlink" title="最大堆的删除"></a>最大堆的删除</h3><ul>
+<li>堆的删除一般是值删除堆顶元素，先删除堆顶元素</li>
+<li>要保证堆一直为完全二叉树，不能直接拿子节点的较大值，而是将末尾元素拿到堆顶，再下沉</li>
+<li>下沉即先比较该节点与左子节点，如果子节点更大，则交换，如果子节点更小，则与右节点比较</li>
+<li>直至到最深层，或者比左右子节点都大</li>
+</ul>
+<p><strong><em>JavaScript实现：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">pop</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>[<span class="number">0</span>] = <span class="variable language_">this</span>.<span class="property">array</span>[<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>-<span class="number">1</span>]</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>.<span class="title function_">pop</span>()</span><br><span class="line">    <span class="keyword">let</span> x_index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> left_index = <span class="number">2</span> * x_index + <span class="number">1</span></span><br><span class="line">        <span class="keyword">let</span> right_index = <span class="number">2</span> * x_index + <span class="number">2</span></span><br><span class="line">        left_index = left_index&gt;=<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>?<span class="attr">x_index</span>:left_index</span><br><span class="line">        right_index = right_index&gt;=<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>?<span class="attr">x_index</span>:right_index</span><br><span class="line">        <span class="keyword">let</span> large_child_index = <span class="variable language_">this</span>.<span class="property">array</span>[x_index]&lt;<span class="variable language_">this</span>.<span class="property">array</span>[left_index]?<span class="attr">left_index</span>:x_index</span><br><span class="line">        large_child_index = large_child_index!==x_index?<span class="attr">large_child_index</span>:(<span class="variable language_">this</span>.<span class="property">array</span>[x_index]&lt;<span class="variable language_">this</span>.<span class="property">array</span>[right_index]?<span class="attr">right_index</span>:x_index)</span><br><span class="line">        <span class="keyword">if</span>(large_child_index===x_index) <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">let</span> temp = <span class="variable language_">this</span>.<span class="property">array</span>[x_index]</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">array</span>[x_index] = <span class="variable language_">this</span>.<span class="property">array</span>[large_child_index]</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">array</span>[large_child_index] = temp</span><br><span class="line">        x_index = large_child_index</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 最大循环次数k即为树的深度 k = logn 时间复杂度为O(logN)</span></span><br></pre></td></tr></table></figure>
+<h1 id="小顶堆-最小堆"><a href="#小顶堆-最小堆" class="headerlink" title="小顶堆/最小堆"></a>小顶堆/最小堆</h1><p>插入与删除与最大堆类似</p>
+<p><strong><em>插入JavaScript实现：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">insert</span>(<span class="params">x</span>)&#123;</span><br><span class="line">    <span class="keyword">debugger</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>.<span class="title function_">push</span>(x)</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>===<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> x_index = <span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>-<span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> parent_index = x_index</span><br><span class="line">    <span class="keyword">while</span>(parent_index!==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> parent_index = x_index%<span class="number">2</span>===<span class="number">0</span>?(x_index-<span class="number">2</span>):(x_index-<span class="number">1</span>)</span><br><span class="line">        parent_index = parent_index/<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">this</span>.<span class="property">array</span>[parent_index]&gt;x)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">array</span>[x_index] = <span class="variable language_">this</span>.<span class="property">array</span>[parent_index]</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">array</span>[parent_index] = x</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        x_index = parent_index</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324210219667.png" alt="image-20230324210219667"></p>
+<p><strong><em>删除JavaScript实现：</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">pop</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">debugger</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>[<span class="number">0</span>] = <span class="variable language_">this</span>.<span class="property">array</span>[<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>-<span class="number">1</span>]</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">array</span>.<span class="title function_">pop</span>()</span><br><span class="line">    <span class="keyword">let</span> x_index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> left_index = <span class="number">2</span> * x_index + <span class="number">1</span></span><br><span class="line">        <span class="keyword">let</span> right_index = <span class="number">2</span> * x_index + <span class="number">2</span></span><br><span class="line">        left_index = left_index&gt;=<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>?<span class="attr">x_index</span>:left_index</span><br><span class="line">        right_index = right_index&gt;=<span class="variable language_">this</span>.<span class="property">array</span>.<span class="property">length</span>?<span class="attr">x_index</span>:right_index</span><br><span class="line">        <span class="keyword">let</span> small_child_index = <span class="variable language_">this</span>.<span class="property">array</span>[x_index]&gt;<span class="variable language_">this</span>.<span class="property">array</span>[left_index]?<span class="attr">left_index</span>:x_index</span><br><span class="line">        small_child_index = small_child_index!==x_index?<span class="attr">small_child_index</span>:(<span class="variable language_">this</span>.<span class="property">array</span>[x_index]&gt;<span class="variable language_">this</span>.<span class="property">array</span>[right_index]?<span class="attr">right_index</span>:x_index)</span><br><span class="line">        <span class="keyword">if</span>(small_child_index===x_index) <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">let</span> temp = <span class="variable language_">this</span>.<span class="property">array</span>[x_index]</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">array</span>[x_index] = <span class="variable language_">this</span>.<span class="property">array</span>[small_child_index]</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">array</span>[small_child_index] = temp</span><br><span class="line">        x_index = small_child_index</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324210321704.png" alt="image-20230324210321704"></p>
+<h1 id="解决前K个高频元素-低频元素题"><a href="#解决前K个高频元素-低频元素题" class="headerlink" title="解决前K个高频元素/低频元素题"></a>解决前K个高频元素/低频元素题</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/top-k-frequent-elements/">LeetCode链接</a></p>
+<p>给定一个非空的整数数组，返回其中出现频率前 k 高的元素。</p>
+<p>示例 1:</p>
+<ul>
+<li>输入: nums = [1,1,1,2,2,3], k = 2</li>
+<li>输出: [1,2]</li>
+</ul>
+<p>示例 2:</p>
+<ul>
+<li>输入: nums = [1], k = 1</li>
+<li>输出: [1]</li>
+</ul>
+<p>提示：</p>
+<ul>
+<li>你可以假设给定的 k 总是合理的，且 1 ≤ k ≤ 数组中不相同的元素的个数。</li>
+<li>你的算法的时间复杂度必须优于 $O(n \log n)$ , n 是数组的大小。</li>
+<li>题目数据保证答案唯一，换句话说，数组中前 k 个高频元素的集合是唯一的。</li>
+<li>你可以按任意顺序返回答案。</li>
+</ul>
+<p><strong><em>步骤：</em></strong></p>
+<ul>
+<li>获取到每个数据出现的频率，使用哈希表，这里可以用map，key是数字，value是次数</li>
+<li>对频率排序</li>
+<li>找出前K个高频元素</li>
+</ul>
+<p>注：</p>
+<ul>
+<li>如果使用快速排序的时间复杂度为O(n)</li>
+<li>仅维护大小为K的小顶堆，小顶堆的堆顶始终是最小值，如果堆长度小于K则继续往队礼添加，如果长度大于K则弹出堆顶的最小值</li>
+</ul>
+<p><img src="/2023/03/24/%E5%A0%86/image-20230324211848724.png" alt="image-20230324211848724"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// js 没有堆 需要自己构造</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Heap</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">compareFn</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">compareFn</span> = compareFn;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">queue</span> = [];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加</span></span><br><span class="line">    <span class="title function_">push</span>(<span class="params">item</span>) &#123;</span><br><span class="line">        <span class="comment">// 推入元素</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">queue</span>.<span class="title function_">push</span>(item);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 上浮</span></span><br><span class="line">        <span class="keyword">let</span> index = <span class="variable language_">this</span>.<span class="title function_">size</span>() - <span class="number">1</span>; <span class="comment">// 记录推入元素下标</span></span><br><span class="line">        <span class="keyword">let</span> parent = <span class="title class_">Math</span>.<span class="title function_">floor</span>((index - <span class="number">1</span>) / <span class="number">2</span>); <span class="comment">// 记录父节点下标</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (parent &gt;= <span class="number">0</span> &amp;&amp; <span class="variable language_">this</span>.<span class="title function_">compare</span>(parent, index) &gt; <span class="number">0</span>) &#123; <span class="comment">// 注意compare参数顺序</span></span><br><span class="line">            [<span class="variable language_">this</span>.<span class="property">queue</span>[index], <span class="variable language_">this</span>.<span class="property">queue</span>[parent]] = [<span class="variable language_">this</span>.<span class="property">queue</span>[parent], <span class="variable language_">this</span>.<span class="property">queue</span>[index]];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 更新下标</span></span><br><span class="line">            index = parent;</span><br><span class="line">            parent = <span class="title class_">Math</span>.<span class="title function_">floor</span>((index - <span class="number">1</span>) / <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取堆顶元素并移除</span></span><br><span class="line">    <span class="title function_">pop</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">// 堆顶元素</span></span><br><span class="line">        <span class="keyword">const</span> out = <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 移除堆顶元素 填入最后一个元素</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="number">0</span>] = <span class="variable language_">this</span>.<span class="property">queue</span>.<span class="title function_">pop</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 下沉</span></span><br><span class="line">        <span class="keyword">let</span> index = <span class="number">0</span>; <span class="comment">// 记录下沉元素下标</span></span><br><span class="line">        <span class="keyword">let</span> left = <span class="number">1</span>; <span class="comment">// left 是左子节点下标 left + 1 则是右子节点下标</span></span><br><span class="line">        <span class="keyword">let</span> searchChild = <span class="variable language_">this</span>.<span class="title function_">compare</span>(left, left + <span class="number">1</span>) &gt; <span class="number">0</span> ? left + <span class="number">1</span> : left;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (searchChild !== <span class="literal">undefined</span> &amp;&amp; <span class="variable language_">this</span>.<span class="title function_">compare</span>(index, searchChild) &gt; <span class="number">0</span>) &#123; <span class="comment">// 注意compare参数顺序</span></span><br><span class="line">            [<span class="variable language_">this</span>.<span class="property">queue</span>[index], <span class="variable language_">this</span>.<span class="property">queue</span>[searchChild]] = [<span class="variable language_">this</span>.<span class="property">queue</span>[searchChild], <span class="variable language_">this</span>.<span class="property">queue</span>[index]];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 更新下标</span></span><br><span class="line">            index = searchChild;</span><br><span class="line">            left = <span class="number">2</span> * index + <span class="number">1</span>;</span><br><span class="line">            searchChild = <span class="variable language_">this</span>.<span class="title function_">compare</span>(left, left + <span class="number">1</span>) &gt; <span class="number">0</span> ? left + <span class="number">1</span> : left;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> out;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">size</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">queue</span>.<span class="property">length</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用传入的 compareFn 比较两个位置的元素</span></span><br><span class="line">    <span class="title function_">compare</span>(<span class="params">index1, index2</span>) &#123;</span><br><span class="line">        <span class="comment">// 处理下标越界问题</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">queue</span>[index1] === <span class="literal">undefined</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">queue</span>[index2] === <span class="literal">undefined</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">compareFn</span>(<span class="variable language_">this</span>.<span class="property">queue</span>[index1], <span class="variable language_">this</span>.<span class="property">queue</span>[index2]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> topKFrequent = <span class="keyword">function</span> (<span class="params">nums, k</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> nums) &#123;</span><br><span class="line">        map.<span class="title function_">set</span>(num, (map.<span class="title function_">get</span>(num) || <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建小顶堆</span></span><br><span class="line">    <span class="keyword">const</span> heap= <span class="keyword">new</span> <span class="title class_">Heap</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a[<span class="number">1</span>] - b[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// entry 是一个长度为2的数组，0位置存储key，1位置存储value</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> entry <span class="keyword">of</span> map.<span class="title function_">entries</span>()) &#123;</span><br><span class="line">        heap.<span class="title function_">push</span>(entry);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (heap.<span class="title function_">size</span>() &gt; k) &#123;</span><br><span class="line">            heap.<span class="title function_">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// return heap.queue.map(e =&gt; e[0]);</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> res = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = heap.<span class="title function_">size</span>() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        res[i] = heap.<span class="title function_">pop</span>()[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>由于key和value是要绑定的，所以元素不能是简单的数组，而应该是包含key和value的二维数组，同时为了使得代码重用，将比较函数抽取出来，当做参数传递</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/24/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1738,89 +1871,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/21/%E8%8A%82%E6%B5%81%E4%B8%8E%E6%8A%96%E5%8A%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ouwenwu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ouwenwu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/21/%E8%8A%82%E6%B5%81%E4%B8%8E%E6%8A%96%E5%8A%A8/" class="post-title-link" itemprop="url">节流与抖动</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-21 21:24:48" itemprop="dateCreated datePublished" datetime="2023-03-21T21:24:48+08:00">2023-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-04-04 20:12:53" itemprop="dateModified" datetime="2023-04-04T20:12:53+08:00">2023-04-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="防抖与节流"><a href="#防抖与节流" class="headerlink" title="防抖与节流"></a>防抖与节流</h1><h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p>当事件触发时，相应的函数并不会立即触发，而是会等待一定的时间</p>
-<p>当事件密集触发时，函数的触发会被频繁的推迟</p>
-<h3 id="防抖的应用场景："><a href="#防抖的应用场景：" class="headerlink" title="防抖的应用场景："></a>防抖的应用场景：</h3><p>输入框中频繁的输入内容，搜索或提交信息</p>
-<p>平凡的点击按钮，触发某个事件</p>
-<p>用户缩放浏览器的resize事件</p>
-<p>如：输入macbook时，输入m联想，连续输入macbook不联想，在输入完一段时间后联想</p>
-<h3 id="防抖的实现："><a href="#防抖的实现：" class="headerlink" title="防抖的实现："></a>防抖的实现：</h3><p>以input输入为例：</p>
-<p>html代码：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;cancel&quot;</span>&gt;</span>取消<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>基本实现：</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1890,7 +1940,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1903,7 +1953,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
