@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-27T03:11:17.096Z</updated>
+  <updated>2025-07-27T03:14:34.052Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,13 +17,26 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>论文审稿问题</title>
+    <link href="http://example.com/2025/07/27/%E8%AE%BA%E6%96%87%E7%BC%96%E5%86%99%E4%B8%8E%E5%AE%A1%E7%A8%BF/%E8%AE%BA%E6%96%87%E5%AE%A1%E7%A8%BF%E9%97%AE%E9%A2%98/"/>
+    <id>http://example.com/2025/07/27/%E8%AE%BA%E6%96%87%E7%BC%96%E5%86%99%E4%B8%8E%E5%AE%A1%E7%A8%BF/%E8%AE%BA%E6%96%87%E5%AE%A1%E7%A8%BF%E9%97%AE%E9%A2%98/</id>
+    <published>2025-07-27T03:14:34.000Z</published>
+    <updated>2025-07-27T03:14:34.052Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
     <title>hexo常见命令</title>
     <link href="http://example.com/2025/07/27/hexo%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4/"/>
     <id>http://example.com/2025/07/27/hexo%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4/</id>
     <published>2025-07-27T03:01:15.000Z</published>
-    <updated>2025-07-27T03:11:17.096Z</updated>
+    <updated>2025-07-27T03:13:05.372Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="一、创建文档"><a href="#一、创建文档" class="headerlink" title="一、创建文档"></a>一、创建文档</h1><h2 id="1-创建到-post默认的文件夹中"><a href="#1-创建到-post默认的文件夹中" class="headerlink" title="1.创建到_post默认的文件夹中"></a>1.创建到_post默认的文件夹中</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new name</span><br></pre></td></tr></table></figure><h2 id="2-创建到-post下的指定子文件夹中"><a href="#2-创建到-post下的指定子文件夹中" class="headerlink" title="2.创建到_post下的指定子文件夹中"></a>2.创建到_post下的指定子文件夹中</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post &quot;title&quot; --path=latex/name.md</span><br></pre></td></tr></table></figure><h1 id="二、部署到github"><a href="#二、部署到github" class="headerlink" title="二、部署到github"></a>二、部署到github</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<h1 id="一、创建文档"><a href="#一、创建文档" class="headerlink" title="一、创建文档"></a>一、创建文档</h1><h2 id="1-创建到-post默认的文件夹中"><a href="#1-创建到-post默认的文件夹中" class="headerlink" title="1.创建到_post默认的文件夹中"></a>1.创建到_post默认的文件夹中</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new name</span><br></pre></td></tr></table></figure><h2 id="2-创建到-post下的指定子文件夹中"><a href="#2-创建到-post下的指定子文件夹中" class="headerlink" title="2.创建到_post下的指定子文件夹中"></a>2.创建到_post下的指定子文件夹中</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post &quot;title&quot; --path=latex/name.md</span><br></pre></td></tr></table></figure><h1 id="二、部署到github"><a href="#二、部署到github" class="headerlink" title="二、部署到github"></a>二、部署到github</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>]]></content>
     
     
       
@@ -468,33 +481,6 @@
     
     <category term="算法" scheme="http://example.com/categories/%E7%AE%97%E6%B3%95/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>JavaScript属性对象增强</title>
-    <link href="http://example.com/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/"/>
-    <id>http://example.com/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/</id>
-    <published>2023-03-26T14:33:21.000Z</published>
-    <updated>2023-04-04T12:48:13.699Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="对象属性操作的控制"><a href="#对象属性操作的控制" class="headerlink" title="对象属性操作的控制"></a>对象属性操作的控制</h1><ul><li><strong>Object.defineProperty</strong>可以对对象的属性加以限制，例如不能通过delete删除，不能通过for-in/Object.keys遍历</li><li><strong>Object.defineProperty</strong>方法会直接在一个对象上定义一个新的属性，或者修改一个对象的现有属性，并返回该对象</li></ul><p><strong><em>Object.defineProperty参数：</em></strong>Object.defineProperty(obj, prop, descriptor)</p><ul><li>obj：要定义的对象</li><li>prop：要定义或修改的属性的名称或Symbol</li><li>descriptor：要定义或修改的属性描述符</li></ul><h2 id="属性描述符分类"><a href="#属性描述符分类" class="headerlink" title="属性描述符分类"></a>属性描述符分类</h2><p><img src="/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327092658898.png" alt="image-20230327092658898"></p><p><strong><em>Configuratble：</em></strong>属性是否可以通过delete删除属性，是否可以修改它的特性，或者是否可以将它修改为存取属性描述符</p><ul><li>通过对象定义某个属性，其Configurable为true</li><li>通过属性描述符定义属性时，属性的Configurable默认为false</li></ul><p><strong><em>Enumerable：</em></strong>属性是否可以通过for-in或者Object.keys()返回属性</p><ul><li>通过对象定义时，属性的Enumerable为true</li><li>通过属性描述符定义属性时，属性的Enumerable默认为false</li></ul><p><strong><em>Writable：</em></strong>属性是否可以修改值</p><ul><li>通过对象定义时，属性的Writable为true</li><li>通过属性描述符定义属性时，属性的Writable默认为false</li></ul><p><strong><em>value：</em></strong>属性的value值，读取属性会返回该值，修改属性时，会对其进行更改</p><ul><li>默认情况下这个值是undefined</li></ul><p><strong><em>get：</em></strong>获取属性时会执行的函数，默认为undefined</p><p><strong><em>set：</em></strong>设置属性时会执行的函数，默认为undefined</p><p>注：get/set与value/Writable不可共存</p><h1 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h1><p>同时定义多个属性：Object.defineProperties()</p><p><img src="/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327093656890.png" alt="image-20230327093656890"></p><p><strong><em>获取对象的属性描述符：</em></strong></p><ul><li>getOwnPropertyDescriptor</li><li>getOwnPropertyDescriptors</li></ul><p><strong><em>禁止对象扩充新属性：</em></strong>preventExtensions  Object.preventExtensions(obj)</p><ul><li>给一个对象添加新的属性会失败</li></ul><p><strong><em>密封属性，不允许配置和删除属性：</em></strong>seal  Object.seal(obj)</p><ul><li>实际上是调用preventExtensions</li><li>将现有属性的Configurable设置为false</li></ul><p><strong><em>冻结属性，不允许修改现有属性：</em></strong>freeze   Object.freeze(obj)</p><p>实际上是调用seal</p><p>将现有属性的Writable设置为false</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;对象属性操作的控制&quot;&gt;&lt;a href=&quot;#对象属性操作的控制&quot; class=&quot;headerlink&quot; title=&quot;对象属性操作的控制&quot;&gt;&lt;/a&gt;对象属性操作的控制&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Object.defineProperty&lt;/stron</summary>
-      
-    
-    
-    
-    <category term="前端" scheme="http://example.com/categories/%E5%89%8D%E7%AB%AF/"/>
-    
-    
-    <category term="JavaScript" scheme="http://example.com/tags/JavaScript/"/>
-    
-    <category term="JS高级" scheme="http://example.com/tags/JS%E9%AB%98%E7%BA%A7/"/>
     
   </entry>
   

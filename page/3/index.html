@@ -188,6 +188,131 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/" class="post-title-link" itemprop="url">JavaScript属性对象增强</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-26 22:33:21" itemprop="dateCreated datePublished" datetime="2023-03-26T22:33:21+08:00">2023-03-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-04-04 20:48:13" itemprop="dateModified" datetime="2023-04-04T20:48:13+08:00">2023-04-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="对象属性操作的控制"><a href="#对象属性操作的控制" class="headerlink" title="对象属性操作的控制"></a>对象属性操作的控制</h1><ul>
+<li><strong>Object.defineProperty</strong>可以对对象的属性加以限制，例如不能通过delete删除，不能通过for-in/Object.keys遍历</li>
+<li><strong>Object.defineProperty</strong>方法会直接在一个对象上定义一个新的属性，或者修改一个对象的现有属性，并返回该对象</li>
+</ul>
+<p><strong><em>Object.defineProperty参数：</em></strong>Object.defineProperty(obj, prop, descriptor)</p>
+<ul>
+<li>obj：要定义的对象</li>
+<li>prop：要定义或修改的属性的名称或Symbol</li>
+<li>descriptor：要定义或修改的属性描述符</li>
+</ul>
+<h2 id="属性描述符分类"><a href="#属性描述符分类" class="headerlink" title="属性描述符分类"></a>属性描述符分类</h2><p><img src="/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327092658898.png" alt="image-20230327092658898"></p>
+<p><strong><em>Configuratble：</em></strong>属性是否可以通过delete删除属性，是否可以修改它的特性，或者是否可以将它修改为存取属性描述符</p>
+<ul>
+<li>通过对象定义某个属性，其Configurable为true</li>
+<li>通过属性描述符定义属性时，属性的Configurable默认为false</li>
+</ul>
+<p><strong><em>Enumerable：</em></strong>属性是否可以通过for-in或者Object.keys()返回属性</p>
+<ul>
+<li>通过对象定义时，属性的Enumerable为true</li>
+<li>通过属性描述符定义属性时，属性的Enumerable默认为false</li>
+</ul>
+<p><strong><em>Writable：</em></strong>属性是否可以修改值</p>
+<ul>
+<li>通过对象定义时，属性的Writable为true</li>
+<li>通过属性描述符定义属性时，属性的Writable默认为false</li>
+</ul>
+<p><strong><em>value：</em></strong>属性的value值，读取属性会返回该值，修改属性时，会对其进行更改</p>
+<ul>
+<li>默认情况下这个值是undefined</li>
+</ul>
+<p><strong><em>get：</em></strong>获取属性时会执行的函数，默认为undefined</p>
+<p><strong><em>set：</em></strong>设置属性时会执行的函数，默认为undefined</p>
+<p>注：get/set与value/Writable不可共存</p>
+<h1 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h1><p>同时定义多个属性：Object.defineProperties()</p>
+<p><img src="/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327093656890.png" alt="image-20230327093656890"></p>
+<p><strong><em>获取对象的属性描述符：</em></strong></p>
+<ul>
+<li>getOwnPropertyDescriptor</li>
+<li>getOwnPropertyDescriptors</li>
+</ul>
+<p><strong><em>禁止对象扩充新属性：</em></strong>preventExtensions  Object.preventExtensions(obj)</p>
+<ul>
+<li>给一个对象添加新的属性会失败</li>
+</ul>
+<p><strong><em>密封属性，不允许配置和删除属性：</em></strong>seal  Object.seal(obj)</p>
+<ul>
+<li>实际上是调用preventExtensions</li>
+<li>将现有属性的Configurable设置为false</li>
+</ul>
+<p><strong><em>冻结属性，不允许修改现有属性：</em></strong>freeze   Object.freeze(obj)</p>
+<p>实际上是调用seal</p>
+<p>将现有属性的Writable设置为false</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/25/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E5%B8%B8%E8%A7%81%E6%89%8B%E5%86%99%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1692,106 +1817,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ouwenwu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ouwenwu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">浏览器渲染原理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-03-22 21:38:42" itemprop="dateCreated datePublished" datetime="2023-03-22T21:38:42+08:00">2023-03-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-04-04 20:14:50" itemprop="dateModified" datetime="2023-04-04T20:14:50+08:00">2023-04-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="网页解析过程："><a href="#网页解析过程：" class="headerlink" title="网页解析过程："></a>网页解析过程：</h1><p><img src="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322214252101.png" alt="image-20230322214252101"></p>
-<p><img src="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215014488.png" alt="image-20230322215014488"></p>
-<h2 id="HTML解析过程"><a href="#HTML解析过程" class="headerlink" title="HTML解析过程"></a>HTML解析过程</h2><p>默认情况下服务器给浏览器返回index.html文件，因此解析HTML是所有步骤的开始，解析HTML过程会构建Dom Tree</p>
-<p><img src="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215643759.png" alt="image-20230322215643759"></p>
-<h2 id="生成CSS规则"><a href="#生成CSS规则" class="headerlink" title="生成CSS规则"></a>生成CSS规则</h2><p>在解析过程中，如果遇到CSS的link元素，会有浏览器下载对应的CSS文件（不会影响DOM）的解析</p>
-<p>对CSS下载完成后，会对CSS文件进行解析，解析出规则树，即CSSOM</p>
-<p><img src="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322220941332.png" alt="image-20230322220941332"></p>
-<h2 id="构建Render-Tree"><a href="#构建Render-Tree" class="headerlink" title="构建Render Tree"></a>构建Render Tree</h2><p>当DOM Tree和CSSOM Tree有了过后就可以两者结合构建Render Tree了</p>
-<p><img src="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322221500301.png" alt="image-20230322221500301"></p>
-<p>注：link元素不会阻塞DOM Tree的构建，但会阻塞Render Tree的构建</p>
-<p>​        Render Tree和Dom Tree并不是一一对应的关系，对于display为none的元素，不会出现在Render Tree中</p>
-<h2 id="布局和绘制"><a href="#布局和绘制" class="headerlink" title="布局和绘制"></a>布局和绘制</h2><p>渲染树会显示每个节点的样式，但不会给出每个节点的尺寸和位置，布局就是确定渲染树中每个节点的宽度、高度和位置信息</p>
-<p>绘制就是将布局阶段计算的每个frame转为屏幕上实际的像素点，包括将元素的可见部分进行绘制，比如文本、颜色、边框、阴影、替换元素</p>
-<h2 id="script元素和页面解析的关系"><a href="#script元素和页面解析的关系" class="headerlink" title="script元素和页面解析的关系"></a>script元素和页面解析的关系</h2><p>在HTML解析过程中，遇到script元素是不能继续构建DOM Tree的；会首先下载JavaScript代码，并执行脚本，等脚本执行结束后，继续解析HTML，构建DOM Tree</p>
-<p><strong><em>原因：</em></strong> JavaScript的一个作用是操作DOM，并修改DOM，如果等DOM Tree构建完成后执行JavaScript，会引起严重的回流和重绘，影像性能</p>
-<p><strong><em>但是：</em></strong> 目前的Vue/React开发模式，脚本比HTML页面更重，等到JavaScript解析会造成页面阻塞，在脚本执行完成钱，用户在界面上看不到任何东西</p>
-<h3 id="script解析优化：defer、async"><a href="#script解析优化：defer、async" class="headerlink" title="script解析优化：defer、async"></a>script解析优化：defer、async</h3><p><strong><em>defer：</em></strong> 浏览器不需要等到脚本下载，继续解析HTML，构建DOM Tree  </p>
-<p>​              不会阻塞DOm Tree的构建，等到DOM Tree构建完成后，在DOMContentLoaded事件之前执行代码</p>
-<p>​               带多个defer的脚本按顺序执行</p>
-<p>​               从某种角度来说，defer可以提高性能，并且推荐放到head元素中</p>
-<p>​                注：defer仅适用于外部脚本，对于script默认内容会忽略</p>
-<p><strong><em>async：</em></strong>  脚本完全独立</p>
-<p>​                浏览器不会因async阻塞</p>
-<p>​                async不能保证不同脚本之间的顺序，独立下载、运行</p>
-<p>​                async不能保证在DOMcontentLoaded之前或之后运行</p>
-<p><strong><em>defer通常用于文档解析后会操作DOM的JavaScript代码，并且对多个script文件有顺序要求的</em></strong></p>
-<p><strong><em>async通常用于独立的脚本，对其他脚本，DOM没有依赖的</em></strong></p>
-<h2 id="回流和重绘（见浏览器优化）"><a href="#回流和重绘（见浏览器优化）" class="headerlink" title="回流和重绘（见浏览器优化）"></a>回流和重绘（见浏览器优化）</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1861,7 +1886,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
