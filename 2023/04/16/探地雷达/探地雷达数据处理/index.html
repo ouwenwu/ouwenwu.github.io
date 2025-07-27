@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="GNSS数据处理 探地雷达使用过程中，有一个基站RTK、一个绑定在探地雷达上的移动站RTK  由于要用基站RTK去纠正移动站RTK，因此移动站RTK的数据采集时间应当在基站RTK采集时间包含中  对RTK的数据.GNS文件的处理：使用HGO数据处理软件  HGO软件中：工具→RINEX转换工具       基站数据处理 基站RTK数据-1 注意转换基站数据时，前10s和后10s可以不要，防止启动和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="探地雷达数据处理">
+<meta property="og:url" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="Ouwenwu">
+<meta property="og:description" content="GNSS数据处理 探地雷达使用过程中，有一个基站RTK、一个绑定在探地雷达上的移动站RTK  由于要用基站RTK去纠正移动站RTK，因此移动站RTK的数据采集时间应当在基站RTK采集时间包含中  对RTK的数据.GNS文件的处理：使用HGO数据处理软件  HGO软件中：工具→RINEX转换工具       基站数据处理 基站RTK数据-1 注意转换基站数据时，前10s和后10s可以不要，防止启动和">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141026463.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141327150.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141439657.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141815403.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416142003716.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416142434473.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416142546036.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416144253784.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416144409124.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416145751122.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416145850175.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416145933429.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416150105641.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416150201370.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416150507288.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504140927212.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504141124302.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504141349524.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504141433882.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142058164.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142134534.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142209097.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142230608.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142257682.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416161042576.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416161121686.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416161150435.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416161525886.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416170214005.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416170431791.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523155612770.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160222273.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160257746.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160422696.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160649796.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160828461.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523161008203.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523161225710.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523161833582.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523161858046.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523162031623.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523162454371.png">
+<meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523162638582.png">
+<meta property="article:published_time" content="2023-04-16T05:59:57.000Z">
+<meta property="article:modified_time" content="2023-10-30T01:35:46.402Z">
+<meta property="article:author" content="ouwenwu">
+<meta property="article:tag" content="探地雷达数据处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141026463.png">
+
+<link rel="canonical" href="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>探地雷达数据处理 | Ouwenwu</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Ouwenwu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ouwenwu</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">个人学习日志</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/ouwenwu/ouwenwu.github.io" class="github-corner" title="Ouwenwu Github" aria-label="Ouwenwu Github" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          探地雷达数据处理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-16 13:59:57" itemprop="dateCreated datePublished" datetime="2023-04-16T13:59:57+08:00">2023-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-10-30 09:35:46" itemprop="dateModified" datetime="2023-10-30T09:35:46+08:00">2023-10-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BB%AA%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">仪器</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="GNSS数据处理"><a href="#GNSS数据处理" class="headerlink" title="GNSS数据处理"></a>GNSS数据处理</h1><ul>
+<li><p><strong>探地雷达使用过程中，有一个基站RTK、一个绑定在探地雷达上的移动站RTK</strong></p>
+<ul>
+<li><p>由于要用基站RTK去纠正移动站RTK，因此移动站RTK的数据采集时间应当在基站RTK采集时间包含中</p>
+</li>
+<li><p>对RTK的数据.GNS文件的处理：使用<em>HGO数据处理软件</em></p>
+</li>
+<li><p>HGO软件中：工具→RINEX转换工具</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141026463.png" alt="image-20230416141026463"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141327150.png" alt="image-20230416141327150"></p>
+<h2 id="基站数据处理"><a href="#基站数据处理" class="headerlink" title="基站数据处理"></a>基站数据处理</h2><ul>
+<li><strong>基站RTK数据-1</strong><ul>
+<li>注意转换基站数据时，前10s和后10s可以不要，防止启动和结束时数据的不稳定</li>
+<li>起始时间加10，截止时间减10</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141439657.png" alt="image-20230416141439657"></p>
+<ul>
+<li><strong>基站RTK数据-2</strong></li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141815403.png" alt="image-20230416141815403"></p>
+<ul>
+<li><strong>转换后结果</strong><ul>
+<li>转换后出现.o和.p文件</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416142003716.png" alt="image-20230416142003716"></p>
+<h2 id="移动站数据处理"><a href="#移动站数据处理" class="headerlink" title="移动站数据处理"></a>移动站数据处理</h2><ul>
+<li><strong>移动站RTK数据-1</strong><ul>
+<li>可以看出其时间在基站RTK数据-1的范围内</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416142434473.png" alt="image-20230416142434473"></p>
+<ul>
+<li><strong>移动站RTK数据-2</strong><ul>
+<li>可以看出其时间在基站RTK数据-2的范围外</li>
+<li>则需要对</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416142546036.png" alt="image-20230416142546036"></p>
+<h2 id="RTK数据使用IE解算"><a href="#RTK数据使用IE解算" class="headerlink" title="RTK数据使用IE解算"></a>RTK数据使用IE解算</h2><ul>
+<li><strong>创建项目</strong>——点击左上角圈中的按钮，然后下一步</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416144253784.png" alt="image-20230416144253784"></p>
+<ul>
+<li><strong>导入移动站GNSS数据</strong>——刚刚转换后的.o文件，然后一直下一步</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416144409124.png" alt="image-20230416144409124"></p>
+<ul>
+<li><strong>导入基站GNSS数据</strong>——刚刚转换后的.o文件，然后一直下一步</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416145751122.png" alt="image-20230416145751122"></p>
+<ul>
+<li>站点信息设置<ul>
+<li>坐标选项设置为平均值、投影设置为WGS84——然后下一步</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416145850175.png" alt="image-20230416145850175"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416145933429.png" alt="image-20230416145933429"></p>
+<h3 id="GNSS解算"><a href="#GNSS解算" class="headerlink" title="GNSS解算"></a>GNSS解算</h3><ul>
+<li>process→Process GNSS</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416150105641.png" alt="image-20230416150105641"></p>
+<ul>
+<li>参数设置为如图所示——点击process</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416150201370.png" alt="image-20230416150201370"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416150507288.png" alt="image-20230416150507288"></p>
+<h3 id="解算结果导出"><a href="#解算结果导出" class="headerlink" title="解算结果导出"></a>解算结果导出</h3><ul>
+<li><p>Output→Export Wizard</p>
+<ul>
+<li><p>注意选择导出文件格式，这里可以选择cor，如果没有用new添加，格式如图所示，可以点击预览如图所示——然后一直下一步</p>
+</li>
+<li><p>cor的配置</p>
+<ul>
+<li><p>Header/Footer Options参数设置</p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504140927212.png" alt="image-20230504140927212"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504141124302.png" alt="image-20230504141124302"></p>
+</li>
+<li><p>Field Separator参数设置</p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504141349524.png" alt="image-20230504141349524"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504141433882.png" alt="image-20230504141433882"></p>
+</li>
+<li><p>Export Variables内各项参数设置</p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142058164.png" alt="image-20230504142058164"></p>
+<p>具体参数如下图所示：</p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142134534.png" alt="image-20230504142134534"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142209097.png" alt="image-20230504142209097"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142230608.png" alt="image-20230504142230608"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142257682.png" alt="image-20230504142257682"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416161042576.png" alt="image-20230416161042576"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416161121686.png" alt="image-20230416161121686"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416161150435.png" alt="image-20230416161150435"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416161525886.png" alt="image-20230416161525886"></p>
+<h1 id="探地雷达数据绑定RTK"><a href="#探地雷达数据绑定RTK" class="headerlink" title="探地雷达数据绑定RTK"></a>探地雷达数据绑定RTK</h1><ul>
+<li><strong>探地雷达数据每个项目的文件如下所示</strong>——有若干个数据，每个数据都包含一个time文件</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416170214005.png" alt="image-20230416170214005"></p>
+<ul>
+<li><strong>利用探地雷达的time与GNSS输出文件中的time比较，就可以得到每个探地雷达数据的经纬度与海拔信息</strong>——所以要求GNSS的time比探测雷达的time长</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">timeFilePath = <span class="string">&#x27;GPR/2023041102line_time&#x27;</span></span><br><span class="line">corFilePath = <span class="string">&#x27;GPR/2023041102line_cor&#x27;</span></span><br><span class="line"><span class="keyword">for</span> file_name <span class="keyword">in</span> os.listdir(timeFilePath):</span><br><span class="line">    file_ie = <span class="string">&#x27;0411_2.txt&#x27;</span> <span class="comment">#GNSS解算的轨迹坐标</span></span><br><span class="line">    file_gpr = os.path.join(timeFilePath, file_name) <span class="comment">#time文件</span></span><br><span class="line">    day = <span class="string">&#x27;2023-04-11&#x27;</span></span><br><span class="line">    write_cor = corFilePath+<span class="string">&quot;/&quot;</span> + file_name[<span class="number">0</span>:-<span class="number">4</span>] + <span class="string">&#x27;cor&#x27;</span></span><br><span class="line">    ie_txt = pd.read_csv(file_ie, header=<span class="literal">None</span>)</span><br><span class="line">    gpr_txt = pd.read_csv(file_gpr, header=<span class="literal">None</span>)</span><br><span class="line">    gpr_iet = []</span><br><span class="line">    gpr_n = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(gpr_txt[<span class="number">0</span>])):</span><br><span class="line">        gpr_t = gpr_txt[<span class="number">0</span>][i].split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">        gpr_n.append(gpr_t[<span class="number">0</span>])</span><br><span class="line">        gpr_iet.append(utc_to_iet(gpr_t[<span class="number">2</span>]))</span><br><span class="line">    gpr_n = np.array(gpr_n)</span><br><span class="line">    gpr_iet = np.array(gpr_iet)</span><br><span class="line">    condition = (ie_txt[<span class="number">0</span>] &gt;= gpr_iet[<span class="number">0</span>]) &amp; (ie_txt[<span class="number">0</span>] &lt;= gpr_iet[<span class="built_in">len</span>(gpr_iet)-<span class="number">1</span>])</span><br><span class="line">    ie_select = np.extract(condition, ie_txt[<span class="number">0</span>])</span><br><span class="line">    cor = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(ie_select)):</span><br><span class="line">        num = find(gpr_iet, ie_select[i])</span><br><span class="line">        <span class="keyword">if</span> num == -<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        j = np.searchsorted(ie_txt[<span class="number">0</span>], ie_select[i])</span><br><span class="line">        t_cor = iet_to_utc(ie_select[i])</span><br><span class="line">        lon = ie_txt[<span class="number">1</span>][j]</span><br><span class="line">        lat = ie_txt[<span class="number">2</span>][j]</span><br><span class="line">        hei = ie_txt[<span class="number">3</span>][j]</span><br><span class="line">        q = ie_txt[<span class="number">4</span>][j]</span><br><span class="line">        <span class="comment"># print(type(gpr_n[num]))</span></span><br><span class="line">        cor.append(gpr_n[num] + <span class="string">&#x27;\t&#x27;</span> + day + <span class="string">&#x27;\t&#x27;</span> + <span class="built_in">str</span>(t_cor) + <span class="string">&#x27;\t&#x27;</span> + <span class="built_in">str</span>(lon) + <span class="string">&#x27;\t&#x27;</span> + <span class="string">&#x27;N&#x27;</span> + <span class="string">&#x27;\t&#x27;</span> + <span class="built_in">str</span>(lat) + <span class="string">&#x27;\t&#x27;</span> + <span class="string">&#x27;E&#x27;</span> + <span class="string">&#x27;\t&#x27;</span> + <span class="built_in">str</span>(hei) + <span class="string">&#x27;\t&#x27;</span> + <span class="string">&#x27;M&#x27;</span> + <span class="string">&#x27;\t&#x27;</span> + <span class="built_in">str</span>(q))</span><br><span class="line">    cor = np.array(cor)</span><br><span class="line">    np.savetxt(write_cor, cor, fmt = <span class="string">&#x27;%s&#x27;</span>, delimiter=<span class="string">&#x27;\t&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416170431791.png" alt="image-20230416170431791"></p>
+<ul>
+<li>将生成的cor文件复制回数据文件夹，替代原有的cor，但还会有一些cor为空，这一部分数据在后面是无法使用的</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523155612770.png" alt="image-20230523155612770"></p>
+<h1 id="探地雷达数据的处理"><a href="#探地雷达数据的处理" class="headerlink" title="探地雷达数据的处理"></a>探地雷达数据的处理</h1><ul>
+<li><p><strong>打开CrossPoint</strong></p>
+<ul>
+<li>需要插U盘，要不然很多功能无法使用</li>
+</ul>
+</li>
+<li><p><strong>打开同一个项目中的各项文件</strong></p>
+<ul>
+<li>如这里的6和7是同一个地方的项目</li>
+<li>点进去这个文件夹就可以出现能打开的文件，注意与刚刚的cor对比，如果该文件的cor大小为0kb，这个文件就不能导入</li>
+<li>打开后如图所示</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160222273.png" alt="image-20230523160222273"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160257746.png" alt="image-20230523160257746"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160422696.png" alt="image-20230523160422696"></p>
+<h2 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h2><ul>
+<li><strong>过滤器设置</strong><ul>
+<li>目前我也不会设置，先简单打开这两个选项，那么左边的波形就会更加变化，我们将依据这个波形去判断是否有异常</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160649796.png" alt="image-20230523160649796"></p>
+<ul>
+<li><strong>0m深度位置设置，这个是为了使得到的高度正常</strong><ul>
+<li>按道理来说，第一天反射横线应该是地面，也就是此次的深度为0，但是图示并不是这样</li>
+<li>左键点住红色三角并向下拖动，就可以改变0深度位置，注意上下两个都要设置，上面的图为更细节的，也是我们在处理数据过程中用得更多的</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160828461.png" alt="image-20230523160828461"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523161008203.png" alt="image-20230523161008203"></p>
+<ul>
+<li><strong>波形图对比度调整（应该是叫做对比度）</strong><ul>
+<li>分为左右两个，左边的调上面的图，右边的调下面的图，一般也就使用左边的调节上面的图</li>
+<li>可以多调整实验一下，调整到可以清晰判断就行</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523161225710.png" alt="image-20230523161225710"></p>
+<ul>
+<li><strong>显示文件数据设置</strong><ul>
+<li>在判断过程中，我们经常需要观察两条相邻带之间有相似的异常</li>
+<li>因此，可以在中间的波形图区域设置显示多条带，对比着看异常</li>
+<li>在Tools→Settings→Data view中设置，设置一般为偶数，因为对每一条带都要一个细节的和一个不那么细节的数据需要展示</li>
+<li>设置为6时如下图所示</li>
+<li>因为我们不常使用下面那一条不那么细节的数据，因此可以将其缩小，便于我们观察需要的数据（鼠标放在蓝色条带上往下拉，拉倒两条数据的交界处），结果如图所示</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523161833582.png" alt="image-20230523161833582"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523161858046.png" alt="image-20230523161858046"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523162031623.png" alt="image-20230523162031623"></p>
+<ul>
+<li><strong>异常点标注</strong><ul>
+<li>如图中的明显异常点，可以标注出来</li>
+<li>可以看出，三条带出现了类似的异常点，那么我们用同一种Marker标记</li>
+<li>按照这种逻辑将所有的异常标出来，再导出和正射影像叠加分析，如图所示</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523162454371.png" alt="image-20230523162454371"></p>
+<p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523162638582.png" alt="image-20230523162638582"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" rel="tag"># 探地雷达数据处理</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/15/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/PhotoScan%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E5%8F%8A%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/" rel="prev" title="PhotoScan三维重建及坐标转换">
+      <i class="fa fa-chevron-left"></i> PhotoScan三维重建及坐标转换
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/20/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/CSS%E5%85%83%E7%B4%A0%E7%9A%84%E5%AE%9A%E4%BD%8D%E4%B8%8E%E6%B5%AE%E5%8A%A8/" rel="next" title="CSS元素的定位与浮动">
+      CSS元素的定位与浮动 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GNSS%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">GNSS数据处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%AB%99%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">基站数据处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%99%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">移动站数据处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RTK%E6%95%B0%E6%8D%AE%E4%BD%BF%E7%94%A8IE%E8%A7%A3%E7%AE%97"><span class="nav-number">1.3.</span> <span class="nav-text">RTK数据使用IE解算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GNSS%E8%A7%A3%E7%AE%97"><span class="nav-number">1.3.1.</span> <span class="nav-text">GNSS解算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AE%97%E7%BB%93%E6%9E%9C%E5%AF%BC%E5%87%BA"><span class="nav-number">1.3.2.</span> <span class="nav-text">解算结果导出</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9ARTK"><span class="nav-number">2.</span> <span class="nav-text">探地雷达数据绑定RTK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">探地雷达数据的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">数据处理</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">ouwenwu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ouwenwu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '',
+      clientSecret: '',
+      repo        : 'ouwenwu.github.io',
+      owner       : 'ouwenwu',
+      admin       : [''],
+      id          : '8b8493faea2a89b099e42ae1d6ddc92b',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>
