@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-27T02:36:46.902Z</updated>
+  <updated>2025-07-27T02:47:36.978Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>一个tex编译好的参考文件顺序用于另外一个tex里(适用于保持回复信中的参考文献顺序和文章中的一致)</title>
-    <link href="http://example.com/2025/07/27/latex/%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%E8%BF%81%E7%A7%BB%20-%20%E5%89%AF%E6%9C%AC/"/>
-    <id>http://example.com/2025/07/27/latex/%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%E8%BF%81%E7%A7%BB%20-%20%E5%89%AF%E6%9C%AC/</id>
-    <published>2025-07-27T08:02:59.000Z</published>
-    <updated>2025-07-27T02:36:46.902Z</updated>
+    <title>参考文献迁移</title>
+    <link href="http://example.com/2025/07/27/latex/%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%E8%BF%81%E7%A7%BB/"/>
+    <id>http://example.com/2025/07/27/latex/%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%E8%BF%81%E7%A7%BB/</id>
+    <published>2025-07-27T02:46:12.000Z</published>
+    <updated>2025-07-27T02:47:36.978Z</updated>
     
     <content type="html"><![CDATA[<p>当你不想在新文件夹里再跑一次 BibTeX，只想把已经“编译好”的参考文献带过去(适用于保持回复信中的参考文献顺序和文章中的一致)，你至少要拷以下几个文件：</p><ol><li>.bbl  这是 BibTeX 运行后生成的含所有条目的正文文件，LaTeX 在第二轮编译时会直接把它当作 <code>.tex</code> 插入。</li><li>.bst 这是你用来格式化参考文献的样式文件，如果目标工程里还没有，就要一并拷过去。</li><li>.bib 如果目标工程以后还要对条目做增删改，或者要重新跑 BibTeX，就也把原始的 <code>.bib</code> 带上。</li><li>.aux 只有当你要完全复刻交叉引用编号或者要保证引用顺序完全一致时才需要，一般不必。</li></ol>]]></content>
     
@@ -34,6 +34,8 @@
       
     
     
+    
+    <category term="latex" scheme="http://example.com/categories/latex/"/>
     
     
     <category term="latex" scheme="http://example.com/tags/latex/"/>
