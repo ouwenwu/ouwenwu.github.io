@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-27T03:17:16.078Z</updated>
+  <updated>2025-07-27T03:19:28.987Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,14 +21,18 @@
     <link href="http://example.com/2025/07/27/%E8%AE%BA%E6%96%87%E7%BC%96%E5%86%99%E4%B8%8E%E5%AE%A1%E7%A8%BF/%E8%AE%BA%E6%96%87%E5%AE%A1%E7%A8%BF%E9%97%AE%E9%A2%98/"/>
     <id>http://example.com/2025/07/27/%E8%AE%BA%E6%96%87%E7%BC%96%E5%86%99%E4%B8%8E%E5%AE%A1%E7%A8%BF/%E8%AE%BA%E6%96%87%E5%AE%A1%E7%A8%BF%E9%97%AE%E9%A2%98/</id>
     <published>2025-07-27T03:14:34.000Z</published>
-    <updated>2025-07-27T03:17:16.078Z</updated>
+    <updated>2025-07-27T03:19:28.987Z</updated>
     
-    <content type="html"><![CDATA[<p>aaa</p>]]></content>
+    <content type="html"><![CDATA[<ol><li><p>Equations: conclude with comma or dot depending on what follows.</p><p>公式后要根据后续的内容添加逗号或句号</p></li></ol>]]></content>
     
     
       
       
-    <summary type="html">&lt;p&gt;aaa&lt;/p&gt;
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Equations: conclude with comma or dot depending on what follows.&lt;/p&gt;
+&lt;p&gt;公式后要根据后续的内容添加逗号或句号&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
 </summary>
       
     
