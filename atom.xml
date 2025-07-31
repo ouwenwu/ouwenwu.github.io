@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-27T03:19:28.987Z</updated>
+  <updated>2025-07-31T03:02:34.770Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>空地融合空三</title>
+    <link href="http://example.com/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/"/>
+    <id>http://example.com/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/</id>
+    <published>2025-07-31T02:49:32.000Z</published>
+    <updated>2025-07-31T03:02:34.770Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="一、数据准备"><a href="#一、数据准备" class="headerlink" title="一、数据准备"></a>一、数据准备</h1><p>无人机数据</p><p> <img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/无人机数据图片.png" alt="无人机数据图片"></p><p>手持扫码仪数据</p><p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/手持扫描仪数据.png" alt="手持扫描仪数据"></p><h1 id="二、无人机数据处理"><a href="#二、无人机数据处理" class="headerlink" title="二、无人机数据处理"></a>二、无人机数据处理</h1>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;一、数据准备&quot;&gt;&lt;a href=&quot;#一、数据准备&quot; class=&quot;headerlink&quot; title=&quot;一、数据准备&quot;&gt;&lt;/a&gt;一、数据准备&lt;/h1&gt;&lt;p&gt;无人机数据&lt;/p&gt;
+&lt;p&gt; &lt;img src=&quot;/2025/07/31/%E4%B8%89%E7%BB%B4</summary>
+      
+    
+    
+    
+    
+    <category term="三维重建" scheme="http://example.com/tags/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/"/>
+    
+    <category term="空地融合" scheme="http://example.com/tags/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88/"/>
+    
+  </entry>
   
   <entry>
     <title>论文审稿问题</title>
@@ -475,28 +500,6 @@
     <category term="JavaScript" scheme="http://example.com/tags/JavaScript/"/>
     
     <category term="React" scheme="http://example.com/tags/React/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>二叉树</title>
-    <link href="http://example.com/2023/03/27/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91/"/>
-    <id>http://example.com/2023/03/27/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91/</id>
-    <published>2023-03-27T07:59:08.000Z</published>
-    <updated>2023-03-27T11:54:33.699Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="一、二叉树种类"><a href="#一、二叉树种类" class="headerlink" title="一、二叉树种类"></a>一、二叉树种类</h1><h2 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h2><h2 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h2><h2 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h2><p>左节点小于中间节点，右节点大于中间节点</p><h2 id="平衡二叉搜索树"><a href="#平衡二叉搜索树" class="headerlink" title="平衡二叉搜索树"></a>平衡二叉搜索树</h2><p>左节点小于中间节点，右节点大于中间节点，且左右子树的高度绝对值小于1</p><p>c++中map、set、multimap、multiset的底层是通过平衡二叉树实现，那么在插入节点，查询节点的时间复杂度是O(logn)</p><p>map中的key和set中的元素都是有序的</p><h1 id="二、二叉树存储方式"><a href="#二、二叉树存储方式" class="headerlink" title="二、二叉树存储方式"></a>二、二叉树存储方式</h1><h2 id="链式存储"><a href="#链式存储" class="headerlink" title="链式存储"></a>链式存储</h2><h2 id="线式存储"><a href="#线式存储" class="headerlink" title="线式存储"></a>线式存储</h2><p>左孩子：i*2+1</p><p>右孩子：i*2+2</p><h1 id="三、二叉树的遍历"><a href="#三、二叉树的遍历" class="headerlink" title="三、二叉树的遍历"></a>三、二叉树的遍历</h1><h2 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h2><p>前序、中序、后序遍历——迭代法、递归法</p><h2 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h2><p>层序遍历——迭代法</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;一、二叉树种类&quot;&gt;&lt;a href=&quot;#一、二叉树种类&quot; class=&quot;headerlink&quot; title=&quot;一、二叉树种类&quot;&gt;&lt;/a&gt;一、二叉树种类&lt;/h1&gt;&lt;h2 id=&quot;满二叉树&quot;&gt;&lt;a href=&quot;#满二叉树&quot; class=&quot;headerlink&quot; titl</summary>
-      
-    
-    
-    
-    <category term="算法" scheme="http://example.com/categories/%E7%AE%97%E6%B3%95/"/>
-    
     
   </entry>
   
