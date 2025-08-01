@@ -188,6 +188,124 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">JavaScript运行原理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-23 18:41:46" itemprop="dateCreated datePublished" datetime="2023-03-23T18:41:46+08:00">2023-03-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-04-05 10:19:04" itemprop="dateModified" datetime="2023-04-05T10:19:04+08:00">2023-04-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong><em>浏览器内核（以webkit为例）：</em></strong>WebCore负责解析HTML、布局、渲染等；JavaScriptCore：解析、执行JavaScript代码</p>
+<p><strong><em>ECMAScript3：</em></strong>用这个来学习JavaScript执行、作用域、作用域链、闭包等概念</p>
+<p><strong><em>ECMAScript5：</em></strong>用这个来学习块级作用域、let、const等概念</p>
+<p>两者概念描述不一样，整体思路一致</p>
+<h1 id="V8引擎的执行原理"><a href="#V8引擎的执行原理" class="headerlink" title="V8引擎的执行原理"></a>V8引擎的执行原理</h1><p>V8是用C++编写的开源高性能JavaScript和WebAssembly引擎，可以用于Chrome和Node.js</p>
+<p><img src="/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323184747752.png" alt="image-20230323184747752"></p>
+<p><strong><em>Parse：</em></strong>将JavaScript代码转换为AST（抽象语法树）——函数在没调用的时候，不会被转换为抽象语法树</p>
+<p><strong><em>Ignition：</em></strong>将AST转换为字节码</p>
+<p><strong><em>TurboFan：</em></strong>将字节码编译为可以直接运行的机器码</p>
+<ul>
+<li>如果一个函数被多次调用，就会被标记为热点函数，就会被TurboFan转换为机器码，提高代码的执行性能</li>
+<li>机器码也会被还原为ByteCode，如果后续执行函数的过程中，类型发生了变化，之前的机器码不能进行准确的运算，就会逆向转换为字节码</li>
+</ul>
+<h2 id="JavaScript执行过程"><a href="#JavaScript执行过程" class="headerlink" title="JavaScript执行过程"></a>JavaScript执行过程</h2><p><strong><em>执行上下文栈（ECS）：</em></strong>js引擎内部有一个执行上下文栈，是执行代码的调用栈</p>
+<p><strong><em>全局执行上下文：</em></strong>全局代码块为了执行会生成一个全局执行上下文（GEC），并放入ECS中</p>
+<p><strong><em>函数执行上下文：</em></strong>执行到一个函数值，会根据函数体创建一个函数执行上下文（FEC），并放入到ECS中</p>
+<p><strong><em>AO对象：</em></strong>当进入一个函数执行上下文时，会创建一个AO对象，AO对象使用arguments作为初始化，初始值是传入的参数</p>
+<p><strong><em>VO对象：</em></strong>每一个执行上下文都会关联一个VO（Variable Object）对象，变量和函数的声明会被添加到这个VO对象中</p>
+<p><strong><em>注：</em></strong>全局上下文的VO对象就是GO、函数执行上下文的VO对象是AO</p>
+<h3 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h3><p>js在执行代码前，会在堆内存中创建一个全局对象：Global Object（GO）</p>
+<ul>
+<li>该对象所有的作用域（scope）都可以访问； </li>
+<li>里面会包含Date、Array、String、Number、setTimeout、setInterval等等； </li>
+<li>其中还有一个window属性指向自己；</li>
+</ul>
+<p>在parser转成AST的过程中，会将全局定义的变量、函数等放入GlobalObject中，但不会赋值（变量的作用域提升）</p>
+<ul>
+<li>JavaScript可以在变量声明前访问，但是值是undefined，浏览器会对函数进行特殊处理，使得其可以在定义前调用</li>
+</ul>
+<p>在代码执行过程中，对变量赋值或者执行其他的函数</p>
+<p>全局代码执行前：</p>
+<p><img src="/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191418551.png" alt="image-20230323191418551"></p>
+<p>全局代码执行后：</p>
+<p><img src="/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191040277.png" alt="image-20230323191040277"></p>
+<p>函数执行前：</p>
+<p><img src="/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191504578.png" alt="image-20230323191504578"></p>
+<p>函数执行后：</p>
+<p><img src="/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191448418.png" alt="image-20230323191448418"></p>
+<h1 id="作用域和作用域链"><a href="#作用域和作用域链" class="headerlink" title="作用域和作用域链"></a>作用域和作用域链</h1><p><strong><em>作用域链：</em></strong>当进入到一个执行上下文时，执行上下文会关联一个作用域链，并根据代码类型，添加一系列的对象</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">age</span>)&#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">bar</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(age)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> baz = <span class="title function_">foo</span>(<span class="number">18</span>)</span><br><span class="line"><span class="title function_">baz</span>()</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323192141405.png" alt="image-20230323192141405"></p>
+<ul>
+<li>其作用域链中有两个，分别是foo的作用域、全局作用域</li>
+</ul>
+<p>注：作用域链是在函数声明是产生的，与调用时刻无关</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%98%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -812,7 +930,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -825,7 +943,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
