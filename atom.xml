@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-12-10T01:59:47.884Z</updated>
+  <updated>2025-12-10T02:09:08.597Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2025/12/10/%E9%AB%98%E6%96%AF%E6%B3%BC%E6%BA%85/%E9%AB%98%E6%96%AF%E6%B3%BC%E6%BA%85%E5%8E%9F%E7%90%86/"/>
     <id>http://example.com/2025/12/10/%E9%AB%98%E6%96%AF%E6%B3%BC%E6%BA%85/%E9%AB%98%E6%96%AF%E6%B3%BC%E6%BA%85%E5%8E%9F%E7%90%86/</id>
     <published>2025-12-10T01:40:25.000Z</published>
-    <updated>2025-12-10T01:59:47.884Z</updated>
+    <updated>2025-12-10T02:09:08.597Z</updated>
     
     <content type="html"><![CDATA[<h1>高斯泼溅形状</h1><h2 id="为什么是椭球">为什么是椭球</h2><h3 id="一维高斯分布函数">一维高斯分布函数</h3><p>一维高斯分布（Gaussian Distribution），通常被称为<strong>正态分布</strong>（Normal Distribution），其概率密度函数（PDF）的数学方程如下：<br>$$<br>f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}<br>$$<br>当概率取某个值时，x也对应的为一个常数值</p><h3 id="二维高斯分布函数">二维高斯分布函数</h3><p>二维高斯分布（Bivariate Gaussian Distribution 或 2D Normal Distribution）是一维高斯分布在二维平面上的推广。它的图像不再是一条平面曲线，而是一个三维空间中的“山包”或“钟形曲面”。</p><p>**矩阵形式：**若二维随机向量 $\mathbf{x} = [x, y]^T$ 服从均值向量为 $\mathbf{\mu}$，协方差矩阵为 $\mathbf{\Sigma}$ 的正态分布，其概率密度函数为：</p>]]></content>
     
