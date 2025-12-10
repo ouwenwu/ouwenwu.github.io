@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="对象属性操作的控制 Object.defineProperty可以对对象的属性加以限制，例如不能通过delete删除，不能通过for-in&#x2F;Object.keys遍历 Object.defineProperty方法会直接在一个对象上定义一个新的属性，或者修改一个对象的现有属性，并返回该对象  Object.defineProperty参数：Object.defineProperty(obj, pr">
+  <meta name="description" content="对象属性操作的控制  Object.defineProperty可以对对象的属性加以限制，例如不能通过delete删除，不能通过for-in&#x2F;Object.keys遍历 Object.defineProperty方法会直接在一个对象上定义一个新的属性，或者修改一个对象的现有属性，并返回该对象  ***Object.defineProperty参数：***Object.defineProperty(">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript属性对象增强">
 <meta property="og:url" content="http://example.com/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/index.html">
 <meta property="og:site_name" content="Ouwenwu">
-<meta property="og:description" content="对象属性操作的控制 Object.defineProperty可以对对象的属性加以限制，例如不能通过delete删除，不能通过for-in&#x2F;Object.keys遍历 Object.defineProperty方法会直接在一个对象上定义一个新的属性，或者修改一个对象的现有属性，并返回该对象  Object.defineProperty参数：Object.defineProperty(obj, pr">
+<meta property="og:description" content="对象属性操作的控制  Object.defineProperty可以对对象的属性加以限制，例如不能通过delete删除，不能通过for-in&#x2F;Object.keys遍历 Object.defineProperty方法会直接在一个对象上定义一个新的属性，或者修改一个对象的现有属性，并返回该对象  ***Object.defineProperty参数：***Object.defineProperty(">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327092658898.png">
 <meta property="og:image" content="http://example.com/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327093656890.png">
@@ -258,56 +258,59 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="对象属性操作的控制"><a href="#对象属性操作的控制" class="headerlink" title="对象属性操作的控制"></a>对象属性操作的控制</h1><ul>
+        <h1>对象属性操作的控制</h1>
+<ul>
 <li><strong>Object.defineProperty</strong>可以对对象的属性加以限制，例如不能通过delete删除，不能通过for-in/Object.keys遍历</li>
 <li><strong>Object.defineProperty</strong>方法会直接在一个对象上定义一个新的属性，或者修改一个对象的现有属性，并返回该对象</li>
 </ul>
-<p><strong><em>Object.defineProperty参数：</em></strong>Object.defineProperty(obj, prop, descriptor)</p>
+<p>***Object.defineProperty参数：***Object.defineProperty(obj, prop, descriptor)</p>
 <ul>
 <li>obj：要定义的对象</li>
 <li>prop：要定义或修改的属性的名称或Symbol</li>
 <li>descriptor：要定义或修改的属性描述符</li>
 </ul>
-<h2 id="属性描述符分类"><a href="#属性描述符分类" class="headerlink" title="属性描述符分类"></a>属性描述符分类</h2><p><img src="/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327092658898.png" alt="image-20230327092658898"></p>
-<p><strong><em>Configuratble：</em></strong>属性是否可以通过delete删除属性，是否可以修改它的特性，或者是否可以将它修改为存取属性描述符</p>
+<h2 id="属性描述符分类">属性描述符分类</h2>
+<p><img src="/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327092658898.png" alt="image-20230327092658898"></p>
+<p>***Configuratble：***属性是否可以通过delete删除属性，是否可以修改它的特性，或者是否可以将它修改为存取属性描述符</p>
 <ul>
 <li>通过对象定义某个属性，其Configurable为true</li>
 <li>通过属性描述符定义属性时，属性的Configurable默认为false</li>
 </ul>
-<p><strong><em>Enumerable：</em></strong>属性是否可以通过for-in或者Object.keys()返回属性</p>
+<p>***Enumerable：***属性是否可以通过for-in或者Object.keys()返回属性</p>
 <ul>
 <li>通过对象定义时，属性的Enumerable为true</li>
 <li>通过属性描述符定义属性时，属性的Enumerable默认为false</li>
 </ul>
-<p><strong><em>Writable：</em></strong>属性是否可以修改值</p>
+<p>***Writable：***属性是否可以修改值</p>
 <ul>
 <li>通过对象定义时，属性的Writable为true</li>
 <li>通过属性描述符定义属性时，属性的Writable默认为false</li>
 </ul>
-<p><strong><em>value：</em></strong>属性的value值，读取属性会返回该值，修改属性时，会对其进行更改</p>
+<p>***value：***属性的value值，读取属性会返回该值，修改属性时，会对其进行更改</p>
 <ul>
 <li>默认情况下这个值是undefined</li>
 </ul>
-<p><strong><em>get：</em></strong>获取属性时会执行的函数，默认为undefined</p>
-<p><strong><em>set：</em></strong>设置属性时会执行的函数，默认为undefined</p>
+<p>***get：***获取属性时会执行的函数，默认为undefined</p>
+<p>***set：***设置属性时会执行的函数，默认为undefined</p>
 <p>注：get/set与value/Writable不可共存</p>
-<h1 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h1><p>同时定义多个属性：Object.defineProperties()</p>
+<h1>补充：</h1>
+<p>同时定义多个属性：Object.defineProperties()</p>
 <p><img src="/2023/03/26/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E5%B1%9E%E6%80%A7%E5%AF%B9%E8%B1%A1%E5%A2%9E%E5%BC%BA/image-20230327093656890.png" alt="image-20230327093656890"></p>
-<p><strong><em>获取对象的属性描述符：</em></strong></p>
+<p><em><strong>获取对象的属性描述符：</strong></em></p>
 <ul>
 <li>getOwnPropertyDescriptor</li>
 <li>getOwnPropertyDescriptors</li>
 </ul>
-<p><strong><em>禁止对象扩充新属性：</em></strong>preventExtensions  Object.preventExtensions(obj)</p>
+<p>***禁止对象扩充新属性：***preventExtensions  Object.preventExtensions(obj)</p>
 <ul>
 <li>给一个对象添加新的属性会失败</li>
 </ul>
-<p><strong><em>密封属性，不允许配置和删除属性：</em></strong>seal  Object.seal(obj)</p>
+<p>***密封属性，不允许配置和删除属性：***seal  Object.seal(obj)</p>
 <ul>
 <li>实际上是调用preventExtensions</li>
 <li>将现有属性的Configurable设置为false</li>
 </ul>
-<p><strong><em>冻结属性，不允许修改现有属性：</em></strong>freeze   Object.freeze(obj)</p>
+<p>***冻结属性，不允许修改现有属性：***freeze   Object.freeze(obj)</p>
 <p>实际上是调用seal</p>
 <p>将现有属性的Writable设置为false</p>
 
@@ -395,7 +398,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7%E6%93%8D%E4%BD%9C%E7%9A%84%E6%8E%A7%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">对象属性操作的控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">属性描述符分类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">补充：</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">对象属性操作的控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">属性描述符分类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">补充：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -409,7 +412,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">42</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -422,7 +425,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="浏览器内核（以webkit为例）：WebCore负责解析HTML、布局、渲染等；JavaScriptCore：解析、执行JavaScript代码 ECMAScript3：用这个来学习JavaScript执行、作用域、作用域链、闭包等概念 ECMAScript5：用这个来学习块级作用域、let、const等概念 两者概念描述不一样，整体思路一致 V8引擎的执行原理V8是用C++编写的开源高性能Jav">
+  <meta name="description" content="***浏览器内核（以webkit为例）：***WebCore负责解析HTML、布局、渲染等；JavaScriptCore：解析、执行JavaScript代码 ***ECMAScript3：***用这个来学习JavaScript执行、作用域、作用域链、闭包等概念 ***ECMAScript5：***用这个来学习块级作用域、let、const等概念 两者概念描述不一样，整体思路一致 V8引擎的执行原理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript运行原理">
 <meta property="og:url" content="http://example.com/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Ouwenwu">
-<meta property="og:description" content="浏览器内核（以webkit为例）：WebCore负责解析HTML、布局、渲染等；JavaScriptCore：解析、执行JavaScript代码 ECMAScript3：用这个来学习JavaScript执行、作用域、作用域链、闭包等概念 ECMAScript5：用这个来学习块级作用域、let、const等概念 两者概念描述不一样，整体思路一致 V8引擎的执行原理V8是用C++编写的开源高性能Jav">
+<meta property="og:description" content="***浏览器内核（以webkit为例）：***WebCore负责解析HTML、布局、渲染等；JavaScriptCore：解析、执行JavaScript代码 ***ECMAScript3：***用这个来学习JavaScript执行、作用域、作用域链、闭包等概念 ***ECMAScript5：***用这个来学习块级作用域、let、const等概念 两者概念描述不一样，整体思路一致 V8引擎的执行原理">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323184747752.png">
 <meta property="og:image" content="http://example.com/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191418551.png">
@@ -262,29 +262,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong><em>浏览器内核（以webkit为例）：</em></strong>WebCore负责解析HTML、布局、渲染等；JavaScriptCore：解析、执行JavaScript代码</p>
-<p><strong><em>ECMAScript3：</em></strong>用这个来学习JavaScript执行、作用域、作用域链、闭包等概念</p>
-<p><strong><em>ECMAScript5：</em></strong>用这个来学习块级作用域、let、const等概念</p>
+        <p>***浏览器内核（以webkit为例）：***WebCore负责解析HTML、布局、渲染等；JavaScriptCore：解析、执行JavaScript代码</p>
+<p>***ECMAScript3：***用这个来学习JavaScript执行、作用域、作用域链、闭包等概念</p>
+<p>***ECMAScript5：***用这个来学习块级作用域、let、const等概念</p>
 <p>两者概念描述不一样，整体思路一致</p>
-<h1 id="V8引擎的执行原理"><a href="#V8引擎的执行原理" class="headerlink" title="V8引擎的执行原理"></a>V8引擎的执行原理</h1><p>V8是用C++编写的开源高性能JavaScript和WebAssembly引擎，可以用于Chrome和Node.js</p>
+<h1>V8引擎的执行原理</h1>
+<p>V8是用C++编写的开源高性能JavaScript和WebAssembly引擎，可以用于Chrome和Node.js</p>
 <p><img src="/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323184747752.png" alt="image-20230323184747752"></p>
-<p><strong><em>Parse：</em></strong>将JavaScript代码转换为AST（抽象语法树）——函数在没调用的时候，不会被转换为抽象语法树</p>
-<p><strong><em>Ignition：</em></strong>将AST转换为字节码</p>
-<p><strong><em>TurboFan：</em></strong>将字节码编译为可以直接运行的机器码</p>
+<p>***Parse：***将JavaScript代码转换为AST（抽象语法树）——函数在没调用的时候，不会被转换为抽象语法树</p>
+<p>***Ignition：***将AST转换为字节码</p>
+<p>***TurboFan：***将字节码编译为可以直接运行的机器码</p>
 <ul>
 <li>如果一个函数被多次调用，就会被标记为热点函数，就会被TurboFan转换为机器码，提高代码的执行性能</li>
 <li>机器码也会被还原为ByteCode，如果后续执行函数的过程中，类型发生了变化，之前的机器码不能进行准确的运算，就会逆向转换为字节码</li>
 </ul>
-<h2 id="JavaScript执行过程"><a href="#JavaScript执行过程" class="headerlink" title="JavaScript执行过程"></a>JavaScript执行过程</h2><p><strong><em>执行上下文栈（ECS）：</em></strong>js引擎内部有一个执行上下文栈，是执行代码的调用栈</p>
-<p><strong><em>全局执行上下文：</em></strong>全局代码块为了执行会生成一个全局执行上下文（GEC），并放入ECS中</p>
-<p><strong><em>函数执行上下文：</em></strong>执行到一个函数值，会根据函数体创建一个函数执行上下文（FEC），并放入到ECS中</p>
-<p><strong><em>AO对象：</em></strong>当进入一个函数执行上下文时，会创建一个AO对象，AO对象使用arguments作为初始化，初始值是传入的参数</p>
-<p><strong><em>VO对象：</em></strong>每一个执行上下文都会关联一个VO（Variable Object）对象，变量和函数的声明会被添加到这个VO对象中</p>
-<p><strong><em>注：</em></strong>全局上下文的VO对象就是GO、函数执行上下文的VO对象是AO</p>
-<h3 id="初始化全局对象"><a href="#初始化全局对象" class="headerlink" title="初始化全局对象"></a>初始化全局对象</h3><p>js在执行代码前，会在堆内存中创建一个全局对象：Global Object（GO）</p>
+<h2 id="JavaScript执行过程">JavaScript执行过程</h2>
+<p>***执行上下文栈（ECS）：***js引擎内部有一个执行上下文栈，是执行代码的调用栈</p>
+<p>***全局执行上下文：***全局代码块为了执行会生成一个全局执行上下文（GEC），并放入ECS中</p>
+<p>***函数执行上下文：***执行到一个函数值，会根据函数体创建一个函数执行上下文（FEC），并放入到ECS中</p>
+<p>***AO对象：***当进入一个函数执行上下文时，会创建一个AO对象，AO对象使用arguments作为初始化，初始值是传入的参数</p>
+<p>***VO对象：***每一个执行上下文都会关联一个VO（Variable Object）对象，变量和函数的声明会被添加到这个VO对象中</p>
+<p>***注：***全局上下文的VO对象就是GO、函数执行上下文的VO对象是AO</p>
+<h3 id="初始化全局对象">初始化全局对象</h3>
+<p>js在执行代码前，会在堆内存中创建一个全局对象：Global Object（GO）</p>
 <ul>
-<li>该对象所有的作用域（scope）都可以访问； </li>
-<li>里面会包含Date、Array、String、Number、setTimeout、setInterval等等； </li>
+<li>该对象所有的作用域（scope）都可以访问；</li>
+<li>里面会包含Date、Array、String、Number、setTimeout、setInterval等等；</li>
 <li>其中还有一个window属性指向自己；</li>
 </ul>
 <p>在parser转成AST的过程中，会将全局定义的变量、函数等放入GlobalObject中，但不会赋值（变量的作用域提升）</p>
@@ -300,7 +303,8 @@
 <p><img src="/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191504578.png" alt="image-20230323191504578"></p>
 <p>函数执行后：</p>
 <p><img src="/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323191448418.png" alt="image-20230323191448418"></p>
-<h1 id="作用域和作用域链"><a href="#作用域和作用域链" class="headerlink" title="作用域和作用域链"></a>作用域和作用域链</h1><p><strong><em>作用域链：</em></strong>当进入到一个执行上下文时，执行上下文会关联一个作用域链，并根据代码类型，添加一系列的对象</p>
+<h1>作用域和作用域链</h1>
+<p>***作用域链：***当进入到一个执行上下文时，执行上下文会关联一个作用域链，并根据代码类型，添加一系列的对象</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params">age</span>)&#123;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">bar</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(age)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> baz = <span class="title function_">foo</span>(<span class="number">18</span>)</span><br><span class="line"><span class="title function_">baz</span>()</span><br></pre></td></tr></table></figure>
 <p><img src="/2023/03/23/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/JavaScript%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/image-20230323192141405.png" alt="image-20230323192141405"></p>
 <ul>
@@ -392,7 +396,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#V8%E5%BC%95%E6%93%8E%E7%9A%84%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">V8引擎的执行原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">JavaScript执行过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%85%A8%E5%B1%80%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.1.1.</span> <span class="nav-text">初始化全局对象</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE"><span class="nav-number">2.</span> <span class="nav-text">作用域和作用域链</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">V8引擎的执行原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">JavaScript执行过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%85%A8%E5%B1%80%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.1.1.</span> <span class="nav-text">初始化全局对象</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">作用域和作用域链</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -406,7 +410,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">42</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -419,7 +423,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

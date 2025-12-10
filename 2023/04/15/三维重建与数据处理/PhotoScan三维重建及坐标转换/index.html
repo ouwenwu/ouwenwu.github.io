@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="对齐图片（投影后）添加图片 全景图片一张可以投影为若干张普通图片，在PhotoScan中可以将一张全景图片所投影出的图片设置为一个组，对其加以约束，会使得图片对齐效果更好 图片分组 首先选中一组图片，将其添加到一个图片组中     保存后项目文件夹下会有一下红线圈出的内容   进入对应的chunk文件夹下   解压chunk.zip得到doc.xml文件  doc.xml内容如图所示，其中包含了我">
+  <meta name="description" content="对齐图片（投影后） 添加图片  全景图片一张可以投影为若干张普通图片，在PhotoScan中可以将一张全景图片所投影出的图片设置为一个组，对其加以约束，会使得图片对齐效果更好 图片分组  首先选中一组图片，将其添加到一个图片组中     保存后项目文件夹下会有一下红线圈出的内容   进入对应的chunk文件夹下   解压chunk.zip得到doc.xml文件  doc.xml内容如图所示，其中包">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PhotoScan三维重建及坐标转换">
 <meta property="og:url" content="http://example.com/2023/04/15/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/PhotoScan%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E5%8F%8A%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/index.html">
 <meta property="og:site_name" content="Ouwenwu">
-<meta property="og:description" content="对齐图片（投影后）添加图片 全景图片一张可以投影为若干张普通图片，在PhotoScan中可以将一张全景图片所投影出的图片设置为一个组，对其加以约束，会使得图片对齐效果更好 图片分组 首先选中一组图片，将其添加到一个图片组中     保存后项目文件夹下会有一下红线圈出的内容   进入对应的chunk文件夹下   解压chunk.zip得到doc.xml文件  doc.xml内容如图所示，其中包含了我">
+<meta property="og:description" content="对齐图片（投影后） 添加图片  全景图片一张可以投影为若干张普通图片，在PhotoScan中可以将一张全景图片所投影出的图片设置为一个组，对其加以约束，会使得图片对齐效果更好 图片分组  首先选中一组图片，将其添加到一个图片组中     保存后项目文件夹下会有一下红线圈出的内容   进入对应的chunk文件夹下   解压chunk.zip得到doc.xml文件  doc.xml内容如图所示，其中包">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/04/15/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/PhotoScan%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E5%8F%8A%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/image-20230416114600655.png">
 <meta property="og:image" content="http://example.com/2023/04/15/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/PhotoScan%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E5%8F%8A%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/image-20230416115019165.png">
@@ -266,9 +266,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="对齐图片（投影后）"><a href="#对齐图片（投影后）" class="headerlink" title="对齐图片（投影后）"></a>对齐图片（投影后）</h1><h2 id="添加图片"><a href="#添加图片" class="headerlink" title="添加图片"></a>添加图片</h2><p><img src="/2023/04/15/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/PhotoScan%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E5%8F%8A%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/image-20230416114600655.png" alt="image-20230416114600655"></p>
-<p><strong><em>全景图片一张可以投影为若干张普通图片，在PhotoScan中可以将一张全景图片所投影出的图片设置为一个组，对其加以约束，会使得图片对齐效果更好</em></strong></p>
-<h2 id="图片分组"><a href="#图片分组" class="headerlink" title="图片分组"></a>图片分组</h2><ul>
+        <h1>对齐图片（投影后）</h1>
+<h2 id="添加图片">添加图片</h2>
+<p><img src="/2023/04/15/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/PhotoScan%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E5%8F%8A%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/image-20230416114600655.png" alt="image-20230416114600655"></p>
+<p><em><strong>全景图片一张可以投影为若干张普通图片，在PhotoScan中可以将一张全景图片所投影出的图片设置为一个组，对其加以约束，会使得图片对齐效果更好</strong></em></p>
+<h2 id="图片分组">图片分组</h2>
+<ul>
 <li><strong>首先选中一组图片，将其添加到一个图片组中</strong></li>
 </ul>
 <p><img src="/2023/04/15/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/PhotoScan%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E5%8F%8A%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/image-20230416115019165.png" alt="image-20230416115019165"></p>
@@ -294,25 +297,34 @@
 <li><strong>重新打开项目文件</strong></li>
 </ul>
 <p><img src="/2023/04/15/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/PhotoScan%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E5%8F%8A%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/image-20230416120711094.png" alt="image-20230416120711094"></p>
-<h2 id="对齐图片"><a href="#对齐图片" class="headerlink" title="对齐图片"></a>对齐图片</h2><p>Workflow→Align Photos</p>
+<h2 id="对齐图片">对齐图片</h2>
+<p>Workflow→Align Photos</p>
 <p><strong>根据需求更改精度之类的东西</strong></p>
 <p><img src="/2023/04/15/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/PhotoScan%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E5%8F%8A%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/image-20230416121056281.png" alt="image-20230416121056281"></p>
 <p>如果对齐成功，就会像下面一样只有一个component，而如果对齐失败就会出现多个component这时就需要其他方法去改进优化</p>
 <p><img src="/2023/04/15/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/PhotoScan%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E5%8F%8A%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/image-20230416121220687.png" alt="image-20230416121220687"></p>
-<h1 id="对齐图片（全景图片直接处理）"><a href="#对齐图片（全景图片直接处理）" class="headerlink" title="对齐图片（全景图片直接处理）"></a>对齐图片（全景图片直接处理）</h1><ul>
-<li><p><strong>除了按上述将投影后的图片进行对齐及后续处理，还可以直接使用全景图片进行操作</strong></p>
+<h1>对齐图片（全景图片直接处理）</h1>
 <ul>
-<li><p>全景图片数量更少（一张全景图片会投影为若干张普通图片），因此处理速率更快</p>
+<li>
+<p><strong>除了按上述将投影后的图片进行对齐及后续处理，还可以直接使用全景图片进行操作</strong></p>
+<ul>
+<li>
+<p>全景图片数量更少（一张全景图片会投影为若干张普通图片），因此处理速率更快</p>
 </li>
-<li><p>出现多个component的概率更小</p>
+<li>
+<p>出现多个component的概率更小</p>
 </li>
-<li><p>但可能也会出现其他问题</p>
+<li>
+<p>但可能也会出现其他问题</p>
 </li>
 </ul>
 </li>
-<li><p><strong>由于是全景图片，因此不存在分group的情况，当然也可以将比较靠近的若干图片分为一组</strong></p>
+<li>
+<p><strong>由于是全景图片，因此不存在分group的情况，当然也可以将比较靠近的若干图片分为一组</strong></p>
 </li>
-<li><strong>注意导入图片后要有一个步骤告诉软件我们正在使用全景图片</strong><ul>
+<li>
+<p><strong>注意导入图片后要有一个步骤告诉软件我们正在使用全景图片</strong></p>
+<ul>
 <li>Tools→Camera Calibration</li>
 </ul>
 </li>
@@ -405,7 +417,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E9%BD%90%E5%9B%BE%E7%89%87%EF%BC%88%E6%8A%95%E5%BD%B1%E5%90%8E%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">对齐图片（投影后）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%9B%BE%E7%89%87"><span class="nav-number">1.1.</span> <span class="nav-text">添加图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E5%88%86%E7%BB%84"><span class="nav-number">1.2.</span> <span class="nav-text">图片分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E9%BD%90%E5%9B%BE%E7%89%87"><span class="nav-number">1.3.</span> <span class="nav-text">对齐图片</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E9%BD%90%E5%9B%BE%E7%89%87%EF%BC%88%E5%85%A8%E6%99%AF%E5%9B%BE%E7%89%87%E7%9B%B4%E6%8E%A5%E5%A4%84%E7%90%86%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">对齐图片（全景图片直接处理）</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">对齐图片（投影后）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%9B%BE%E7%89%87"><span class="nav-number">1.1.</span> <span class="nav-text">添加图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E5%88%86%E7%BB%84"><span class="nav-number">1.2.</span> <span class="nav-text">图片分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E9%BD%90%E5%9B%BE%E7%89%87"><span class="nav-number">1.3.</span> <span class="nav-text">对齐图片</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">对齐图片（全景图片直接处理）</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -419,7 +431,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">42</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -432,7 +444,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
