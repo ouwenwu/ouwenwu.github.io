@@ -242,24 +242,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>this的绑定</h1>
-<h2 id="一-整理this的绑定规则">一. 整理this的绑定规则</h2>
-<ul>
-<li>
-<p>默认绑定：独立函数调用，函数没有被绑定到某个对象上进行调用</p>
+          <h1 id="this的绑定"><a href="#this的绑定" class="headerlink" title="this的绑定"></a>this的绑定</h1><h2 id="一-整理this的绑定规则"><a href="#一-整理this的绑定规则" class="headerlink" title="一. 整理this的绑定规则"></a>一. 整理this的绑定规则</h2><ul>
+<li><p>默认绑定：独立函数调用，函数没有被绑定到某个对象上进行调用</p>
 </li>
-<li>
-<p>隐式绑定：通过某个对象发起的函数调用，在调用对象内部有一个对函数的引用。</p>
+<li><p>隐式绑定：通过某个对象发起的函数调用，在调用对象内部有一个对函数的引用。</p>
 </li>
-<li>
-<p>显式绑定：明确this指向的对象，第一个参数相同并要求传入一个对象。</p>
+<li><p>显式绑定：明确this指向的对象，第一个参数相同并要求传入一个对象。</p>
 <ul>
 <li>apply/call</li>
 <li>bind</li>
 </ul>
 </li>
-<li>
-<p>new绑定：</p>
+<li><p>new绑定：</p>
 <ul>
 <li>创建一个全新对象</li>
 <li>新对象被执行prototype链接</li>
@@ -268,89 +262,78 @@
 </ul>
 </li>
 </ul>
-<h3 id="默认绑定">默认绑定</h3>
-<p>默认绑定this一般情况下是window</p>
+<h3 id="默认绑定"><a href="#默认绑定" class="headerlink" title="默认绑定"></a>默认绑定</h3><p>默认绑定this一般情况下是window</p>
 <p>在严格模式下this为undefined</p>
 <p>es6后的class中函数默认为严格模式，即this为undefined</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>)&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> test = <span class="keyword">new</span> <span class="title class_">Test</span>()</span><br><span class="line"><span class="keyword">const</span> bar = test.<span class="property">foo</span></span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
 <p>babel会将js设置为严格模式——在React框架下，隐式绑定都为undefined</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/babel-standalone@6/babel.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">foo</span>() <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
-<h2 id="二-说出apply、call、bind函数的用法和区别">二. 说出apply、call、bind函数的用法和区别</h2>
-<p>​	  用法：</p>
+<h2 id="二-说出apply、call、bind函数的用法和区别"><a href="#二-说出apply、call、bind函数的用法和区别" class="headerlink" title="二. 说出apply、call、bind函数的用法和区别"></a>二. 说出apply、call、bind函数的用法和区别</h2><p>​      用法：</p>
 <ul>
-<li>
-<p>​    apply</p>
+<li><p>​    apply</p>
 <p>​     第一个参数: 绑定this</p>
 <p>​    第二个参数: 传入额外的实参, 以数组的形式</p>
 </li>
-<li>
-<p>​    call</p>
+<li><p>​    call</p>
 <p>​    第一个参数: 绑定this</p>
 <p>​    参数列表: 后续的参数以多参数的形式传递, 会作为实参</p>
 </li>
-<li>
-<p>​    bind(不希望obj对象身上有函数)</p>
+<li><p>​    bind(不希望obj对象身上有函数)</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">var</span> bar = foo.<span class="title function_">bind</span>(obj)</span><br><span class="line">​    <span class="title function_">bar</span>() <span class="comment">// this -&gt; obj</span></span><br></pre></td></tr></table></figure>
 <p>区别：</p>
 </li>
-<li>
-<p>call、apply和bind都可以改变函数的this指向</p>
+<li><p>call、apply和bind都可以改变函数的this指向</p>
 </li>
-<li>
-<p>call、apply和bind第一个参数的是this要指向的对象</p>
+<li><p>call、apply和bind第一个参数的是this要指向的对象</p>
 </li>
-<li>
-<p>call、apply和bind都可以后续为函数传参，apply是将参数并成一个数组，call和bind是将参数依次列出</p>
+<li><p>call、apply和bind都可以后续为函数传参，apply是将参数并成一个数组，call和bind是将参数依次列出</p>
 </li>
-<li>
-<p>call、apply都是直接调用，bind生成的this指向改变函数需要手动调用。</p>
+<li><p>call、apply都是直接调用，bind生成的this指向改变函数需要手动调用。</p>
 </li>
 </ul>
-<p>​		绑定优先级：</p>
-<p>​		默认绑定的优先级最低、显示绑定的优先级高于隐式绑定、new绑定的优先级高于隐式绑定、new绑定优先级高于bind</p>
-<p>​		new绑定和call、apply不可以一起使用</p>
-<p>​		注：</p>
-<p>​		显示绑定传入null或undefined，显示绑定会忽略使用默认规则</p>
+<p>​        绑定优先级：</p>
+<p>​        默认绑定的优先级最低、显示绑定的优先级高于隐式绑定、new绑定的优先级高于隐式绑定、new绑定优先级高于bind</p>
+<p>​        new绑定和call、apply不可以一起使用</p>
+<p>​        注：</p>
+<p>​        显示绑定传入null或undefined，显示绑定会忽略使用默认规则</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">foo.<span class="title function_">call</span>(<span class="literal">null</span>)</span><br><span class="line">foo.<span class="title function_">call</span>(<span class="literal">undefined</span>)</span><br><span class="line"><span class="keyword">var</span> bar = foo.<span class="title function_">bind</span>(<span class="literal">null</span>)</span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// 都是windows</span></span><br></pre></td></tr></table></figure>
-<h2 id="三-说出箭头函数的各种用法和简写">三. 说出箭头函数的各种用法和简写</h2>
+<h2 id="三-说出箭头函数的各种用法和简写"><a href="#三-说出箭头函数的各种用法和简写" class="headerlink" title="三. 说出箭头函数的各种用法和简写"></a>三. 说出箭头函数的各种用法和简写</h2><ul>
+<li><p>基本写法</p>
 <ul>
-<li>
-<p>基本写法</p>
-<ul>
-<li>
-<p>()：函数的参数</p>
+<li><p>()：函数的参数</p>
 </li>
-<li>
-<p>{}:函数的执行体</p>
+<li><p>{}:函数的执行体</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var foo3 = (name, age) =&gt; &#123;</span><br><span class="line">    console.log(&quot;箭头函数的函数体&quot;)</span><br><span class="line">    console.log(name, age)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li>
-<p>优化写法</p>
+</ul>
 <ul>
-<li>
-<p>只有一个参数时, 可以省略()</p>
+<li><p>优化写法</p>
+<ul>
+<li><p>只有一个参数时, 可以省略()</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">names.<span class="title function_">forEach</span>(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(item)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 </li>
-<li>
-<p>只有一行代码时, 可以省略{}</p>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>只有一行代码时, 可以省略{}</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">names.<span class="title function_">forEach</span>(<span class="function"><span class="params">item</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(item))</span><br></pre></td></tr></table></figure>
 </li>
-<li>
-<p>只要一行代码时, 表达式的返回值会作为箭头函数默认返回值, 所以可以省略return</p>
+</ul>
+<ul>
+<li><p>只要一行代码时, 表达式的返回值会作为箭头函数默认返回值, 所以可以省略return</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> newNums = nums.<span class="title function_">filter</span>(<span class="function"><span class="params">item</span> =&gt;</span> item % <span class="number">2</span> === <span class="number">0</span>)</span><br><span class="line"><span class="keyword">var</span> newNums = nums.<span class="title function_">filter</span>(<span class="function"><span class="params">item</span> =&gt;</span> item % <span class="number">2</span> === <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 </li>
-<li>
-<p>如果箭头函数默认返回的是对象, 在省略{}的时候, 对象必须使用()包裹 () =&gt; ({name: “why”})</p>
+</ul>
+<ul>
+<li><p>如果箭头函数默认返回的是对象, 在省略{}的时候, 对象必须使用()包裹 () =&gt; ({name: “why”})</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="title function_">arrFn</span> = (<span class="params"></span>) =&gt; [<span class="string">&quot;abc&quot;</span>, <span class="string">&quot;cba&quot;</span>]</span><br><span class="line"><span class="keyword">var</span> <span class="title function_">arrFn</span> = (<span class="params"></span>) =&gt; &#123;&#125; <span class="comment">// 注意: 这里是&#123;&#125;执行体</span></span><br><span class="line"><span class="keyword">var</span> <span class="title function_">arrFn</span> = (<span class="params"></span>) =&gt; (&#123; <span class="attr">name</span>: <span class="string">&quot;why&quot;</span> &#125;)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">arrFn</span>())</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-</li>
-</ul>
-<h2 id="四-完成this的面试题解析">四. 完成this的面试题解析</h2>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;window&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;person&quot;</span>,</span><br><span class="line">  <span class="attr">sayName</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayName</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sss = person.<span class="property">sayName</span>;</span><br><span class="line">  <span class="title function_">sss</span>(); <span class="comment">// window</span></span><br><span class="line">  person.<span class="title function_">sayName</span>(); <span class="comment">// person</span></span><br><span class="line">  (person.<span class="property">sayName</span>)(); <span class="comment">// person</span></span><br><span class="line">  (b = person.<span class="property">sayName</span>)(); <span class="comment">// window </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">sayName</span>();</span><br></pre></td></tr></table></figure>
+<h2 id="四-完成this的面试题解析"><a href="#四-完成this的面试题解析" class="headerlink" title="四. 完成this的面试题解析"></a>四. 完成this的面试题解析</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;window&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;person&quot;</span>,</span><br><span class="line">  <span class="attr">sayName</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayName</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> sss = person.<span class="property">sayName</span>;</span><br><span class="line">  <span class="title function_">sss</span>(); <span class="comment">// window</span></span><br><span class="line">  person.<span class="title function_">sayName</span>(); <span class="comment">// person</span></span><br><span class="line">  (person.<span class="property">sayName</span>)(); <span class="comment">// person</span></span><br><span class="line">  (b = person.<span class="property">sayName</span>)(); <span class="comment">// window </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">sayName</span>();</span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">var</span> person1 = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person1&#x27;</span>,</span><br><span class="line">  <span class="attr">foo1</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo2</span>: <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>),</span><br><span class="line">  <span class="attr">foo3</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo4</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person2 = &#123; <span class="attr">name</span>: <span class="string">&#x27;person2&#x27;</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo1(); // person1</span></span><br><span class="line"><span class="comment">// person1.foo1.call(person2); // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo2(); // window</span></span><br><span class="line"><span class="comment">// person1.foo2.call(person2); // window</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo3()(); // window</span></span><br><span class="line"><span class="comment">// person1.foo3.call(person2)(); // window</span></span><br><span class="line"><span class="comment">// person1.foo3().call(person2); // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo4()(); // person1</span></span><br><span class="line"><span class="comment">// person1.foo4.call(person2)(); // person2</span></span><br><span class="line"><span class="comment">// person1.foo4().call(person2); // person1</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span> (name) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo1</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo2</span> = <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>),</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo3</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">foo4</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo1() // person1</span></span><br><span class="line"><span class="comment">// person1.foo1.call(person2) // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo2() // person1</span></span><br><span class="line"><span class="comment">// person1.foo2.call(person2) // person1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo3()() // window</span></span><br><span class="line"><span class="comment">// person1.foo3.call(person2)() // window</span></span><br><span class="line"><span class="comment">// person1.foo3().call(person2) // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.foo4()() // person1</span></span><br><span class="line"><span class="comment">// person1.foo4.call(person2)() // person2</span></span><br><span class="line"><span class="comment">// person1.foo4().call(person2) // person1</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span> (name) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">obj</span> = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">    <span class="attr">foo1</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">foo2</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.obj.foo1()() // window</span></span><br><span class="line"><span class="comment">// person1.obj.foo1.call(person2)() // window</span></span><br><span class="line"><span class="comment">// person1.obj.foo1().call(person2) // person2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// person1.obj.foo2()() // obj</span></span><br><span class="line"><span class="comment">// person1.obj.foo2.call(person2)() // person2</span></span><br><span class="line"><span class="comment">// person1.obj.foo2().call(person2) // obj</span></span><br></pre></td></tr></table></figure>
@@ -427,17 +410,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>防抖与节流</h1>
-<h2 id="防抖">防抖</h2>
-<p>当事件触发时，相应的函数并不会立即触发，而是会等待一定的时间</p>
+          <h1 id="防抖与节流"><a href="#防抖与节流" class="headerlink" title="防抖与节流"></a>防抖与节流</h1><h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p>当事件触发时，相应的函数并不会立即触发，而是会等待一定的时间</p>
 <p>当事件密集触发时，函数的触发会被频繁的推迟</p>
-<h3 id="防抖的应用场景：">防抖的应用场景：</h3>
-<p>输入框中频繁的输入内容，搜索或提交信息</p>
+<h3 id="防抖的应用场景："><a href="#防抖的应用场景：" class="headerlink" title="防抖的应用场景："></a>防抖的应用场景：</h3><p>输入框中频繁的输入内容，搜索或提交信息</p>
 <p>平凡的点击按钮，触发某个事件</p>
 <p>用户缩放浏览器的resize事件</p>
 <p>如：输入macbook时，输入m联想，连续输入macbook不联想，在输入完一段时间后联想</p>
-<h3 id="防抖的实现：">防抖的实现：</h3>
-<p>以input输入为例：</p>
+<h3 id="防抖的实现："><a href="#防抖的实现：" class="headerlink" title="防抖的实现："></a>防抖的实现：</h3><p>以input输入为例：</p>
 <p>html代码：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;cancel&quot;</span>&gt;</span>取消<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>基本实现：</p>

@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一、二叉树种类 满二叉树 完全二叉树 二叉搜索树 左节点小于中间节点，右节点大于中间节点 平衡二叉搜索树 左节点小于中间节点，右节点大于中间节点，且左右子树的高度绝对值小于1 c++中map、set、multimap、multiset的底层是通过平衡二叉树实现，那么在插入节点，查询节点的时间复杂度是O(logn) map中的key和set中的元素都是有序的 二、二叉树存储方式 链式存储 线式存储">
+  <meta name="description" content="一、二叉树种类满二叉树完全二叉树二叉搜索树左节点小于中间节点，右节点大于中间节点 平衡二叉搜索树左节点小于中间节点，右节点大于中间节点，且左右子树的高度绝对值小于1 c++中map、set、multimap、multiset的底层是通过平衡二叉树实现，那么在插入节点，查询节点的时间复杂度是O(logn) map中的key和set中的元素都是有序的 二、二叉树存储方式链式存储线式存储左孩子：i*2+">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二叉树">
 <meta property="og:url" content="http://example.com/2023/03/27/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E4%BA%8C%E5%8F%89%E6%A0%91/index.html">
 <meta property="og:site_name" content="Ouwenwu">
-<meta property="og:description" content="一、二叉树种类 满二叉树 完全二叉树 二叉搜索树 左节点小于中间节点，右节点大于中间节点 平衡二叉搜索树 左节点小于中间节点，右节点大于中间节点，且左右子树的高度绝对值小于1 c++中map、set、multimap、multiset的底层是通过平衡二叉树实现，那么在插入节点，查询节点的时间复杂度是O(logn) map中的key和set中的元素都是有序的 二、二叉树存储方式 链式存储 线式存储">
+<meta property="og:description" content="一、二叉树种类满二叉树完全二叉树二叉搜索树左节点小于中间节点，右节点大于中间节点 平衡二叉搜索树左节点小于中间节点，右节点大于中间节点，且左右子树的高度绝对值小于1 c++中map、set、multimap、multiset的底层是通过平衡二叉树实现，那么在插入节点，查询节点的时间复杂度是O(logn) map中的key和set中的元素都是有序的 二、二叉树存储方式链式存储线式存储左孩子：i*2+">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-03-27T07:59:08.000Z">
 <meta property="article:modified_time" content="2023-03-27T11:54:33.699Z">
@@ -247,25 +247,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1>一、二叉树种类</h1>
-<h2 id="满二叉树">满二叉树</h2>
-<h2 id="完全二叉树">完全二叉树</h2>
-<h2 id="二叉搜索树">二叉搜索树</h2>
-<p>左节点小于中间节点，右节点大于中间节点</p>
-<h2 id="平衡二叉搜索树">平衡二叉搜索树</h2>
-<p>左节点小于中间节点，右节点大于中间节点，且左右子树的高度绝对值小于1</p>
+        <h1 id="一、二叉树种类"><a href="#一、二叉树种类" class="headerlink" title="一、二叉树种类"></a>一、二叉树种类</h1><h2 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h2><h2 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h2><h2 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h2><p>左节点小于中间节点，右节点大于中间节点</p>
+<h2 id="平衡二叉搜索树"><a href="#平衡二叉搜索树" class="headerlink" title="平衡二叉搜索树"></a>平衡二叉搜索树</h2><p>左节点小于中间节点，右节点大于中间节点，且左右子树的高度绝对值小于1</p>
 <p>c++中map、set、multimap、multiset的底层是通过平衡二叉树实现，那么在插入节点，查询节点的时间复杂度是O(logn)</p>
 <p>map中的key和set中的元素都是有序的</p>
-<h1>二、二叉树存储方式</h1>
-<h2 id="链式存储">链式存储</h2>
-<h2 id="线式存储">线式存储</h2>
-<p>左孩子：i*2+1</p>
+<h1 id="二、二叉树存储方式"><a href="#二、二叉树存储方式" class="headerlink" title="二、二叉树存储方式"></a>二、二叉树存储方式</h1><h2 id="链式存储"><a href="#链式存储" class="headerlink" title="链式存储"></a>链式存储</h2><h2 id="线式存储"><a href="#线式存储" class="headerlink" title="线式存储"></a>线式存储</h2><p>左孩子：i*2+1</p>
 <p>右孩子：i*2+2</p>
-<h1>三、二叉树的遍历</h1>
-<h2 id="深度优先搜索">深度优先搜索</h2>
-<p>前序、中序、后序遍历——迭代法、递归法</p>
-<h2 id="广度优先搜索">广度优先搜索</h2>
-<p>层序遍历——迭代法</p>
+<h1 id="三、二叉树的遍历"><a href="#三、二叉树的遍历" class="headerlink" title="三、二叉树的遍历"></a>三、二叉树的遍历</h1><h2 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h2><p>前序、中序、后序遍历——迭代法、递归法</p>
+<h2 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h2><p>层序遍历——迭代法</p>
 
     </div>
 
@@ -347,7 +336,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">一、二叉树种类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BB%A1%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">1.1.</span> <span class="nav-text">满二叉树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">1.2.</span> <span class="nav-text">完全二叉树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-number">1.3.</span> <span class="nav-text">二叉搜索树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-number">1.4.</span> <span class="nav-text">平衡二叉搜索树</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">二、二叉树存储方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8"><span class="nav-number">2.1.</span> <span class="nav-text">链式存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E5%BC%8F%E5%AD%98%E5%82%A8"><span class="nav-number">2.2.</span> <span class="nav-text">线式存储</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">三、二叉树的遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="nav-number">3.1.</span> <span class="nav-text">深度优先搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="nav-number">3.2.</span> <span class="nav-text">广度优先搜索</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A7%8D%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">一、二叉树种类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BB%A1%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">1.1.</span> <span class="nav-text">满二叉树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">1.2.</span> <span class="nav-text">完全二叉树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-number">1.3.</span> <span class="nav-text">二叉搜索树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-number">1.4.</span> <span class="nav-text">平衡二叉搜索树</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">二、二叉树存储方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8"><span class="nav-number">2.1.</span> <span class="nav-text">链式存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E5%BC%8F%E5%AD%98%E5%82%A8"><span class="nav-number">2.2.</span> <span class="nav-text">线式存储</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86"><span class="nav-number">3.</span> <span class="nav-text">三、二叉树的遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="nav-number">3.1.</span> <span class="nav-text">深度优先搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="nav-number">3.2.</span> <span class="nav-text">广度优先搜索</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

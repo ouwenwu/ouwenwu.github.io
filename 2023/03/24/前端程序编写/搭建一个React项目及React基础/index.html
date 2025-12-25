@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="***官网：***https:&#x2F;&#x2F;zh-hans.reactjs.org&#x2F; React简单项目创建（React一） React特点  声明书编程：只需要维护自己的状态，当状态改变时，React可以根据最新的状态去渲染UI界面 组件化开发：将复杂的界面拆分为一个个小的组件 多平台适配：React(Web)、ReactNative(移动端平台)、ReactVR(虚拟现实Web应用程序)——虚拟DOM也">
+  <meta name="description" content="官网：https:&#x2F;&#x2F;zh-hans.reactjs.org&#x2F; React简单项目创建（React一）React特点 声明书编程：只需要维护自己的状态，当状态改变时，React可以根据最新的状态去渲染UI界面 组件化开发：将复杂的界面拆分为一个个小的组件 多平台适配：React(Web)、ReactNative(移动端平台)、ReactVR(虚拟现实Web应用程序)——虚拟DOM也对跨平台有很大用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="搭建一个React项目及React基础">
 <meta property="og:url" content="http://example.com/2023/03/24/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAReact%E9%A1%B9%E7%9B%AE%E5%8F%8AReact%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Ouwenwu">
-<meta property="og:description" content="***官网：***https:&#x2F;&#x2F;zh-hans.reactjs.org&#x2F; React简单项目创建（React一） React特点  声明书编程：只需要维护自己的状态，当状态改变时，React可以根据最新的状态去渲染UI界面 组件化开发：将复杂的界面拆分为一个个小的组件 多平台适配：React(Web)、ReactNative(移动端平台)、ReactVR(虚拟现实Web应用程序)——虚拟DOM也">
+<meta property="og:description" content="官网：https:&#x2F;&#x2F;zh-hans.reactjs.org&#x2F; React简单项目创建（React一）React特点 声明书编程：只需要维护自己的状态，当状态改变时，React可以根据最新的状态去渲染UI界面 组件化开发：将复杂的界面拆分为一个个小的组件 多平台适配：React(Web)、ReactNative(移动端平台)、ReactVR(虚拟现实Web应用程序)——虚拟DOM也对跨平台有很大用">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/03/24/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAReact%E9%A1%B9%E7%9B%AE%E5%8F%8AReact%E5%9F%BA%E7%A1%80/image-20230324165543425.png">
 <meta property="article:published_time" content="2023-03-24T07:29:50.000Z">
@@ -251,132 +251,111 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>***官网：***<a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/">https://zh-hans.reactjs.org/</a></p>
-<h1>React简单项目创建（React一）</h1>
-<h2 id="React特点">React特点</h2>
-<ul>
+        <p><strong><em>官网：</em></strong><a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/">https://zh-hans.reactjs.org/</a></p>
+<h1 id="React简单项目创建（React一）"><a href="#React简单项目创建（React一）" class="headerlink" title="React简单项目创建（React一）"></a>React简单项目创建（React一）</h1><h2 id="React特点"><a href="#React特点" class="headerlink" title="React特点"></a>React特点</h2><ul>
 <li>声明书编程：只需要维护自己的状态，当状态改变时，React可以根据最新的状态去渲染UI界面</li>
 <li>组件化开发：将复杂的界面拆分为一个个小的组件</li>
 <li>多平台适配：React(Web)、ReactNative(移动端平台)、ReactVR(虚拟现实Web应用程序)——虚拟DOM也对跨平台有很大用处</li>
 </ul>
-<h2 id="React开发依赖">React开发依赖</h2>
-<ul>
-<li>***react：***react所必须的核心代码</li>
-<li>***react-dom：***react渲染在不同平台上所需要的核心代码——虚拟DOM→真实DOM（浏览器）/原生控件（移动端）</li>
-<li>***babel：***将jsx转换为React代码的工具，如果直接用React.createElement来写React对象，可以不用babel，同时可以将ES6转换为ES5语法</li>
+<h2 id="React开发依赖"><a href="#React开发依赖" class="headerlink" title="React开发依赖"></a>React开发依赖</h2><ul>
+<li><strong><em>react：</em></strong>react所必须的核心代码</li>
+<li><strong><em>react-dom：</em></strong>react渲染在不同平台上所需要的核心代码——虚拟DOM→真实DOM（浏览器）/原生控件（移动端）</li>
+<li><strong><em>babel：</em></strong>将jsx转换为React代码的工具，如果直接用React.createElement来写React对象，可以不用babel，同时可以将ES6转换为ES5语法</li>
 </ul>
 <p>react CDN引入：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react@18/umd/react.development.js&quot;</span> <span class="attr">crossorigin</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react-dom@18/umd/react-dom.development.js&quot;</span> <span class="attr">crossorigin</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/babel-standalone@6/babel.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="React第一个Hello-World">React第一个Hello World</h2>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- root作为根节点--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/babel&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">	<span class="keyword">const</span> message = <span class="string">&quot;hello World&quot;</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> root = <span class="title class_">ReactDOM</span>.<span class="title function_">createRoot</span>(<span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#root&#x27;</span>))</span></span><br><span class="line"><span class="language-javascript">    root.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;message&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span>)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><em><strong>注：</strong></em></p>
+<h2 id="React第一个Hello-World"><a href="#React第一个Hello-World" class="headerlink" title="React第一个Hello World"></a>React第一个Hello World</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- root作为根节点--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/babel&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">	<span class="keyword">const</span> message = <span class="string">&quot;hello World&quot;</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> root = <span class="title class_">ReactDOM</span>.<span class="title function_">createRoot</span>(<span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#root&#x27;</span>))</span></span><br><span class="line"><span class="language-javascript">    root.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;message&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span>)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong><em>注：</em></strong></p>
 <ul>
-<li>script一定要设置 type=“text/babel” 否则不会被babel解析，jsx语法就不能识别</li>
+<li>script一定要设置 type=”text/babel” 否则不会被babel解析，jsx语法就不能识别</li>
 <li>ReactDom.createRoot()是创建一个React根，不一定是整个html的根</li>
 <li>render函数，参数是要渲染的组件</li>
 <li>{}语法可以引入JavaScript语法</li>
 </ul>
-<h1>React组件化开发</h1>
-<p>***组件化开发：***root.render参数是一个HTML元素或一个组件，那么可以将复杂的业务逻辑封装到一个组件中，然后传入到ReactDom.render中</p>
-<p><em><strong>React组件：</strong></em></p>
+<h1 id="React组件化开发"><a href="#React组件化开发" class="headerlink" title="React组件化开发"></a>React组件化开发</h1><p><strong><em>组件化开发：</em></strong>root.render参数是一个HTML元素或一个组件，那么可以将复杂的业务逻辑封装到一个组件中，然后传入到ReactDom.render中</p>
+<p><strong><em>React组件：</em></strong></p>
 <ul>
 <li>类组件与函数组件</li>
 <li>根据内部是否有状态需要维护：无状态组件、有状态组件（this.state，不考虑hooks的情况下函数组件是无状态组件，而类组件不定义this.state也可以看做无状态组件）</li>
 <li>根据组件的不同职责：展示型组件、容器型组件</li>
 </ul>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span>&#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">super</span>()</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">state</span> = &#123;</span><br><span class="line">            <span class="attr">movies</span>:[<span class="string">&quot;盗梦空间&quot;</span>,<span class="string">&quot;星际穿越&quot;</span>,<span class="string">&quot;大话西游&quot;</span>,<span class="string">&quot;流浪地球&quot;</span>],</span><br><span class="line">            <span class="attr">currentIndex</span>: <span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">clickLi</span>(<span class="params">event,index</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="title function_">setState</span>(&#123;<span class="attr">currentIndex</span>:index&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">render</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            	&#123;this.state.movies.map((item,index)=&gt;&#123;</span></span><br><span class="line"><span class="language-xml">           			 return( </span></span><br><span class="line"><span class="language-xml">                			<span class="tag">&lt;<span class="name">li</span> </span></span></span><br><span class="line"><span class="tag"><span class="language-xml">                				<span class="attr">key</span>=<span class="string">&#123;item&#125;</span> </span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        						<span class="attr">onClick</span>=<span class="string">&#123;(event)</span>=&gt;</span>&#123;</span></span><br><span class="line"><span class="language-xml">            						this.clickLi(event,index)</span></span><br><span class="line"><span class="language-xml">        						&#125;&#125; </span></span><br><span class="line"><span class="language-xml">    							className = &#123;index===this.state.currentIndex?&quot;active&quot;:&quot;&quot;&#125;&gt;&#123;item&#125;</span></span><br><span class="line"><span class="language-xml">    						<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    					)</span></span><br><span class="line"><span class="language-xml">				&#125;)&#125;</span></span><br><span class="line"><span class="language-xml">    		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">		)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> root = <span class="title class_">ReactDOM</span>.<span class="title function_">createRoot</span>(<span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#root&#x27;</span>))</span><br><span class="line">root.<span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">App</span>/&gt;</span></span>)</span><br></pre></td></tr></table></figure>
-<h2 id="数据依赖">数据依赖</h2>
-<ul>
-<li>***参与界面更新的数据：***当数据改变时，需要更新组件渲染的数据（调用this.setState更新数据会自动检测改变的变量，并重新执行render函数更新页面）——参与数据流，放入当前对象的state对象中</li>
-<li>***不参与页面更新的数据：***数据改变时，不需要更新页面的数据</li>
+<h2 id="数据依赖"><a href="#数据依赖" class="headerlink" title="数据依赖"></a>数据依赖</h2><ul>
+<li><strong><em>参与界面更新的数据：</em></strong>当数据改变时，需要更新组件渲染的数据（调用this.setState更新数据会自动检测改变的变量，并重新执行render函数更新页面）——参与数据流，放入当前对象的state对象中</li>
+<li><strong><em>不参与页面更新的数据：</em></strong>数据改变时，不需要更新页面的数据</li>
 </ul>
-<h2 id="事件绑定">事件绑定</h2>
-<p><em><strong>this指向问题：</strong></em></p>
+<h2 id="事件绑定"><a href="#事件绑定" class="headerlink" title="事件绑定"></a>事件绑定</h2><p><strong><em>this指向问题：</em></strong></p>
 <ul>
 <li>babel默认严格模式，那么默认调用的函数的this为undefined</li>
 <li>一般的button点击，this指向button本身，但是这里调用的button是一个React的Element对象，并不是页面中的button，是React内部调用响应函数，因此不知道如何绑定正确的this</li>
 </ul>
-<p><em><strong>绑定this方法：</strong></em></p>
+<p><strong><em>绑定this方法：</em></strong></p>
 <ul>
-<li>
-<p>bind方法：调用bind方法生成一个带特定this的函数赋值给onClick</p>
+<li><p>bind方法：调用bind方法生成一个带特定this的函数赋值给onClick</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button onClick=&#123;this.changeText.bind(this)&#125;&gt; </span><br></pre></td></tr></table></figure>
 </li>
-<li>
-<p>箭头函数方法：如上面代码，给onClick赋值一个箭头函数，在箭头函数中调用隐式绑定想要运行的函数，箭头函数由于没有this，会向上寻找到this即class对象</p>
+<li><p>箭头函数方法：如上面代码，给onClick赋值一个箭头函数，在箭头函数中调用隐式绑定想要运行的函数，箭头函数由于没有this，会向上寻找到this即class对象</p>
 </li>
 </ul>
-<p>***事件参数传递：***点击函数会传入一个event，可以将event与其他的参数放在箭头函数里面调用函数时传给最后的响应函数</p>
+<p><strong><em>事件参数传递：</em></strong>点击函数会传入一个event，可以将event与其他的参数放在箭头函数里面调用函数时传给最后的响应函数</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;li onClick=&#123;event=&gt;this.clickLi(event,&quot;oww&quot;,&quot;22&quot;)&#125;&gt;按钮&lt;/li&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="map映射">map映射</h2>
-<p>往往会从数据数组中得到要展示的Element列表，就可以使用map映射</p>
+<h2 id="map映射"><a href="#map映射" class="headerlink" title="map映射"></a>map映射</h2><p>往往会从数据数组中得到要展示的Element列表，就可以使用map映射</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">    &#123;this.state.movies.map((item,index)=&gt;&#123;</span><br><span class="line">        return( </span><br><span class="line">            &lt;li </span><br><span class="line">                key=&#123;item&#125; </span><br><span class="line">                onClick=&#123;(event)=&gt;&#123;</span><br><span class="line">                    this.clickLi(event,index)</span><br><span class="line">                &#125;&#125; </span><br><span class="line">                className = &#123;index===this.state.currentIndex?&quot;active&quot;:&quot;&quot;&#125;&gt;&#123;item&#125;</span><br><span class="line">			&lt;/li&gt;</span><br><span class="line">		)</span><br><span class="line">	&#125;)&#125;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<h1>JSX语法</h1>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const element = &lt;div&gt;Hello World&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="JSX语法"><a href="#JSX语法" class="headerlink" title="JSX语法"></a>JSX语法</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const element = &lt;div&gt;Hello World&lt;/div&gt;</span><br></pre></td></tr></table></figure>
 <p>类似于上诉代码的形式就是一个JSX代码</p>
-<p><em><strong>React选择JSX的理由：</strong></em></p>
+<p><strong><em>React选择JSX的理由：</em></strong></p>
 <ul>
-<li>
-<p>React认为渲染逻辑本质上与其他UI逻辑存在耦合（UI需要绑定事件、UI需要展示数据状态、状态改变时，又会改变UI）</p>
+<li><p>React认为渲染逻辑本质上与其他UI逻辑存在耦合（UI需要绑定事件、UI需要展示数据状态、状态改变时，又会改变UI）</p>
 </li>
-<li>
-<p>因为渲染逻辑与UI逻辑的耦合，React没有将标记分离到不同的文件中，而是组合在一起形成组件</p>
+<li><p>因为渲染逻辑与UI逻辑的耦合，React没有将标记分离到不同的文件中，而是组合在一起形成组件</p>
 </li>
 </ul>
 <p>注：JSX只能有一个根元素，也就是上面不能存在两个兄弟DIV，实在需要可以用数组[]包围，JSX中的单标签必须以/&gt;结尾</p>
-<h3 id="JSX中的变量">JSX中的变量</h3>
-<ul>
+<h3 id="JSX中的变量"><a href="#JSX中的变量" class="headerlink" title="JSX中的变量"></a>JSX中的变量</h3><ul>
 <li>Number、String、Array可以直接显示</li>
 <li>null、undefined、Boolean内容为空，如确实要显示，转换为字符串后使用</li>
 <li>嵌入表达式使用（运算表达式、三元运算符、执行函数——是一个函数的执行得到返回值）</li>
 <li>Object对象不能作为子元素</li>
 </ul>
-<h3 id="JSX绑定属性">JSX绑定属性</h3>
-<ul>
-<li>***title属性/img的src属性/a元素href属性：***直接使用title/src/href=“”/{}</li>
+<h3 id="JSX绑定属性"><a href="#JSX绑定属性" class="headerlink" title="JSX绑定属性"></a>JSX绑定属性</h3><ul>
+<li><strong><em>title属性/img的src属性/a元素href属性：</em></strong>直接使用title/src/href=””/{}</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const element = &lt;h2 title=&quot;h2&quot;&gt;哈哈哈&lt;/h2&gt;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>***class属性：***小驼峰法className设置</li>
+<li><strong><em>class属性：</em></strong>小驼峰法className设置</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const element = &lt;h2 className=&#123;&#x27;abc cba $&#123;isActive?&#x27;active&#x27;:&#x27;&#x27;&#125;&#x27;&#125;&gt;哈哈哈&lt;/h2&gt;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>***内联style属性：***style=“”/{}设置——外层{}是JSX语法，里层{}是包裹对象，font-size要用小驼峰法fontSize</li>
+<li><strong><em>内联style属性：</em></strong>style=””/{}设置——外层{}是JSX语法，里层{}是包裹对象，font-size要用小驼峰法fontSize</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const element= &lt;h2 style=&#123;&#123;color:&quot;red&quot;, fontSize:&quot;30px&quot;&#125;&#125;&gt;哈哈哈&lt;/h2&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="JSX本质">JSX本质</h3>
-<p>JSX实际上是React.createElement的语法糖，下面两种方法等效，label会将JSX转换为React对象</p>
+<h3 id="JSX本质"><a href="#JSX本质" class="headerlink" title="JSX本质"></a>JSX本质</h3><p>JSX实际上是React.createElement的语法糖，下面两种方法等效，label会将JSX转换为React对象</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const element = React.createElement(&#x27;div&#x27;,&#123;class:&quot;active&quot;,style=&#123;color:&quot;red&quot;&#125;&#125;,children)</span><br><span class="line">const element = &lt;div className = &quot;active&quot; style=&#123;&#123;color:&quot;red&quot;&#125;&#125;&gt;children1,children2&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<h1>虚拟DOM</h1>
-<ul>
-<li>
-<p>通过React.createElement最终可以创建出一个ReactElement对象，其与其子元素构成一个对象树，这个树就是<strong>虚拟DOM</strong></p>
+<h1 id="虚拟DOM"><a href="#虚拟DOM" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h1><ul>
+<li><p>通过React.createElement最终可以创建出一个ReactElement对象，其与其子元素构成一个对象树，这个树就是<strong>虚拟DOM</strong></p>
 </li>
-<li>
-<p>React从JSX到真实DOM的流程：</p>
+<li><p>React从JSX到真实DOM的流程：</p>
 <p><img src="/2023/03/24/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAReact%E9%A1%B9%E7%9B%AE%E5%8F%8AReact%E5%9F%BA%E7%A1%80/image-20230324165543425.png" alt="image-20230324165543425"></p>
 </li>
 </ul>
-<h2 id="虚拟DOM帮助实现声明式编程">虚拟DOM帮助实现声明式编程</h2>
-<p>***虚拟DOM：***虚拟DOM是一种编程理念</p>
+<h2 id="虚拟DOM帮助实现声明式编程"><a href="#虚拟DOM帮助实现声明式编程" class="headerlink" title="虚拟DOM帮助实现声明式编程"></a>虚拟DOM帮助实现声明式编程</h2><p><strong><em>虚拟DOM：</em></strong>虚拟DOM是一种编程理念</p>
 <ul>
 <li>UI以一种虚拟化的方式保存在内存中，是一个较为简单的JavaScript对象</li>
 <li>通过ReactDom.render函数让虚拟DOM与真实DOM同步起来，这一个步骤叫做协调</li>
 <li>更新状态后整体刷新，而不是原生的局部刷新</li>
 </ul>
-<p>***Diff算法：***如果简单的整体刷新会导致项目运行效率较低</p>
+<p><strong><em>Diff算法：</em></strong>如果简单的整体刷新会导致项目运行效率较低</p>
 <ul>
 <li>Diff算法对于没有改变的DOM节点，保持原样不动，仅仅创建并替换变更过的DOM节点，实现DOM节点复用</li>
 <li>因此需要实现DOM节点的版本控制，如果对原生的DOM节点进行版本控制，会有大量的DOM查询操作，所以React将DOM的diff操作转移到轻量js对象上，可以避免大量的DOM操作，这个轻量的js对象就是虚拟DOM</li>
 </ul>
-<p><em><strong>实现过程：</strong></em></p>
+<p><strong><em>实现过程：</em></strong></p>
 <ul>
 <li>维护一个使用JS对象表示的虚拟DOM，与真实DOM一一对应</li>
 <li>对前后的虚拟DOM做diff操作，找到变化的虚拟DOM</li>
 <li>将变化的DOM应用于真实DOM（<strong>不是不操作DOM，而是对DOM的操作次数降到最低</strong>）</li>
 </ul>
-<h3 id="React的声明式编程">React的声明式编程</h3>
-<ul>
+<h3 id="React的声明式编程"><a href="#React的声明式编程" class="headerlink" title="React的声明式编程"></a>React的声明式编程</h3><ul>
 <li>通过虚拟DOM表示希望UI是什么状态</li>
 <li>React确保DOM和这些状态匹配</li>
 <li>不需要直接进行DOM操作，而去改变虚拟DOM，从手动更改DOM、属性操作、事件处理中解放出来（传统的DOM API太多，操作复杂，容易出现Bug，代码不易维护），用户只需要关心状态和最终的UI样式</li>
@@ -466,7 +445,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">React简单项目创建（React一）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#React%E7%89%B9%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">React特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React%E5%BC%80%E5%8F%91%E4%BE%9D%E8%B5%96"><span class="nav-number">1.2.</span> <span class="nav-text">React开发依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React%E7%AC%AC%E4%B8%80%E4%B8%AAHello-World"><span class="nav-number">1.3.</span> <span class="nav-text">React第一个Hello World</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">React组件化开发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BE%9D%E8%B5%96"><span class="nav-number">2.1.</span> <span class="nav-text">数据依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A"><span class="nav-number">2.2.</span> <span class="nav-text">事件绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E6%98%A0%E5%B0%84"><span class="nav-number">2.3.</span> <span class="nav-text">map映射</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">JSX语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JSX%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="nav-number">3.0.1.</span> <span class="nav-text">JSX中的变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSX%E7%BB%91%E5%AE%9A%E5%B1%9E%E6%80%A7"><span class="nav-number">3.0.2.</span> <span class="nav-text">JSX绑定属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSX%E6%9C%AC%E8%B4%A8"><span class="nav-number">3.0.3.</span> <span class="nav-text">JSX本质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">虚拟DOM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9FDOM%E5%B8%AE%E5%8A%A9%E5%AE%9E%E7%8E%B0%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%BC%96%E7%A8%8B"><span class="nav-number">4.1.</span> <span class="nav-text">虚拟DOM帮助实现声明式编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#React%E7%9A%84%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%BC%96%E7%A8%8B"><span class="nav-number">4.1.1.</span> <span class="nav-text">React的声明式编程</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#React%E7%AE%80%E5%8D%95%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA%EF%BC%88React%E4%B8%80%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">React简单项目创建（React一）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#React%E7%89%B9%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">React特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React%E5%BC%80%E5%8F%91%E4%BE%9D%E8%B5%96"><span class="nav-number">1.2.</span> <span class="nav-text">React开发依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React%E7%AC%AC%E4%B8%80%E4%B8%AAHello-World"><span class="nav-number">1.3.</span> <span class="nav-text">React第一个Hello World</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#React%E7%BB%84%E4%BB%B6%E5%8C%96%E5%BC%80%E5%8F%91"><span class="nav-number">2.</span> <span class="nav-text">React组件化开发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BE%9D%E8%B5%96"><span class="nav-number">2.1.</span> <span class="nav-text">数据依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A"><span class="nav-number">2.2.</span> <span class="nav-text">事件绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map%E6%98%A0%E5%B0%84"><span class="nav-number">2.3.</span> <span class="nav-text">map映射</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JSX%E8%AF%AD%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">JSX语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JSX%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="nav-number">3.0.1.</span> <span class="nav-text">JSX中的变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSX%E7%BB%91%E5%AE%9A%E5%B1%9E%E6%80%A7"><span class="nav-number">3.0.2.</span> <span class="nav-text">JSX绑定属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSX%E6%9C%AC%E8%B4%A8"><span class="nav-number">3.0.3.</span> <span class="nav-text">JSX本质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%99%9A%E6%8B%9FDOM"><span class="nav-number">4.</span> <span class="nav-text">虚拟DOM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9FDOM%E5%B8%AE%E5%8A%A9%E5%AE%9E%E7%8E%B0%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%BC%96%E7%A8%8B"><span class="nav-number">4.1.</span> <span class="nav-text">虚拟DOM帮助实现声明式编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#React%E7%9A%84%E5%A3%B0%E6%98%8E%E5%BC%8F%E7%BC%96%E7%A8%8B"><span class="nav-number">4.1.1.</span> <span class="nav-text">React的声明式编程</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

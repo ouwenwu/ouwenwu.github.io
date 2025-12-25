@@ -233,53 +233,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>高斯泼溅形状</h1>
-<h2 id="为什么是椭球">为什么是椭球</h2>
-<h3 id="一维高斯分布函数">一维高斯分布函数</h3>
-<p>一维高斯分布（Gaussian Distribution），通常被称为<strong>正态分布</strong>（Normal Distribution），其概率密度函数（PDF）的数学方程如下：<br>
-$$<br>
-f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}<br>
-$$<br>
-当概率取某个值时，x也对应的为一个常数值</p>
-<h3 id="二维高斯分布函数">二维高斯分布函数</h3>
-<p>二维高斯分布（Bivariate Gaussian Distribution 或 2D Normal Distribution）是一维高斯分布在二维平面上的推广。它的图像不再是一条平面曲线，而是一个三维空间中的“山包”或“钟形曲面”。</p>
-<p>**矩阵形式：**若二维随机向量 $\mathbf{x} = [x, y]^T$ 服从均值向量为 $\mathbf{\mu}$，协方差矩阵为 $\mathbf{\Sigma}$ 的正态分布，其概率密度函数为：<br>
-$$<br>
-f(\mathbf{x}) = \frac{1}{2\pi \sqrt{|\mathbf{\Sigma}|}} \exp\left( -\frac{1}{2} (\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu}) \right)<br>
-$$<br>
-其中：</p>
+          <h1 id="高斯泼溅形状"><a href="#高斯泼溅形状" class="headerlink" title="高斯泼溅形状"></a>高斯泼溅形状</h1><h2 id="为什么是椭球"><a href="#为什么是椭球" class="headerlink" title="为什么是椭球"></a>为什么是椭球</h2><h3 id="一维高斯分布函数"><a href="#一维高斯分布函数" class="headerlink" title="一维高斯分布函数"></a>一维高斯分布函数</h3><p>一维高斯分布（Gaussian Distribution），通常被称为<strong>正态分布</strong>（Normal Distribution），其概率密度函数（PDF）的数学方程如下：</p>
+<script type="math/tex; mode=display">
+f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}</script><p>当概率取某个值时，x也对应的为一个常数值</p>
+<h3 id="二维高斯分布函数"><a href="#二维高斯分布函数" class="headerlink" title="二维高斯分布函数"></a>二维高斯分布函数</h3><p>二维高斯分布（Bivariate Gaussian Distribution 或 2D Normal Distribution）是一维高斯分布在二维平面上的推广。它的图像不再是一条平面曲线，而是一个三维空间中的“山包”或“钟形曲面”。</p>
+<p><strong>矩阵形式：</strong>若二维随机向量 $\mathbf{x} = [x, y]^T$ 服从均值向量为 $\mathbf{\mu}$，协方差矩阵为 $\mathbf{\Sigma}$ 的正态分布，其概率密度函数为：</p>
+<script type="math/tex; mode=display">
+f(\mathbf{x}) = \frac{1}{2\pi \sqrt{|\mathbf{\Sigma}|}} \exp\left( -\frac{1}{2} (\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu}) \right)</script><p>其中：</p>
 <ul>
-<li>$$\mathbf{x} = \begin{bmatrix} x \ y \end{bmatrix}$$是二维变量</li>
-<li>$$ y=\begin{bmatrix}u_x \u_y \end{bmatrix}$$是均值向量，决定了中心点的位置</li>
+<li><script type="math/tex">\mathbf{x} = \begin{bmatrix} x \\ y \end{bmatrix}</script>是二维变量</li>
+<li><script type="math/tex">y=\begin{bmatrix}u_x \\u_y \end{bmatrix}</script>是均值向量，决定了中心点的位置</li>
 <li>$\mathbf{\Sigma} = \begin{bmatrix} \sigma_x^2 &amp; \rho\sigma_x\sigma_y \ \rho\sigma_x\sigma_y &amp; \sigma_y^2 \end{bmatrix}$是协方差矩阵，决定了分布的形状、方向和散度</li>
 </ul>
-<p>当概率取某个常数值时：<br>
-$$<br>
-\left{\begin{array}{l}(\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu})=constant_1 \<br>
-\frac{(x-\mu_x)^2}{\sigma_x^2} - 2\rho\frac{(x-\mu_x)(y-\mu_y)}{\sigma_x\sigma_y} + \frac{(y-\mu_y)^2}{\sigma_y^2}=constant_2<br>
-\end{array}\right.<br>
-$$<br>
-此时xy的分布是一个椭圆，当概率值从［0,1］发生变化时，则x和y组成很多个椭圆，整体来说构成一个实心的椭圆面</p>
-<h3 id="三维高斯分布函数">三维高斯分布函数</h3>
-<p>在二维中，高斯分布是一个平面上的“山包”（等高线是椭圆）。 到了三维中，高斯分布描述的是三维空间中的一个**“云团”<strong>或</strong>“雾状球体”<strong>。它的等值面（密度相同点的集合）是三维空间中的</strong>椭球体 (Ellipsoid)**</p>
-<p>设三维随机向量 $\mathbf{x} = [x, y, z]^T$，其概率密度函数为：<br>
-$$<br>
-f(\mathbf{x}) = \frac{1}{(2\pi)^{3/2} |\mathbf{\Sigma}|^{1/2}} \exp\left( -\frac{1}{2} (\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu}) \right)<br>
-$$<br>
-其中：</p>
+<p>当概率取某个常数值时：</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}(\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu})=constant_1 \\
+\frac{(x-\mu_x)^2}{\sigma_x^2} - 2\rho\frac{(x-\mu_x)(y-\mu_y)}{\sigma_x\sigma_y} + \frac{(y-\mu_y)^2}{\sigma_y^2}=constant_2
+\end{array}\right.</script><p>此时xy的分布是一个椭圆，当概率值从［0,1］发生变化时，则x和y组成很多个椭圆，整体来说构成一个实心的椭圆面</p>
+<h3 id="三维高斯分布函数"><a href="#三维高斯分布函数" class="headerlink" title="三维高斯分布函数"></a>三维高斯分布函数</h3><p>在二维中，高斯分布是一个平面上的“山包”（等高线是椭圆）。 到了三维中，高斯分布描述的是三维空间中的一个<strong>“云团”</strong>或<strong>“雾状球体”</strong>。它的等值面（密度相同点的集合）是三维空间中的<strong>椭球体 (Ellipsoid)</strong></p>
+<p>设三维随机向量 $\mathbf{x} = [x, y, z]^T$，其概率密度函数为：</p>
+<script type="math/tex; mode=display">
+f(\mathbf{x}) = \frac{1}{(2\pi)^{3/2} |\mathbf{\Sigma}|^{1/2}} \exp\left( -\frac{1}{2} (\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu}) \right)</script><p>其中：</p>
 <ul>
-<li>
-<p><strong>$\mathbf{x}$ - 输入变量 (Input Vector):</strong> 三维空间中的一个点。 $\mathbf{x} = \begin{bmatrix} x \cr y \cr z \end{bmatrix}$</p>
+<li><p><strong>$\mathbf{x}$ - 输入变量 (Input Vector):</strong> 三维空间中的一个点。 $\mathbf{x} = \begin{bmatrix} x \cr y \cr z \end{bmatrix}$</p>
 </li>
-<li>
-<p><strong>$\mathbf{\mu}$ - 均值向量 (Mean Vector):</strong> 这个三维“云团”中心点的位置坐标。 $\mathbf{\mu} = \begin{bmatrix} \mu_x \cr \mu_y \cr \mu_z \end{bmatrix}$</p>
+<li><p><strong>$\mathbf{\mu}$ - 均值向量 (Mean Vector):</strong> 这个三维“云团”中心点的位置坐标。 $\mathbf{\mu} = \begin{bmatrix} \mu_x \cr \mu_y \cr \mu_z \end{bmatrix}$</p>
 </li>
-<li>
-<p>$\mathbf{\Sigma}$ - 3x3 协方差矩阵 (Covariance Matrix):</p>
-<p>这是最核心的部分，它定义了椭球体的形状、大小和方向。$$\mathbf{\Sigma} = \begin{bmatrix} \sigma_x^2 &amp; \sigma_{xy} &amp; \sigma_{xz} \cr \sigma_{yx} &amp; \sigma_y^2 &amp; \sigma_{yz} \cr \sigma_{zx} &amp; \sigma_{zy} &amp; \sigma_z^2 \end{bmatrix}$$</p>
+<li><p>$\mathbf{\Sigma}$ - 3x3 协方差矩阵 (Covariance Matrix):</p>
+<p>这是最核心的部分，它定义了椭球体的形状、大小和方向。<script type="math/tex">\mathbf{\Sigma} = \begin{bmatrix} \sigma_x^2 & \sigma_{xy} & \sigma_{xz} \cr \sigma_{yx} & \sigma_y^2 & \sigma_{yz} \cr \sigma_{zx} & \sigma_{zy} & \sigma_z^2 \end{bmatrix}</script></p>
 <ul>
 <li><strong>对角线元素 ($\sigma_x^2, \sigma_y^2, \sigma_z^2$)</strong>：也就是方差，决定了椭球体沿 XYZ 三个轴向的拉伸程度（“胖瘦”）。</li>
-<li><strong>非对角线元素 ($$\sigma_{xy}, \sigma_{xz},…$$)</strong>：也就是协方差，表示了分布的x轴、y轴、z轴之间的关系，决定了椭球体在空间中的<strong>旋转姿态</strong>。如果它们全为 0，说明分布的xyz是独立的，椭球体的轴就与坐标轴平行。</li>
+<li><strong>非对角线元素 (<script type="math/tex">\sigma_{xy}, \sigma_{xz},...</script>)</strong>：也就是协方差，表示了分布的x轴、y轴、z轴之间的关系，决定了椭球体在空间中的<strong>旋转姿态</strong>。如果它们全为 0，说明分布的xyz是独立的，椭球体的轴就与坐标轴平行。</li>
 </ul>
 <p>同时可以用来表示分布的特性</p>
 <ul>
@@ -289,71 +273,59 @@ $$<br>
 </li>
 </ul>
 <p>当概率值取某个常数时$(\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu})=constant$,x的分布为椭球体，则当概率从[0,1]发生变化时，组成很多个椭球体，则所有的分布构成一个实心的椭球，这个就是高斯椭球</p>
-<h2 id="椭球形状的控制">椭球形状的控制</h2>
-<p>上面已经推断出协方差矩阵$$\mathbf{\Sigma} = \begin{bmatrix} \sigma_x^2 &amp; \sigma_{xy} &amp; \sigma_{xz} \cr \sigma_{yx} &amp; \sigma_y^2 &amp; \sigma_{yz} \cr \sigma_{zx} &amp; \sigma_{zy} &amp; \sigma_z^2 \end{bmatrix}$$控制了椭球的中心和各方向上的方向，根据椭球在空间上可以通过球进行仿射变换得到推出椭球的协方差矩阵可以通过球的协方差矩阵通过变换得到，即任意高斯可以看作标准高斯通过仿射变换得到。</p>
-<p>对于高斯分布$$x \sim N\left( \mu ,I \right) $$，假设其每个x均经过$$w=Ax+b$$的仿射变换，那么其新的分布为$$x \sim N(A\mu+b, AI A^T)$$</p>
-<p>仿射变换可以分解为旋转和缩放，即$A=RS$,$$\Sigma=AIA^T=RSIS^TR^T$$,反之，通过协方差矩阵之后可以通过特征值分求出R和S，即将高斯椭球的协方差矩阵用R、S进行表示，R作为旋转矩阵又可以通过四元数q进行表示，即最终的椭球，我们通过q、s进行表示</p>
+<h2 id="椭球形状的控制"><a href="#椭球形状的控制" class="headerlink" title="椭球形状的控制"></a>椭球形状的控制</h2><p>上面已经推断出协方差矩阵<script type="math/tex">\mathbf{\Sigma} = \begin{bmatrix} \sigma_x^2 & \sigma_{xy} & \sigma_{xz} \cr \sigma_{yx} & \sigma_y^2 & \sigma_{yz} \cr \sigma_{zx} & \sigma_{zy} & \sigma_z^2 \end{bmatrix}</script>控制了椭球的中心和各方向上的方向，根据椭球在空间上可以通过球进行仿射变换得到推出椭球的协方差矩阵可以通过球的协方差矩阵通过变换得到，即任意高斯可以看作标准高斯通过仿射变换得到。</p>
+<p>对于高斯分布<script type="math/tex">x \sim N\left( \mu ,I \right)</script>，假设其每个x均经过<script type="math/tex">w=Ax+b</script>的仿射变换，那么其新的分布为<script type="math/tex">x \sim N(A\mu+b, AI A^T)</script></p>
+<p>仿射变换可以分解为旋转和缩放，即$A=RS$,<script type="math/tex">\Sigma=AIA^T=RSIS^TR^T</script>,反之，通过协方差矩阵之后可以通过特征值分求出R和S，即将高斯椭球的协方差矩阵用R、S进行表示，R作为旋转矩阵又可以通过四元数q进行表示，即最终的椭球，我们通过q、s进行表示</p>
 <p>所以对于椭球的形状共有4元数+缩放3+中心3共10个参数</p>
-<h1>椭球的颜色</h1>
-<h3 id="球谐函数">球谐函数</h3>
-<p>要理解球谐函数，你只需要理解一个概念：<strong>傅里叶变换（Fourier Transform）</strong>。</p>
+<h1 id="椭球的颜色"><a href="#椭球的颜色" class="headerlink" title="椭球的颜色"></a>椭球的颜色</h1><h3 id="球谐函数"><a href="#球谐函数" class="headerlink" title="球谐函数"></a>球谐函数</h3><p>要理解球谐函数，你只需要理解一个概念：<strong>傅里叶变换（Fourier Transform）</strong>。</p>
 <ol>
-<li><strong>一维的情况（傅里叶级数）：</strong> 想象一段复杂的声波（音乐）。我们知道，这段复杂的波形其实是由无数个简单的**正弦波（Sine waves）**叠加而成的。
-<ul>
+<li><strong>一维的情况（傅里叶级数）：</strong> 想象一段复杂的声波（音乐）。我们知道，这段复杂的波形其实是由无数个简单的<strong>正弦波（Sine waves）</strong>叠加而成的。<ul>
 <li>低频正弦波决定了整体的大调。</li>
 <li>高频正弦波决定了细节和音色。</li>
 <li><strong>结论：</strong> 任何一维周期函数，都可以分解为一组正弦波的加权和。</li>
 </ul>
 </li>
-<li><strong>二维的情况（球谐函数）：</strong> 现在，把目光从“一根线（声波）”移到“一个球（地球仪或灯光球）”上。 如果我想描述一个球体表面的颜色分布、凹凸起伏或者是围绕球体的光照强度，该怎么办？
-<ul>
+<li><strong>二维的情况（球谐函数）：</strong> 现在，把目光从“一根线（声波）”移到“一个球（地球仪或灯光球）”上。 如果我想描述一个球体表面的颜色分布、凹凸起伏或者是围绕球体的光照强度，该怎么办？<ul>
 <li>球谐函数就是<strong>定义在球表面上的“正弦波”</strong>。</li>
 <li><strong>结论：</strong> 任何定义在球表面上的函数（比如地球的地形、环境光照），都可以分解为一组球谐函数的加权和。</li>
 </ul>
 </li>
 </ol>
 <p><strong>一句话总结定义：</strong> 球谐函数就是球面上的<strong>基函数（Basis Functions）</strong>，就像积木一样，通过组合不同形状的积木（球谐函数），你可以拼出任何复杂的球面信号。</p>
-<h4 id="球谐函数公式">球谐函数公式</h4>
-<p>$$<br>
-\begin{gathered}<br>
-y_{l}^{m}\left( \theta ,\varphi \right) =\left{ \begin{array}{l}<br>
-\sqrt{2}K_{l}^{m}\cos \left( m\varphi \right) P_{l}^{m}\left( \cos \theta \right) \ \ \ m&gt;0\<br>
-\sqrt{2}K_{l}^{m}\sin \left( -m\varphi \right) P_{l}^{-m}\left( \cos \theta \right) \ m&lt;0\<br>
-K_{l}^{0}P_{l}^{0}\left( \cos \theta \right) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m=0\<br>
-\end{array} \right. \cr<br>
-P_n\left( x \right) =\frac{1}{2^n\cdot n!}\frac{d^n}{dx^n}\left[ \left( x^2-1 \right) ^n \right] \cr<br>
-P_{l}^{m}=\left( -1 \right) ^m\left( 1-x^2 \right) ^{\frac{m}{2}}\frac{d^m}{dx^m}\left( P_l\left( x \right) \right) \cr<br>
-K_{l}^{m}=\sqrt{\frac{\left( 2l+1 \right) \left( l-|m| \right) !}{4\pi \left( l+|m| \right) !}}<br>
-\end{gathered}<br>
-$$</p>
-<p><strong>对于一个球谐函数有4个输入分别代表</strong>：</p>
+<h4 id="球谐函数公式"><a href="#球谐函数公式" class="headerlink" title="球谐函数公式"></a>球谐函数公式</h4><script type="math/tex; mode=display">
+\begin{gathered}
+y_{l}^{m}\left( \theta ,\varphi \right) =\left\{ \begin{array}{l}
+    \sqrt{2}K_{l}^{m}\cos \left( m\varphi \right) P_{l}^{m}\left( \cos \theta \right) \ \ \ m>0\\
+    \sqrt{2}K_{l}^{m}\sin \left( -m\varphi \right) P_{l}^{-m}\left( \cos \theta \right) \ m<0\\
+    K_{l}^{0}P_{l}^{0}\left( \cos \theta \right) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m=0\\
+\end{array} \right. \cr
+P_n\left( x \right) =\frac{1}{2^n\cdot n!}\frac{d^n}{dx^n}\left[ \left( x^2-1 \right) ^n \right] \cr
+P_{l}^{m}=\left( -1 \right) ^m\left( 1-x^2 \right) ^{\frac{m}{2}}\frac{d^m}{dx^m}\left( P_l\left( x \right) \right) \cr
+K_{l}^{m}=\sqrt{\frac{\left( 2l+1 \right) \left( l-|m| \right) !}{4\pi \left( l+|m| \right) !}}
+\end{gathered}</script><p><strong>对于一个球谐函数有4个输入分别代表</strong>：</p>
 <ul>
-<li>$$\theta、\varphi$$: 指定的角度，也就是一个球谐函数可以求出空间中任意角度的值y，y代表的是这个球谐函数在这个角度的l，即长度</li>
+<li><script type="math/tex">\theta、\varphi</script>: 指定的角度，也就是一个球谐函数可以求出空间中任意角度的值y，y代表的是这个球谐函数在这个角度的l，即长度</li>
 <li>l(Degree, 阶数): 代表频率或细节程度、l越大球表面的褶皱越多，能表现的细节越明显。l=0是光滑的球；</li>
-<li>m(order，阶次): 代表方向和纹理分布，范围m为整数，且$$-l&lt;=m&lt;=l$$. 正负代表了是否旋转90度</li>
+<li>m(order，阶次): 代表方向和纹理分布，范围m为整数，且<script type="math/tex">-l<=m<=l</script>. 正负代表了是否旋转90度</li>
 </ul>
 <p><strong>部件的作用：</strong></p>
 <ul>
-<li>$$K_{l}^{m}$$:归一化常数，使得l和m不管怎么变，球谐函数在球面上的积分都等于1</li>
-<li>$$P_{l}^m$$:伴随勒让德多项式,这是核心形状生成器，专门负责切分<strong>南北（纬度）方向</strong>的形状</li>
+<li><script type="math/tex">K_{l}^{m}</script>:归一化常数，使得l和m不管怎么变，球谐函数在球面上的积分都等于1</li>
+<li><script type="math/tex">P_{l}^m</script>:伴随勒让德多项式,这是核心形状生成器，专门负责切分<strong>南北（纬度）方向</strong>的形状</li>
 </ul>
 <p>下面是l取3时m的所有取值所得出的表面图像:</p>
 <p><img src="/2025/12/10/%E9%AB%98%E6%96%AF%E6%B3%BC%E6%BA%85/%E9%AB%98%E6%96%AF%E6%B3%BC%E6%BA%85%E5%8E%9F%E7%90%86/m_3.png" alt="m_3"></p>
-<h3 id="椭球的颜色">椭球的颜色</h3>
-<p>我们要让椭球的颜色真实，就不能让椭球的颜色在各个角度看都意义，因此引入球谐函数，因为球谐函数恰好定义了每个不同的角度的值，我们可以将这个值作为颜色，也就是上图中不同方向的值不一样，代表颜色的占比不必要。</p>
-<p>但是不能用一个球谐函数去代表颜色，因为实际上各个方向的并不规则，与傅里叶变换一样，可以用多个正余弦函数去拟合场景中的任意波形，因此，可以考虑多个球谐函数的叠加，去拟合空间中的任意椭球，也就是颜色的公式如下：<br>
-$$<br>
-\begin{aligned}<br>
-f\left( t \right) &amp;\approx \sum_l{\sum_{m=-l}^l{c_{l}^{m}y_{l}^{m}\left( \theta ,\varphi \right)}}\<br>
-&amp;=c_{0}^{0}y_{0}^{0}+\<br>
-&amp;\quad c_{1}^{-1}y_{1}^{-1}+c_{1}^{0}y_{1}^{0}+c_{1}^{1}y_{1}^{1}+\<br>
-&amp;\quad c_{2}^{-2}y_{2}^{-2}+c_{2}^{-1}y_{2}^{-1}+c_{2}^{0}y_{2}^{0}+c_{2}^{1}y_{2}^{1}+c_{2}^{2}y_{2}^{2}+\<br>
-&amp;\quad c_{3}^{-3}y_{3}^{-3}+…\<br>
-\end{aligned}<br>
-$$<br>
-在高斯椭球颜色的渲染中，选择3阶即l等于3,其中的每个y都可以通过公式计算出来，所有的c为参数。且可以得出对于l，他的参数为2*l+1当最高取3时，所有的参数量为$$1+3+5+7=16$$,同时，这仅能代表一个颜色值，对于真实的RGB，则需要$$16\cdot 3=48$$个参数</p>
-<h3 id="高斯椭球参数">高斯椭球参数</h3>
-<ul>
+<h3 id="椭球的颜色-1"><a href="#椭球的颜色-1" class="headerlink" title="椭球的颜色"></a>椭球的颜色</h3><p>我们要让椭球的颜色真实，就不能让椭球的颜色在各个角度看都意义，因此引入球谐函数，因为球谐函数恰好定义了每个不同的角度的值，我们可以将这个值作为颜色，也就是上图中不同方向的值不一样，代表颜色的占比不必要。</p>
+<p>但是不能用一个球谐函数去代表颜色，因为实际上各个方向的并不规则，与傅里叶变换一样，可以用多个正余弦函数去拟合场景中的任意波形，因此，可以考虑多个球谐函数的叠加，去拟合空间中的任意椭球，也就是颜色的公式如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    f\left( t \right) &\approx \sum_l{\sum_{m=-l}^l{c_{l}^{m}y_{l}^{m}\left( \theta ,\varphi \right)}}\\
+    &=c_{0}^{0}y_{0}^{0}+\\
+    &\quad c_{1}^{-1}y_{1}^{-1}+c_{1}^{0}y_{1}^{0}+c_{1}^{1}y_{1}^{1}+\\
+    &\quad c_{2}^{-2}y_{2}^{-2}+c_{2}^{-1}y_{2}^{-1}+c_{2}^{0}y_{2}^{0}+c_{2}^{1}y_{2}^{1}+c_{2}^{2}y_{2}^{2}+\\
+    &\quad c_{3}^{-3}y_{3}^{-3}+...\\
+\end{aligned}</script><p>在高斯椭球颜色的渲染中，选择3阶即l等于3,其中的每个y都可以通过公式计算出来，所有的c为参数。且可以得出对于l，他的参数为2*l+1当最高取3时，所有的参数量为<script type="math/tex">1+3+5+7=16</script>,同时，这仅能代表一个颜色值，对于真实的RGB，则需要<script type="math/tex">16\cdot 3=48</script>个参数</p>
+<h3 id="高斯椭球参数"><a href="#高斯椭球参数" class="headerlink" title="高斯椭球参数"></a>高斯椭球参数</h3><ul>
 <li>形状参数：4个四元数+3个缩放+3个中心位置参数 =10</li>
 <li>颜色参数：16·3=48</li>
 <li>不透明度：1个$\alpha$</li>
@@ -423,8 +395,7 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>本篇介绍我的世界的各种特性</h1>
-<p>**铁傀儡刷新机制:**村民被吓+区域内5个以上村民,僵尸吓村民表现为晚上上床后立马起床</p>
+          <h1 id="本篇介绍我的世界的各种特性"><a href="#本篇介绍我的世界的各种特性" class="headerlink" title="本篇介绍我的世界的各种特性"></a>本篇介绍我的世界的各种特性</h1><p><strong>铁傀儡刷新机制:</strong>村民被吓+区域内5个以上村民,僵尸吓村民表现为晚上上床后立马起床</p>
 
       
     </div>
@@ -483,40 +454,32 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>简易刷铁机的制作</h1>
-<h2 id="原料">原料:</h2>
-<p>任意方框: 泥土、玻璃、石头均可以</p>
-<h2 id="收集装置">收集装置</h2>
-<p>首先搭建下面的装置,一格深的装置,两个小箱子组成的大箱子----箱子*2 方块*15</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E6%94%B6%E9%9B%861.png" alt="收集1"></p>
+          <h1 id="简易刷铁机的制作"><a href="#简易刷铁机的制作" class="headerlink" title="简易刷铁机的制作"></a>简易刷铁机的制作</h1><h2 id="原料"><a href="#原料" class="headerlink" title="原料:"></a>原料:</h2><p>任意方框: 泥土、玻璃、石头均可以</p>
+<h2 id="收集装置"><a href="#收集装置" class="headerlink" title="收集装置"></a>收集装置</h2><p>首先搭建下面的装置,一格深的装置,两个小箱子组成的大箱子——箱子*2 方块*15</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/收集1.png" alt="收集1"></p>
 <p>接下来放置9个漏斗,漏斗连接到箱子上,方法是shift+右键点击对应方块,即可将漏斗连接到方块上、将红色线圈内的漏斗连接到箱子,其余漏斗依次连接</p>
 <p>检验是否安装成果: 向漏斗里面丢东西,最后可以在箱子里面找到</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E6%BC%8F%E6%96%97%E5%AE%89%E8%A3%85.png" alt="漏斗安装"></p>
-<h2 id="铁傀儡处死装置">铁傀儡处死装置</h2>
-<p>在收集装置基础上向上搭建20格,并形成通道,部分区域可简化,以节省方块,当然也可以想底下挖,将收集装置位于-20处以节省方块,需要方块16*20=320,告示牌*9</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E7%8E%BB%E7%92%83%E9%80%9A%E9%81%93.png" alt="玻璃通道"></p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/漏斗安装.png" alt="漏斗安装"></p>
+<h2 id="铁傀儡处死装置"><a href="#铁傀儡处死装置" class="headerlink" title="铁傀儡处死装置"></a>铁傀儡处死装置</h2><p>在收集装置基础上向上搭建20格,并形成通道,部分区域可简化,以节省方块,当然也可以想底下挖,将收集装置位于-20处以节省方块,需要方块16*20=320,告示牌*9</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/玻璃通道.png" alt="玻璃通道"></p>
 <p>在距收集装置2格处放置告示牌,悬浮告示牌放置需要将光标指向告示牌右侧 shift+右键单机(下面的截图均高了一格)</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E5%91%8A%E7%A4%BA%E7%89%8C%E6%94%BE%E7%BD%AE%E6%96%B9%E6%B3%95.png" alt="告示牌放置方法"></p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E5%91%8A%E7%A4%BA%E7%89%8C%E5%AE%89%E7%BD%AE%E7%BB%93%E6%9E%9C.png" alt="告示牌安置结果"></p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/告示牌放置方法.png" alt="告示牌放置方法"></p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/告示牌安置结果.png" alt="告示牌安置结果"></p>
 <p>在告示牌安置上一个放置岩浆,上图红框范围</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E5%B2%A9%E6%B5%86%E6%94%BE%E7%BD%AE%E7%BB%93%E6%9E%9C.png" alt="岩浆放置结果"></p>
-<h2 id="铁傀儡生成">铁傀儡生成</h2>
-<h3 id="搭建铁傀儡生成后的移动平台-利用水流将铁傀儡推到处死装置里">搭建铁傀儡生成后的移动平台,利用水流将铁傀儡推到处死装置里</h3>
-<p>搭建9*9的方格,并在方格外侧添加围栏,挡住水的流动</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E9%93%81%E5%82%80%E5%84%A1%E6%B5%81%E5%8A%A8%E5%B9%B3%E5%8F%B0.png" alt="铁傀儡流动平台"></p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/岩浆放置结果.png" alt="岩浆放置结果"></p>
+<h2 id="铁傀儡生成"><a href="#铁傀儡生成" class="headerlink" title="铁傀儡生成"></a>铁傀儡生成</h2><h3 id="搭建铁傀儡生成后的移动平台-利用水流将铁傀儡推到处死装置里"><a href="#搭建铁傀儡生成后的移动平台-利用水流将铁傀儡推到处死装置里" class="headerlink" title="搭建铁傀儡生成后的移动平台,利用水流将铁傀儡推到处死装置里"></a>搭建铁傀儡生成后的移动平台,利用水流将铁傀儡推到处死装置里</h3><p>搭建9*9的方格,并在方格外侧添加围栏,挡住水的流动</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/铁傀儡流动平台.png" alt="铁傀儡流动平台"></p>
 <p>先在中心添加栅栏门,挡住水流向下的移动,在四个角的方块上放置水源,将铁傀儡向中心推动</p>
 <p>![水流装置](水流装置.p</p>
-<h3 id="僵尸放置轨道">僵尸放置轨道</h3>
-<p>在水流上方四格处,放置一个横着的9格,并搭建为如图所示,其中最上方为半砖</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E5%83%B5%E5%B0%B8%E8%A1%8C%E5%8A%A8%E8%BD%A8%E9%81%93.png" alt="僵尸行动轨道"></p>
+<h3 id="僵尸放置轨道"><a href="#僵尸放置轨道" class="headerlink" title="僵尸放置轨道"></a>僵尸放置轨道</h3><p>在水流上方四格处,放置一个横着的9格,并搭建为如图所示,其中最上方为半砖</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/僵尸行动轨道.png" alt="僵尸行动轨道"></p>
 <p>在僵尸过道两侧建立有3*3*2空间的空间的村民房</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E6%9D%91%E6%B0%91%E6%88%BF.png" alt="村民房"></p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/村民房.png" alt="村民房"></p>
 <p>放入床并封顶,注意床要顶格放,否则僵尸吓不到村民,如果夜晚村民睡觉了,说明距离太远了,以及注意床的方向,床的方向不对,村民不会睡觉</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E6%9D%91%E6%B0%91%E5%BA%8A.png" alt="村民床"></p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/村民床.png" alt="村民床"></p>
 <p>在最底下可以放置灵魂篝火,以加快效率</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E7%81%B5%E9%AD%82%E7%AF%9D%E7%81%AB.png" alt="灵魂篝火"></p>
-<h2 id="注意">注意:</h2>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E9%93%81%E5%82%80%E5%84%A1%E7%94%9F%E6%88%90%E8%A7%84%E5%88%99.png" alt="铁傀儡生成规则"></p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/灵魂篝火.png" alt="灵魂篝火"></p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意:"></a>注意:</h2><p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/铁傀儡生成规则.png" alt="铁傀儡生成规则"></p>
 
       
     </div>
@@ -575,21 +538,16 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>一、ContextCapture先降低图像分辨率做空三再恢复继续做</h1>
-<p>首先下采样图像分辨率,一般为30%</p>
-<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/%E4%B8%8B%E9%99%8D%E5%88%86%E8%BE%A8%E7%8E%87.png" alt="下降分辨率"></p>
+          <h1 id="一、ContextCapture先降低图像分辨率做空三再恢复继续做"><a href="#一、ContextCapture先降低图像分辨率做空三再恢复继续做" class="headerlink" title="一、ContextCapture先降低图像分辨率做空三再恢复继续做"></a>一、ContextCapture先降低图像分辨率做空三再恢复继续做</h1><p>首先下采样图像分辨率,一般为30%</p>
+<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/下降分辨率.png" alt="下降分辨率"></p>
 <p>提交空三</p>
-<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/%E6%8F%90%E4%BA%A4%E7%A9%BA%E4%B8%891.png" alt="image-20250804100937058"></p>
-<h1>二、已有图像初始位姿,计算准确位姿</h1>
-<p>针对于:手持激光扫描仪由于时间同步或标定或者其他问题导致的图像位姿不准,但已有较好的初值,需要计算更为准确的位姿</p>
-<h3 id="将初始位姿转为blockexchange-的xml格式">将初始位姿转为blockexchange 的xml格式</h3>
-<p>这个格式是COntextCapture、Photoscan等软件的通用格式</p>
-<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture%E5%AF%BC%E5%85%A5xml.png" alt="image-20250804142715704"></p>
-<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture%E5%AF%BC%E5%85%A5xml%E7%BB%93%E6%9E%9C.png" alt="contextCapture导入xml结果"></p>
-<h2 id="在已有位姿上提交空三">在已有位姿上提交空三</h2>
-<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture%E6%8F%90%E4%BA%A4%E7%A9%BA%E4%B8%89.png" alt="contextCapture提交空三"></p>
-<h2 id="最后导出block-在metashape中生成稀疏点云即可">最后导出block,在metashape中生成稀疏点云即可</h2>
-
+<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/提交空三1.png" alt="image-20250804100937058"></p>
+<h1 id="二、已有图像初始位姿-计算准确位姿"><a href="#二、已有图像初始位姿-计算准确位姿" class="headerlink" title="二、已有图像初始位姿,计算准确位姿"></a>二、已有图像初始位姿,计算准确位姿</h1><p>针对于:手持激光扫描仪由于时间同步或标定或者其他问题导致的图像位姿不准,但已有较好的初值,需要计算更为准确的位姿</p>
+<h3 id="将初始位姿转为blockexchange-的xml格式"><a href="#将初始位姿转为blockexchange-的xml格式" class="headerlink" title="将初始位姿转为blockexchange 的xml格式"></a>将初始位姿转为blockexchange 的xml格式</h3><p>这个格式是COntextCapture、Photoscan等软件的通用格式</p>
+<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture导入xml.png" alt="image-20250804142715704"></p>
+<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture导入xml结果.png" alt="contextCapture导入xml结果"></p>
+<h2 id="在已有位姿上提交空三"><a href="#在已有位姿上提交空三" class="headerlink" title="在已有位姿上提交空三"></a>在已有位姿上提交空三</h2><p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture提交空三.png" alt="contextCapture提交空三"></p>
+<h2 id="最后导出block-在metashape中生成稀疏点云即可"><a href="#最后导出block-在metashape中生成稀疏点云即可" class="headerlink" title="最后导出block,在metashape中生成稀疏点云即可"></a>最后导出block,在metashape中生成稀疏点云即可</h2>
       
     </div>
 
@@ -649,14 +607,12 @@ $$<br>
       
           <p><strong>指定ip走指定的网卡</strong></p>
 <p><strong>本文实验适用于,vpn走wifi的网卡,其余走网线,这样vpn不会影响其余端口的实用</strong></p>
-<h1>查询本地网卡与网关</h1>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route print</span><br></pre></td></tr></table></figure>
-<p><img src="/2025/08/01/%E4%B8%8D%E5%90%8Cip%E8%B5%B0%E4%B8%8D%E5%90%8C%E7%9A%84%E7%BD%91%E5%8D%A1/%E7%BD%91%E5%8D%A1%E4%B8%8E%E7%BD%91%E5%85%B3%E4%BF%A1%E6%81%AF.png" alt="网卡与网关信息"></p>
+<h1 id="查询本地网卡与网关"><a href="#查询本地网卡与网关" class="headerlink" title="查询本地网卡与网关"></a>查询本地网卡与网关</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route print</span><br></pre></td></tr></table></figure>
+<p><img src="/2025/08/01/%E4%B8%8D%E5%90%8Cip%E8%B5%B0%E4%B8%8D%E5%90%8C%E7%9A%84%E7%BD%91%E5%8D%A1/网卡与网关信息.png" alt="网卡与网关信息"></p>
 <p>其中:10.104.255.254是网线的网关、192.168.1.1是wifi的网关</p>
-<h2 id="添加条件-指定的ip走指定的网关">添加条件:指定的ip走指定的网关</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route add 219.139.228.228 mask 255.255.255.255 192.168.1.1 metric 10 <span class="keyword">if</span> 6</span><br></pre></td></tr></table></figure>
+<h2 id="添加条件-指定的ip走指定的网关"><a href="#添加条件-指定的ip走指定的网关" class="headerlink" title="添加条件:指定的ip走指定的网关"></a>添加条件:指定的ip走指定的网关</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route add 219.139.228.228 mask 255.255.255.255 192.168.1.1 metric 10 <span class="keyword">if</span> 6</span><br></pre></td></tr></table></figure>
 <p>其中219.139.228.228是指定的ip 192.168.1.1是这个ip走的网关,其中6是指wifi对于的接口</p>
-<p><img src="/2025/08/01/%E4%B8%8D%E5%90%8Cip%E8%B5%B0%E4%B8%8D%E5%90%8C%E7%9A%84%E7%BD%91%E5%8D%A1/wifi%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF.png" alt="wifi接口信息"></p>
+<p><img src="/2025/08/01/%E4%B8%8D%E5%90%8Cip%E8%B5%B0%E4%B8%8D%E5%90%8C%E7%9A%84%E7%BD%91%E5%8D%A1/wifi接口信息.png" alt="wifi接口信息"></p>
 <p>即可实现219.139.228.228走wifi,其余走网线</p>
 
       
@@ -722,30 +678,21 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>常见命令</h1>
-<h2 id="拉取容器">拉取容器</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull image_name</span><br></pre></td></tr></table></figure>
-<h2 id="创建镜像">创建镜像</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -i -d --gpus all --shm-size=24g -v F:/ubuntu/docker_data/fast-livo2:/data --name fast-livo2 cuda_11_8</span><br></pre></td></tr></table></figure>
+          <h1 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h1><h2 id="拉取容器"><a href="#拉取容器" class="headerlink" title="拉取容器"></a>拉取容器</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull image_name</span><br></pre></td></tr></table></figure>
+<h2 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -i -d --gpus all --shm-size=24g -v F:/ubuntu/docker_data/fast-livo2:/data --name fast-livo2 cuda_11_8</span><br></pre></td></tr></table></figure>
 <ul>
 <li>-d: 容器在后台运行,并返回容器的id</li>
-<li>–gpus all: 该镜像可以访问到的gpu设置为全部</li>
-<li>–shm-size=24g: 设置容器的共享内存,默认为64MB,对于深度学习等应用来说,不够</li>
+<li>—gpus all: 该镜像可以访问到的gpu设置为全部</li>
+<li>—shm-size=24g: 设置容器的共享内存,默认为64MB,对于深度学习等应用来说,不够</li>
 <li>-v local_path:image_path : 将容器路径映射到本地路径,用于存放代码和数据等等</li>
-<li>–name: 容器名称</li>
+<li>—name: 容器名称</li>
 <li>cuda_11_8: 镜像名称</li>
 </ul>
-<h2 id="进入已有容器的命令行进行操作">进入已有容器的命令行进行操作</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br><span class="line">docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>或名称&gt; /bin/bash</span><br></pre></td></tr></table></figure>
-<h2 id="删除容器和镜像">删除容器和镜像</h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="加载本地镜像">加载本地镜像</h2>
-<h1>常见问题</h1>
-<h3 id="vscode连接远程docker权限问题">vscode连接远程docker权限问题</h3>
-<p>Failed to connect. Is Docker runing?</p>
+<h2 id="进入已有容器的命令行进行操作"><a href="#进入已有容器的命令行进行操作" class="headerlink" title="进入已有容器的命令行进行操作"></a>进入已有容器的命令行进行操作</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br><span class="line">docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>或名称&gt; /bin/bash</span><br></pre></td></tr></table></figure>
+<h2 id="删除容器和镜像"><a href="#删除容器和镜像" class="headerlink" title="删除容器和镜像"></a>删除容器和镜像</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="加载本地镜像"><a href="#加载本地镜像" class="headerlink" title="加载本地镜像"></a>加载本地镜像</h2><h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><h3 id="vscode连接远程docker权限问题"><a href="#vscode连接远程docker权限问题" class="headerlink" title="vscode连接远程docker权限问题"></a>vscode连接远程docker权限问题</h3><p>Failed to connect. Is Docker runing?</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">chmod</span> 777 /var/run/docker.sock</span><br></pre></td></tr></table></figure>
-<h2 id="vscode连接远程本地docker版本冲突">vscode连接远程本地docker版本冲突</h2>
-<p>Failed to connect to the remote extension host server (Error: Connection error: Client refused: version mismatch)</p>
+<h2 id="vscode连接远程本地docker版本冲突"><a href="#vscode连接远程本地docker版本冲突" class="headerlink" title="vscode连接远程本地docker版本冲突"></a>vscode连接远程本地docker版本冲突</h2><p>Failed to connect to the remote extension host server (Error: Connection error: Client refused: version mismatch)</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pkill -f vscode-server || true</span><br><span class="line">rm -rf ~/.vscode-server ~/.vscode-server-insiders</span><br></pre></td></tr></table></figure>
 
       
@@ -805,23 +752,17 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>pyinstaller常用参数</h1>
-<ul>
-<li>
-<p>-F: 打包为一整个exe</p>
+          <h1 id="pyinstaller常用参数"><a href="#pyinstaller常用参数" class="headerlink" title="pyinstaller常用参数"></a>pyinstaller常用参数</h1><ul>
+<li><p>-F: 打包为一整个exe</p>
 </li>
-<li>
-<p>-D: 打包为一个文件夹</p>
+<li><p>-D: 打包为一个文件夹</p>
 </li>
-<li>
-<p>-w: 运行时不显示命令行窗口(仅对windows有效)</p>
+<li><p>-w: 运行时不显示命令行窗口(仅对windows有效)</p>
 </li>
-<li>
-<p>-i: 图标路径</p>
+<li><p>-i: 图标路径</p>
 </li>
 </ul>
-<h2 id="基础命令">基础命令</h2>
-
+<h2 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h2>
       
     </div>
 
@@ -885,62 +826,46 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>本文代码:<a target="_blank" rel="noopener" href="https://github.com/ouwenwu/UAV2GroundMapper.git">https://github.com/ouwenwu/UAV2GroundMapper.git</a></p>
-<h1>一、数据准备</h1>
-<p>无人机数据</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E6%97%A0%E4%BA%BA%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%9B%BE%E7%89%87.png" alt="无人机数据图片"></p>
+          <p> 本文代码:<a target="_blank" rel="noopener" href="https://github.com/ouwenwu/UAV2GroundMapper.git">https://github.com/ouwenwu/UAV2GroundMapper.git</a></p>
+<h1 id="一、数据准备"><a href="#一、数据准备" class="headerlink" title="一、数据准备"></a>一、数据准备</h1><p>无人机数据</p>
+<p> <img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/无人机数据图片.png" alt="无人机数据图片"></p>
 <p>手持扫码仪数据</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E6%89%8B%E6%8C%81%E6%89%AB%E6%8F%8F%E4%BB%AA%E6%95%B0%E6%8D%AE.png" alt="手持扫描仪数据"></p>
-<h1>二、无人机数据处理</h1>
-<h2 id="Photoscan无人机处理流程">Photoscan无人机处理流程</h2>
-<p>Align Photos-&gt;Build Point Cloud</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E6%97%A0%E4%BA%BA%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E7%BB%93%E6%9E%9C.png" alt="无人机数据处理结果"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/手持扫描仪数据.png" alt="手持扫描仪数据"></p>
+<h1 id="二、无人机数据处理"><a href="#二、无人机数据处理" class="headerlink" title="二、无人机数据处理"></a>二、无人机数据处理</h1><h2 id="Photoscan无人机处理流程"><a href="#Photoscan无人机处理流程" class="headerlink" title="Photoscan无人机处理流程"></a>Photoscan无人机处理流程</h2><p>Align Photos-&gt;Build Point Cloud</p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/无人机数据处理结果.png" alt="无人机数据处理结果"></p>
 <p>导出camera.xml和点云备用,需要设置导出格式为blockexchange同时不需要导出tiepoints</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/photoscan%E5%AF%BC%E5%87%BAcamera.png" alt="photoscan导出camera"></p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E5%AF%BC%E5%87%BA%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE.png" alt="导出参数设置"></p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E7%82%B9%E4%BA%91%E5%AF%BC%E5%87%BA%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE.png" alt="点云导出参数设置"></p>
-<h2 id="手持激光扫描仪处理流程">手持激光扫描仪处理流程</h2>
-<h3 id="RayStudio打开工程文件—Basic-Data解算图片和点云数据">RayStudio打开工程文件—Basic Data解算图片和点云数据</h3>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/Raystudio%E8%A7%A3%E7%AE%97%E6%95%B0%E6%8D%AE.png" alt="Raystudio解算数据"></p>
-<h3 id="点云赋色">点云赋色</h3>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E7%82%B9%E4%BA%91%E8%B5%8B%E8%89%B2.png" alt="点云赋色"></p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/slam%E5%A4%84%E7%90%86%E7%BB%93%E6%9E%9C.png" alt="slam处理结果"></p>
-<h3 id="RayStudio导出图片使用Photoscan空三">RayStudio导出图片使用Photoscan空三</h3>
-<p>将RayStudio的文件导出图像初始位置</p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/photoscan导出camera.png" alt="photoscan导出camera"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/导出参数设置.png" alt="导出参数设置"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/点云导出参数设置.png" alt="点云导出参数设置"></p>
+<h2 id="手持激光扫描仪处理流程"><a href="#手持激光扫描仪处理流程" class="headerlink" title="手持激光扫描仪处理流程"></a>手持激光扫描仪处理流程</h2><h3 id="RayStudio打开工程文件—-Basic-Data解算图片和点云数据"><a href="#RayStudio打开工程文件—-Basic-Data解算图片和点云数据" class="headerlink" title="RayStudio打开工程文件—-Basic Data解算图片和点云数据"></a>RayStudio打开工程文件—-Basic Data解算图片和点云数据</h3><p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/Raystudio解算数据.png" alt="Raystudio解算数据"></p>
+<h3 id="点云赋色"><a href="#点云赋色" class="headerlink" title="点云赋色"></a>点云赋色</h3><p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/点云赋色.png" alt="点云赋色"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/slam处理结果.png" alt="slam处理结果"></p>
+<h3 id="RayStudio导出图片使用Photoscan空三"><a href="#RayStudio导出图片使用Photoscan空三" class="headerlink" title="RayStudio导出图片使用Photoscan空三"></a>RayStudio导出图片使用Photoscan空三</h3><p>将RayStudio的文件导出图像初始位置</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py getImageXYZ --colmap_dir J:/jyg/chibi/zhihuilou/outdoor/shading/Colmap/sparse/0/images.txt --output_path J:/jyg/chibi/zhihuilou/outdoor/shading/Colmap/image_xyz.txt</span><br></pre></td></tr></table></figure>
 <p>图片路径位于:./image_undistorted/camera_front</p>
 <p>Photoscan添加图片后,在Reference(参考页)添加图像位置作为参考,并选择之前输出的图像位置</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/phtotscan%E5%AF%BC%E5%85%A5%E5%8F%82%E8%80%83.png" alt="phtotscan导入参考"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/phtotscan导入参考.png" alt="phtotscan导入参考"></p>
 <p>可以适量的删除影像(只保留研究区域)以及稀疏影像,当前影像采集频率高于需求,适当减少加快效率,删除后align photos(对齐图片)-&gt;Build Point Cloud</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E6%89%8B%E6%8C%81%E5%AF%86%E9%9B%86%E7%82%B9%E4%BA%91.png" alt="手持密集点云"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/手持密集点云.png" alt="手持密集点云"></p>
 <p>导出camera.xml和点云备用,需要设置导出格式为blockexchange同时不需要导出tiepoints</p>
-<h1>手持与无人机融合</h1>
-<h2 id="手持到无人机坐标系统转换">手持到无人机坐标系统转换</h2>
-<h3 id="cloudcampare计算变换矩阵">cloudcampare计算变换矩阵</h3>
-<p>包含粗配准和精配准两个步骤:其中粗配准为手动调整点云使得两个点云具有初步配齐,再使用icp进行精配准.</p>
+<h1 id="手持与无人机融合"><a href="#手持与无人机融合" class="headerlink" title="手持与无人机融合"></a>手持与无人机融合</h1><h2 id="手持到无人机坐标系统转换"><a href="#手持到无人机坐标系统转换" class="headerlink" title="手持到无人机坐标系统转换"></a>手持到无人机坐标系统转换</h2><h3 id="cloudcampare计算变换矩阵"><a href="#cloudcampare计算变换矩阵" class="headerlink" title="cloudcampare计算变换矩阵"></a>cloudcampare计算变换矩阵</h3><p>包含粗配准和精配准两个步骤:其中粗配准为手动调整点云使得两个点云具有初步配齐,再使用icp进行精配准.</p>
 <p>记录下每一步点云的变换矩阵</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E6%97%8B%E8%BD%AC%E5%B9%B3%E7%A7%BB%E6%96%B9%E6%B3%95.png" alt="旋转平移方法"></p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E7%B2%97%E9%85%8D%E5%87%86%E7%BB%93%E6%9E%9C.png" alt="粗配准结果"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/旋转平移方法.png" alt="旋转平移方法"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/粗配准结果.png" alt="粗配准结果"></p>
 <p>裁剪两个点云至相同范围,并做精配准</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E7%B2%BE%E9%85%8D%E5%87%86.png" alt="精配准"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/精配准.png" alt="精配准"></p>
 <p>记录下每一步的变换矩阵如下:</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5.png" alt="变换矩阵"></p>
-<h2 id="将手持坐标系按照变换关系旋转">将手持坐标系按照变换关系旋转</h2>
-<p>将无人机的photoscan的xml格式转为colmap格式</p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/变换矩阵.png" alt="变换矩阵"></p>
+<h2 id="将手持坐标系按照变换关系旋转"><a href="#将手持坐标系按照变换关系旋转" class="headerlink" title="将手持坐标系按照变换关系旋转"></a>将手持坐标系按照变换关系旋转</h2><p>将无人机的photoscan的xml格式转为colmap格式</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py from_photoscan_xml_2_colmap_txt --xml_path J:/jyg/test/camera_shouchi.xml --output_path J:/jyg/test/colmap</span><br></pre></td></tr></table></figure>
-<h3 id="根据colmap结果计算图像位置">根据colmap结果计算图像位置</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py getImageXYZ --colmap_dir J:/jyg/test/colmap --output_path J:/jyg/test/image_xyz.txt</span><br></pre></td></tr></table></figure>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E5%9B%BE%E5%83%8F%E4%BD%8D%E5%A7%BF.png" alt="图像位姿"></p>
-<h3 id="旋转图像位置到无人机的坐标系下">旋转图像位置到无人机的坐标系下:</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py rotate_image_xyz --image_xyz J:/jyg/test/image_xyz.txt --output_path J:/jyg/test/image_xyz_out.txt --matrix_path J:/jyg/test/matrix.txt</span><br></pre></td></tr></table></figure>
-<h3 id="根据旋转后的图像位置去纠正colmap文件到指定坐标系">根据旋转后的图像位置去纠正colmap文件到指定坐标系</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colmap model_aligner --input_path J:/jyg/test/colmap --output_path J:/jyg/test/colmap_rotate --ref_images_path J:/jyg/test/image_xyz_out.txt --alignment_type enu --ref_is_gps 0  --robust_alignment_max_error 3</span><br></pre></td></tr></table></figure>
+<h3 id="根据colmap结果计算图像位置"><a href="#根据colmap结果计算图像位置" class="headerlink" title="根据colmap结果计算图像位置"></a>根据colmap结果计算图像位置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py getImageXYZ --colmap_dir J:/jyg/test/colmap --output_path J:/jyg/test/image_xyz.txt</span><br></pre></td></tr></table></figure>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/图像位姿.png" alt="图像位姿"></p>
+<h3 id="旋转图像位置到无人机的坐标系下"><a href="#旋转图像位置到无人机的坐标系下" class="headerlink" title="旋转图像位置到无人机的坐标系下:"></a>旋转图像位置到无人机的坐标系下:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py rotate_image_xyz --image_xyz J:/jyg/test/image_xyz.txt --output_path J:/jyg/test/image_xyz_out.txt --matrix_path J:/jyg/test/matrix.txt</span><br></pre></td></tr></table></figure>
+<h3 id="根据旋转后的图像位置去纠正colmap文件到指定坐标系"><a href="#根据旋转后的图像位置去纠正colmap文件到指定坐标系" class="headerlink" title="根据旋转后的图像位置去纠正colmap文件到指定坐标系"></a>根据旋转后的图像位置去纠正colmap文件到指定坐标系</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colmap model_aligner --input_path J:/jyg/test/colmap --output_path J:/jyg/test/colmap_rotate --ref_images_path J:/jyg/test/image_xyz_out.txt --alignment_type enu --ref_is_gps 0  --robust_alignment_max_error 3</span><br></pre></td></tr></table></figure>
 <p>将旋转后的bin文件转为txt格式</p>
 <p>colmap-&gt;import model-&gt;export model as text</p>
-<h3 id="将旋转后的colmap的txt文件-写为photoscan的xml文件">将旋转后的colmap的txt文件,写为photoscan的xml文件</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py write_colmap_txt_2_photoscan_xml --colmap_txt_path J:/jyg/test/colmap_rotate --output_xml_path J:/jyg/test/camera_shouchi_rotate.xml --image_path J:/jyg/test/20250726162036/image_undistorted/camera_front</span><br></pre></td></tr></table></figure>
-<h1>融合无人机和手持影像</h1>
-<p>合并无人机的xml和手持影像的xml</p>
+<h3 id="将旋转后的colmap的txt文件-写为photoscan的xml文件"><a href="#将旋转后的colmap的txt文件-写为photoscan的xml文件" class="headerlink" title="将旋转后的colmap的txt文件,写为photoscan的xml文件"></a>将旋转后的colmap的txt文件,写为photoscan的xml文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py write_colmap_txt_2_photoscan_xml --colmap_txt_path J:/jyg/test/colmap_rotate --output_xml_path J:/jyg/test/camera_shouchi_rotate.xml --image_path J:/jyg/test/20250726162036/image_undistorted/camera_front</span><br></pre></td></tr></table></figure>
+<h1 id="融合无人机和手持影像"><a href="#融合无人机和手持影像" class="headerlink" title="融合无人机和手持影像"></a>融合无人机和手持影像</h1><p>合并无人机的xml和手持影像的xml</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py merge_photoscan_xml --xml_lists J:/jyg/test/camera_wrj.xml J:/jyg/test/camera_shouchi_rotate.xml --output_xml_path J:/jyg/test/merged_camera.xml</span><br></pre></td></tr></table></figure>
 <p>将xml文件导出为colmap的txt格式</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python main.py from_photoscan_xml_2_colmap_txt --xml_path J:/jyg/test/merged_camera.xml --output_path J:/jyg/test/colmap_m</span><br><span class="line">erge</span><br></pre></td></tr></table></figure>
@@ -1003,8 +928,7 @@ $$<br>
 
       
           <ol>
-<li>
-<p>Equations: conclude with comma or dot depending on what follows.</p>
+<li><p>Equations: conclude with comma or dot depending on what follows.</p>
 <p>公式后要根据后续的内容添加逗号或句号</p>
 </li>
 </ol>
@@ -1066,13 +990,9 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>一、创建文档</h1>
-<h2 id="1-创建到-post默认的文件夹中">1.创建到_post默认的文件夹中</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new name</span><br></pre></td></tr></table></figure>
-<h2 id="2-创建到-post下的指定子文件夹中">2.创建到_post下的指定子文件夹中</h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post &quot;title&quot; --path=latex/name.md</span><br></pre></td></tr></table></figure>
-<h1>二、部署到github</h1>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>
+          <h1 id="一、创建文档"><a href="#一、创建文档" class="headerlink" title="一、创建文档"></a>一、创建文档</h1><h2 id="1-创建到-post默认的文件夹中"><a href="#1-创建到-post默认的文件夹中" class="headerlink" title="1.创建到_post默认的文件夹中"></a>1.创建到_post默认的文件夹中</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new name</span><br></pre></td></tr></table></figure>
+<h2 id="2-创建到-post下的指定子文件夹中"><a href="#2-创建到-post下的指定子文件夹中" class="headerlink" title="2.创建到_post下的指定子文件夹中"></a>2.创建到_post下的指定子文件夹中</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post &quot;title&quot; --path=latex/name.md</span><br></pre></td></tr></table></figure>
+<h1 id="二、部署到github"><a href="#二、部署到github" class="headerlink" title="二、部署到github"></a>二、部署到github</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>
 
       
     </div>

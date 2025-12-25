@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="GNSS数据处理   探地雷达使用过程中，有一个基站RTK、一个绑定在探地雷达上的移动站RTK   由于要用基站RTK去纠正移动站RTK，因此移动站RTK的数据采集时间应当在基站RTK采集时间包含中   对RTK的数据.GNS文件的处理：使用HGO数据处理软件   HGO软件中：工具→RINEX转换工具       基站数据处理  基站RTK数据-1  注意转换基站数据时，前10s和后10s可以不">
+  <meta name="description" content="GNSS数据处理 探地雷达使用过程中，有一个基站RTK、一个绑定在探地雷达上的移动站RTK  由于要用基站RTK去纠正移动站RTK，因此移动站RTK的数据采集时间应当在基站RTK采集时间包含中  对RTK的数据.GNS文件的处理：使用HGO数据处理软件  HGO软件中：工具→RINEX转换工具       基站数据处理 基站RTK数据-1 注意转换基站数据时，前10s和后10s可以不要，防止启动和">
 <meta property="og:type" content="article">
 <meta property="og:title" content="探地雷达数据处理">
 <meta property="og:url" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/index.html">
 <meta property="og:site_name" content="Ouwenwu">
-<meta property="og:description" content="GNSS数据处理   探地雷达使用过程中，有一个基站RTK、一个绑定在探地雷达上的移动站RTK   由于要用基站RTK去纠正移动站RTK，因此移动站RTK的数据采集时间应当在基站RTK采集时间包含中   对RTK的数据.GNS文件的处理：使用HGO数据处理软件   HGO软件中：工具→RINEX转换工具       基站数据处理  基站RTK数据-1  注意转换基站数据时，前10s和后10s可以不">
+<meta property="og:description" content="GNSS数据处理 探地雷达使用过程中，有一个基站RTK、一个绑定在探地雷达上的移动站RTK  由于要用基站RTK去纠正移动站RTK，因此移动站RTK的数据采集时间应当在基站RTK采集时间包含中  对RTK的数据.GNS文件的处理：使用HGO数据处理软件  HGO软件中：工具→RINEX转换工具       基站数据处理 基站RTK数据-1 注意转换基站数据时，前10s和后10s可以不要，防止启动和">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141026463.png">
 <meta property="og:image" content="http://example.com/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141327150.png">
@@ -298,29 +298,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1>GNSS数据处理</h1>
+        <h1 id="GNSS数据处理"><a href="#GNSS数据处理" class="headerlink" title="GNSS数据处理"></a>GNSS数据处理</h1><ul>
+<li><p><strong>探地雷达使用过程中，有一个基站RTK、一个绑定在探地雷达上的移动站RTK</strong></p>
 <ul>
-<li>
-<p><strong>探地雷达使用过程中，有一个基站RTK、一个绑定在探地雷达上的移动站RTK</strong></p>
-<ul>
-<li>
-<p>由于要用基站RTK去纠正移动站RTK，因此移动站RTK的数据采集时间应当在基站RTK采集时间包含中</p>
+<li><p>由于要用基站RTK去纠正移动站RTK，因此移动站RTK的数据采集时间应当在基站RTK采集时间包含中</p>
 </li>
-<li>
-<p>对RTK的数据.GNS文件的处理：使用<em>HGO数据处理软件</em></p>
+<li><p>对RTK的数据.GNS文件的处理：使用<em>HGO数据处理软件</em></p>
 </li>
-<li>
-<p>HGO软件中：工具→RINEX转换工具</p>
+<li><p>HGO软件中：工具→RINEX转换工具</p>
 </li>
 </ul>
 </li>
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141026463.png" alt="image-20230416141026463"></p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141327150.png" alt="image-20230416141327150"></p>
-<h2 id="基站数据处理">基站数据处理</h2>
-<ul>
-<li><strong>基站RTK数据-1</strong>
-<ul>
+<h2 id="基站数据处理"><a href="#基站数据处理" class="headerlink" title="基站数据处理"></a>基站数据处理</h2><ul>
+<li><strong>基站RTK数据-1</strong><ul>
 <li>注意转换基站数据时，前10s和后10s可以不要，防止启动和结束时数据的不稳定</li>
 <li>起始时间加10，截止时间减10</li>
 </ul>
@@ -332,33 +325,28 @@
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416141815403.png" alt="image-20230416141815403"></p>
 <ul>
-<li><strong>转换后结果</strong>
-<ul>
+<li><strong>转换后结果</strong><ul>
 <li>转换后出现.o和.p文件</li>
 </ul>
 </li>
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416142003716.png" alt="image-20230416142003716"></p>
-<h2 id="移动站数据处理">移动站数据处理</h2>
-<ul>
-<li><strong>移动站RTK数据-1</strong>
-<ul>
+<h2 id="移动站数据处理"><a href="#移动站数据处理" class="headerlink" title="移动站数据处理"></a>移动站数据处理</h2><ul>
+<li><strong>移动站RTK数据-1</strong><ul>
 <li>可以看出其时间在基站RTK数据-1的范围内</li>
 </ul>
 </li>
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416142434473.png" alt="image-20230416142434473"></p>
 <ul>
-<li><strong>移动站RTK数据-2</strong>
-<ul>
+<li><strong>移动站RTK数据-2</strong><ul>
 <li>可以看出其时间在基站RTK数据-2的范围外</li>
 <li>则需要对</li>
 </ul>
 </li>
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416142546036.png" alt="image-20230416142546036"></p>
-<h2 id="RTK数据使用IE解算">RTK数据使用IE解算</h2>
-<ul>
+<h2 id="RTK数据使用IE解算"><a href="#RTK数据使用IE解算" class="headerlink" title="RTK数据使用IE解算"></a>RTK数据使用IE解算</h2><ul>
 <li><strong>创建项目</strong>——点击左上角圈中的按钮，然后下一步</li>
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416144253784.png" alt="image-20230416144253784"></p>
@@ -371,16 +359,14 @@
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416145751122.png" alt="image-20230416145751122"></p>
 <ul>
-<li>站点信息设置
-<ul>
+<li>站点信息设置<ul>
 <li>坐标选项设置为平均值、投影设置为WGS84——然后下一步</li>
 </ul>
 </li>
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416145850175.png" alt="image-20230416145850175"></p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416145933429.png" alt="image-20230416145933429"></p>
-<h3 id="GNSS解算">GNSS解算</h3>
-<ul>
+<h3 id="GNSS解算"><a href="#GNSS解算" class="headerlink" title="GNSS解算"></a>GNSS解算</h3><ul>
 <li>process→Process GNSS</li>
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416150105641.png" alt="image-20230416150105641"></p>
@@ -389,28 +375,22 @@
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416150201370.png" alt="image-20230416150201370"></p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416150507288.png" alt="image-20230416150507288"></p>
-<h3 id="解算结果导出">解算结果导出</h3>
+<h3 id="解算结果导出"><a href="#解算结果导出" class="headerlink" title="解算结果导出"></a>解算结果导出</h3><ul>
+<li><p>Output→Export Wizard</p>
 <ul>
-<li>Output→Export Wizard
-<ul>
-<li>
-<p>注意选择导出文件格式，这里可以选择cor，如果没有用new添加，格式如图所示，可以点击预览如图所示——然后一直下一步</p>
+<li><p>注意选择导出文件格式，这里可以选择cor，如果没有用new添加，格式如图所示，可以点击预览如图所示——然后一直下一步</p>
 </li>
-<li>
-<p>cor的配置</p>
+<li><p>cor的配置</p>
 <ul>
-<li>
-<p>Header/Footer Options参数设置</p>
+<li><p>Header/Footer Options参数设置</p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504140927212.png" alt="image-20230504140927212"></p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504141124302.png" alt="image-20230504141124302"></p>
 </li>
-<li>
-<p>Field Separator参数设置</p>
+<li><p>Field Separator参数设置</p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504141349524.png" alt="image-20230504141349524"></p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504141433882.png" alt="image-20230504141433882"></p>
 </li>
-<li>
-<p>Export Variables内各项参数设置</p>
+<li><p>Export Variables内各项参数设置</p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142058164.png" alt="image-20230504142058164"></p>
 <p>具体参数如下图所示：</p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230504142134534.png" alt="image-20230504142134534"></p>
@@ -427,8 +407,7 @@
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416161121686.png" alt="image-20230416161121686"></p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416161150435.png" alt="image-20230416161150435"></p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416161525886.png" alt="image-20230416161525886"></p>
-<h1>探地雷达数据绑定RTK</h1>
-<ul>
+<h1 id="探地雷达数据绑定RTK"><a href="#探地雷达数据绑定RTK" class="headerlink" title="探地雷达数据绑定RTK"></a>探地雷达数据绑定RTK</h1><ul>
 <li><strong>探地雷达数据每个项目的文件如下所示</strong>——有若干个数据，每个数据都包含一个time文件</li>
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230416170214005.png" alt="image-20230416170214005"></p>
@@ -441,16 +420,13 @@
 <li>将生成的cor文件复制回数据文件夹，替代原有的cor，但还会有一些cor为空，这一部分数据在后面是无法使用的</li>
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523155612770.png" alt="image-20230523155612770"></p>
-<h1>探地雷达数据的处理</h1>
-<ul>
-<li>
-<p><strong>打开CrossPoint</strong></p>
+<h1 id="探地雷达数据的处理"><a href="#探地雷达数据的处理" class="headerlink" title="探地雷达数据的处理"></a>探地雷达数据的处理</h1><ul>
+<li><p><strong>打开CrossPoint</strong></p>
 <ul>
 <li>需要插U盘，要不然很多功能无法使用</li>
 </ul>
 </li>
-<li>
-<p><strong>打开同一个项目中的各项文件</strong></p>
+<li><p><strong>打开同一个项目中的各项文件</strong></p>
 <ul>
 <li>如这里的6和7是同一个地方的项目</li>
 <li>点进去这个文件夹就可以出现能打开的文件，注意与刚刚的cor对比，如果该文件的cor大小为0kb，这个文件就不能导入</li>
@@ -461,18 +437,15 @@
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160222273.png" alt="image-20230523160222273"></p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160257746.png" alt="image-20230523160257746"></p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160422696.png" alt="image-20230523160422696"></p>
-<h2 id="数据处理">数据处理</h2>
-<ul>
-<li><strong>过滤器设置</strong>
-<ul>
+<h2 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h2><ul>
+<li><strong>过滤器设置</strong><ul>
 <li>目前我也不会设置，先简单打开这两个选项，那么左边的波形就会更加变化，我们将依据这个波形去判断是否有异常</li>
 </ul>
 </li>
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160649796.png" alt="image-20230523160649796"></p>
 <ul>
-<li><strong>0m深度位置设置，这个是为了使得到的高度正常</strong>
-<ul>
+<li><strong>0m深度位置设置，这个是为了使得到的高度正常</strong><ul>
 <li>按道理来说，第一天反射横线应该是地面，也就是此次的深度为0，但是图示并不是这样</li>
 <li>左键点住红色三角并向下拖动，就可以改变0深度位置，注意上下两个都要设置，上面的图为更细节的，也是我们在处理数据过程中用得更多的</li>
 </ul>
@@ -481,8 +454,7 @@
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523160828461.png" alt="image-20230523160828461"></p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523161008203.png" alt="image-20230523161008203"></p>
 <ul>
-<li><strong>波形图对比度调整（应该是叫做对比度）</strong>
-<ul>
+<li><strong>波形图对比度调整（应该是叫做对比度）</strong><ul>
 <li>分为左右两个，左边的调上面的图，右边的调下面的图，一般也就使用左边的调节上面的图</li>
 <li>可以多调整实验一下，调整到可以清晰判断就行</li>
 </ul>
@@ -490,8 +462,7 @@
 </ul>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523161225710.png" alt="image-20230523161225710"></p>
 <ul>
-<li><strong>显示文件数据设置</strong>
-<ul>
+<li><strong>显示文件数据设置</strong><ul>
 <li>在判断过程中，我们经常需要观察两条相邻带之间有相似的异常</li>
 <li>因此，可以在中间的波形图区域设置显示多条带，对比着看异常</li>
 <li>在Tools→Settings→Data view中设置，设置一般为偶数，因为对每一条带都要一个细节的和一个不那么细节的数据需要展示</li>
@@ -504,8 +475,7 @@
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523161858046.png" alt="image-20230523161858046"></p>
 <p><img src="/2023/04/16/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/image-20230523162031623.png" alt="image-20230523162031623"></p>
 <ul>
-<li><strong>异常点标注</strong>
-<ul>
+<li><strong>异常点标注</strong><ul>
 <li>如图中的明显异常点，可以标注出来</li>
 <li>可以看出，三条带出现了类似的异常点，那么我们用同一种Marker标记</li>
 <li>按照这种逻辑将所有的异常标出来，再导出和正射影像叠加分析，如图所示</li>
@@ -598,7 +568,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">GNSS数据处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%AB%99%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">基站数据处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%99%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">移动站数据处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RTK%E6%95%B0%E6%8D%AE%E4%BD%BF%E7%94%A8IE%E8%A7%A3%E7%AE%97"><span class="nav-number">1.3.</span> <span class="nav-text">RTK数据使用IE解算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GNSS%E8%A7%A3%E7%AE%97"><span class="nav-number">1.3.1.</span> <span class="nav-text">GNSS解算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AE%97%E7%BB%93%E6%9E%9C%E5%AF%BC%E5%87%BA"><span class="nav-number">1.3.2.</span> <span class="nav-text">解算结果导出</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">探地雷达数据绑定RTK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">探地雷达数据的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">数据处理</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GNSS%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">GNSS数据处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%AB%99%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">基站数据处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%99%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">移动站数据处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RTK%E6%95%B0%E6%8D%AE%E4%BD%BF%E7%94%A8IE%E8%A7%A3%E7%AE%97"><span class="nav-number">1.3.</span> <span class="nav-text">RTK数据使用IE解算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GNSS%E8%A7%A3%E7%AE%97"><span class="nav-number">1.3.1.</span> <span class="nav-text">GNSS解算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AE%97%E7%BB%93%E6%9E%9C%E5%AF%BC%E5%87%BA"><span class="nav-number">1.3.2.</span> <span class="nav-text">解算结果导出</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9ARTK"><span class="nav-number">2.</span> <span class="nav-text">探地雷达数据绑定RTK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">探地雷达数据的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">数据处理</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

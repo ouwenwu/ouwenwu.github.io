@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="网页解析过程：   HTML解析过程 默认情况下服务器给浏览器返回index.html文件，因此解析HTML是所有步骤的开始，解析HTML过程会构建Dom Tree  生成CSS规则 在解析过程中，如果遇到CSS的link元素，会有浏览器下载对应的CSS文件（不会影响DOM）的解析 对CSS下载完成后，会对CSS文件进行解析，解析出规则树，即CSSOM  构建Render Tree 当DOM Tr">
+  <meta name="description" content="网页解析过程：  HTML解析过程默认情况下服务器给浏览器返回index.html文件，因此解析HTML是所有步骤的开始，解析HTML过程会构建Dom Tree  生成CSS规则在解析过程中，如果遇到CSS的link元素，会有浏览器下载对应的CSS文件（不会影响DOM）的解析 对CSS下载完成后，会对CSS文件进行解析，解析出规则树，即CSSOM  构建Render Tree当DOM Tree和C">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浏览器渲染原理">
 <meta property="og:url" content="http://example.com/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Ouwenwu">
-<meta property="og:description" content="网页解析过程：   HTML解析过程 默认情况下服务器给浏览器返回index.html文件，因此解析HTML是所有步骤的开始，解析HTML过程会构建Dom Tree  生成CSS规则 在解析过程中，如果遇到CSS的link元素，会有浏览器下载对应的CSS文件（不会影响DOM）的解析 对CSS下载完成后，会对CSS文件进行解析，解析出规则树，即CSSOM  构建Render Tree 当DOM Tr">
+<meta property="og:description" content="网页解析过程：  HTML解析过程默认情况下服务器给浏览器返回index.html文件，因此解析HTML是所有步骤的开始，解析HTML过程会构建Dom Tree  生成CSS规则在解析过程中，如果遇到CSS的link元素，会有浏览器下载对应的CSS文件（不会影响DOM）的解析 对CSS下载完成后，会对CSS文件进行解析，解析出规则树，即CSSOM  构建Render Tree当DOM Tree和C">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322214252101.png">
 <meta property="og:image" content="http://example.com/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215014488.png">
@@ -261,42 +261,34 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1>网页解析过程：</h1>
-<p><img src="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322214252101.png" alt="image-20230322214252101"></p>
+        <h1 id="网页解析过程："><a href="#网页解析过程：" class="headerlink" title="网页解析过程："></a>网页解析过程：</h1><p><img src="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322214252101.png" alt="image-20230322214252101"></p>
 <p><img src="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215014488.png" alt="image-20230322215014488"></p>
-<h2 id="HTML解析过程">HTML解析过程</h2>
-<p>默认情况下服务器给浏览器返回index.html文件，因此解析HTML是所有步骤的开始，解析HTML过程会构建Dom Tree</p>
+<h2 id="HTML解析过程"><a href="#HTML解析过程" class="headerlink" title="HTML解析过程"></a>HTML解析过程</h2><p>默认情况下服务器给浏览器返回index.html文件，因此解析HTML是所有步骤的开始，解析HTML过程会构建Dom Tree</p>
 <p><img src="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322215643759.png" alt="image-20230322215643759"></p>
-<h2 id="生成CSS规则">生成CSS规则</h2>
-<p>在解析过程中，如果遇到CSS的link元素，会有浏览器下载对应的CSS文件（不会影响DOM）的解析</p>
+<h2 id="生成CSS规则"><a href="#生成CSS规则" class="headerlink" title="生成CSS规则"></a>生成CSS规则</h2><p>在解析过程中，如果遇到CSS的link元素，会有浏览器下载对应的CSS文件（不会影响DOM）的解析</p>
 <p>对CSS下载完成后，会对CSS文件进行解析，解析出规则树，即CSSOM</p>
 <p><img src="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322220941332.png" alt="image-20230322220941332"></p>
-<h2 id="构建Render-Tree">构建Render Tree</h2>
-<p>当DOM Tree和CSSOM Tree有了过后就可以两者结合构建Render Tree了</p>
+<h2 id="构建Render-Tree"><a href="#构建Render-Tree" class="headerlink" title="构建Render Tree"></a>构建Render Tree</h2><p>当DOM Tree和CSSOM Tree有了过后就可以两者结合构建Render Tree了</p>
 <p><img src="/2023/03/22/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86/image-20230322221500301.png" alt="image-20230322221500301"></p>
 <p>注：link元素不会阻塞DOM Tree的构建，但会阻塞Render Tree的构建</p>
-<p>​		Render Tree和Dom Tree并不是一一对应的关系，对于display为none的元素，不会出现在Render Tree中</p>
-<h2 id="布局和绘制">布局和绘制</h2>
-<p>渲染树会显示每个节点的样式，但不会给出每个节点的尺寸和位置，布局就是确定渲染树中每个节点的宽度、高度和位置信息</p>
+<p>​        Render Tree和Dom Tree并不是一一对应的关系，对于display为none的元素，不会出现在Render Tree中</p>
+<h2 id="布局和绘制"><a href="#布局和绘制" class="headerlink" title="布局和绘制"></a>布局和绘制</h2><p>渲染树会显示每个节点的样式，但不会给出每个节点的尺寸和位置，布局就是确定渲染树中每个节点的宽度、高度和位置信息</p>
 <p>绘制就是将布局阶段计算的每个frame转为屏幕上实际的像素点，包括将元素的可见部分进行绘制，比如文本、颜色、边框、阴影、替换元素</p>
-<h2 id="script元素和页面解析的关系">script元素和页面解析的关系</h2>
-<p>在HTML解析过程中，遇到script元素是不能继续构建DOM Tree的；会首先下载JavaScript代码，并执行脚本，等脚本执行结束后，继续解析HTML，构建DOM Tree</p>
-<p><em><strong>原因：</strong></em> JavaScript的一个作用是操作DOM，并修改DOM，如果等DOM Tree构建完成后执行JavaScript，会引起严重的回流和重绘，影像性能</p>
-<p><em><strong>但是：</strong></em> 目前的Vue/React开发模式，脚本比HTML页面更重，等到JavaScript解析会造成页面阻塞，在脚本执行完成钱，用户在界面上看不到任何东西</p>
-<h3 id="script解析优化：defer、async">script解析优化：defer、async</h3>
-<p><em><strong>defer：</strong></em> 浏览器不需要等到脚本下载，继续解析HTML，构建DOM Tree</p>
+<h2 id="script元素和页面解析的关系"><a href="#script元素和页面解析的关系" class="headerlink" title="script元素和页面解析的关系"></a>script元素和页面解析的关系</h2><p>在HTML解析过程中，遇到script元素是不能继续构建DOM Tree的；会首先下载JavaScript代码，并执行脚本，等脚本执行结束后，继续解析HTML，构建DOM Tree</p>
+<p><strong><em>原因：</em></strong> JavaScript的一个作用是操作DOM，并修改DOM，如果等DOM Tree构建完成后执行JavaScript，会引起严重的回流和重绘，影像性能</p>
+<p><strong><em>但是：</em></strong> 目前的Vue/React开发模式，脚本比HTML页面更重，等到JavaScript解析会造成页面阻塞，在脚本执行完成钱，用户在界面上看不到任何东西</p>
+<h3 id="script解析优化：defer、async"><a href="#script解析优化：defer、async" class="headerlink" title="script解析优化：defer、async"></a>script解析优化：defer、async</h3><p><strong><em>defer：</em></strong> 浏览器不需要等到脚本下载，继续解析HTML，构建DOM Tree  </p>
 <p>​              不会阻塞DOm Tree的构建，等到DOM Tree构建完成后，在DOMContentLoaded事件之前执行代码</p>
 <p>​               带多个defer的脚本按顺序执行</p>
-<p>​			   从某种角度来说，defer可以提高性能，并且推荐放到head元素中</p>
-<p>​				注：defer仅适用于外部脚本，对于script默认内容会忽略</p>
-<p><em><strong>async：</strong></em>  脚本完全独立</p>
-<p>​				浏览器不会因async阻塞</p>
-<p>​				async不能保证不同脚本之间的顺序，独立下载、运行</p>
-<p>​				async不能保证在DOMcontentLoaded之前或之后运行</p>
-<p><em><strong>defer通常用于文档解析后会操作DOM的JavaScript代码，并且对多个script文件有顺序要求的</strong></em></p>
-<p><em><strong>async通常用于独立的脚本，对其他脚本，DOM没有依赖的</strong></em></p>
-<h2 id="回流和重绘（见浏览器优化）">回流和重绘（见浏览器优化）</h2>
-
+<p>​               从某种角度来说，defer可以提高性能，并且推荐放到head元素中</p>
+<p>​                注：defer仅适用于外部脚本，对于script默认内容会忽略</p>
+<p><strong><em>async：</em></strong>  脚本完全独立</p>
+<p>​                浏览器不会因async阻塞</p>
+<p>​                async不能保证不同脚本之间的顺序，独立下载、运行</p>
+<p>​                async不能保证在DOMcontentLoaded之前或之后运行</p>
+<p><strong><em>defer通常用于文档解析后会操作DOM的JavaScript代码，并且对多个script文件有顺序要求的</em></strong></p>
+<p><strong><em>async通常用于独立的脚本，对其他脚本，DOM没有依赖的</em></strong></p>
+<h2 id="回流和重绘（见浏览器优化）"><a href="#回流和重绘（见浏览器优化）" class="headerlink" title="回流和重绘（见浏览器优化）"></a>回流和重绘（见浏览器优化）</h2>
     </div>
 
     
@@ -381,7 +373,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">网页解析过程：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">HTML解析过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90CSS%E8%A7%84%E5%88%99"><span class="nav-number">1.2.</span> <span class="nav-text">生成CSS规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BARender-Tree"><span class="nav-number">1.3.</span> <span class="nav-text">构建Render Tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E5%B1%80%E5%92%8C%E7%BB%98%E5%88%B6"><span class="nav-number">1.4.</span> <span class="nav-text">布局和绘制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#script%E5%85%83%E7%B4%A0%E5%92%8C%E9%A1%B5%E9%9D%A2%E8%A7%A3%E6%9E%90%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.5.</span> <span class="nav-text">script元素和页面解析的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#script%E8%A7%A3%E6%9E%90%E4%BC%98%E5%8C%96%EF%BC%9Adefer%E3%80%81async"><span class="nav-number">1.5.1.</span> <span class="nav-text">script解析优化：defer、async</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E6%B5%81%E5%92%8C%E9%87%8D%E7%BB%98%EF%BC%88%E8%A7%81%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%98%E5%8C%96%EF%BC%89"><span class="nav-number">1.6.</span> <span class="nav-text">回流和重绘（见浏览器优化）</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E9%A1%B5%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">网页解析过程：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">HTML解析过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90CSS%E8%A7%84%E5%88%99"><span class="nav-number">1.2.</span> <span class="nav-text">生成CSS规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BARender-Tree"><span class="nav-number">1.3.</span> <span class="nav-text">构建Render Tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E5%B1%80%E5%92%8C%E7%BB%98%E5%88%B6"><span class="nav-number">1.4.</span> <span class="nav-text">布局和绘制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#script%E5%85%83%E7%B4%A0%E5%92%8C%E9%A1%B5%E9%9D%A2%E8%A7%A3%E6%9E%90%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.5.</span> <span class="nav-text">script元素和页面解析的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#script%E8%A7%A3%E6%9E%90%E4%BC%98%E5%8C%96%EF%BC%9Adefer%E3%80%81async"><span class="nav-number">1.5.1.</span> <span class="nav-text">script解析优化：defer、async</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E6%B5%81%E5%92%8C%E9%87%8D%E7%BB%98%EF%BC%88%E8%A7%81%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%98%E5%8C%96%EF%BC%89"><span class="nav-number">1.6.</span> <span class="nav-text">回流和重绘（见浏览器优化）</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
