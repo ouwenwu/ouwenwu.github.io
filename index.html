@@ -188,6 +188,161 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/05/08/vscode-devcontainer-codex%E6%8F%92%E4%BB%B6%E4%BB%A3%E7%90%86%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/08/vscode-devcontainer-codex%E6%8F%92%E4%BB%B6%E4%BB%A3%E7%90%86%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">vscode devcontainer中codex插件代理问题记录</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-05-08 09:52:38 / 修改时间：09:53:38" itemprop="dateCreated datePublished" datetime="2026-05-08T09:52:38+08:00">2026-05-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="vscode-devcontainer中codex插件代理问题记录"><a href="#vscode-devcontainer中codex插件代理问题记录" class="headerlink" title="vscode devcontainer中codex插件代理问题记录"></a>vscode devcontainer中codex插件代理问题记录</h1><p><strong><em>问题环境：</em></strong></p>
+<ul>
+<li>系统：Windows + Docker Desktop + VS Code Dev Container</li>
+<li>容器：<code>road_ortho</code></li>
+<li>项目路径：<code>/code/road_ortho_code/road_lunwen_code/merge_tiffs_lunwen_code_newest</code></li>
+<li>代理端口：宿主机 <code>7897</code></li>
+<li>容器访问宿主机代理地址：<code>http://host.docker.internal:7897</code></li>
+</ul>
+<p><strong><em>问题现象：</em></strong></p>
+<p>在 VS Code 的 Codex 插件中反复出现网络请求失败，日志类似：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Error fetching error=&quot;TypeError: fetch failed&quot; url=https://ab.chatgpt.com/v1/initialize</span><br><span class="line">Error fetching error=&quot;TypeError: fetch failed&quot; url=https://chatgpt.com/ces/v1/rgstr</span><br><span class="line">Error fetching error=&quot;TypeError: fetch failed&quot; url=/wham/accounts/check</span><br><span class="line">Error fetching error=&quot;TypeError: fetch failed&quot; url=/wham/tasks/list?limit=20&amp;task_filter=current</span><br></pre></td></tr></table></figure>
+<p>同时还可能出现：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unsupported feature enablement `workspace_dependencies`</span><br></pre></td></tr></table></figure>
+<p>以及 Git 或 VS Code Remote 日志中出现：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Failed to connect to 127.0.0.1 port 7897</span><br><span class="line">Failed to establish a socket connection to proxies: PROXY 127.0.0.1:7897</span><br></pre></td></tr></table></figure>
+<h2 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h2><p><strong><em>核心原因：容器内的 <code>127.0.0.1</code> 不是 Windows 宿主机。</em></strong></p>
+<p>在 Windows 上代理软件监听：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:7897</span><br></pre></td></tr></table></figure>
+<p>但是 Codex 插件运行在 Docker 容器中。容器内部访问 <code>127.0.0.1:7897</code> 时，访问的是容器自己，而不是 Windows 宿主机，因此会连接失败。</p>
+<p>在 Docker Desktop 环境中，容器访问宿主机应使用：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">host.docker.internal</span><br></pre></td></tr></table></figure>
+<p>因此容器内正确代理地址是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://host.docker.internal:7897</span><br></pre></td></tr></table></figure>
+<h2 id="需要修改的位置"><a href="#需要修改的位置" class="headerlink" title="需要修改的位置"></a>需要修改的位置</h2><p>这个问题不是只改一个环境变量即可，因为 VS Code Codex 插件涉及多层进程：</p>
+<ul>
+<li>VS Code Remote Server</li>
+<li>VS Code extensionHost</li>
+<li>OpenAI ChatGPT/Codex 插件</li>
+<li>Codex app-server</li>
+<li>Git</li>
+</ul>
+<p>所以需要同时处理以下位置。</p>
+<h3 id="1-VS-Code-Remote-Server-环境变量"><a href="#1-VS-Code-Remote-Server-环境变量" class="headerlink" title="1. VS Code Remote Server 环境变量"></a>1. VS Code Remote Server 环境变量</h3><p>文件：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/root/.vscode-server/server-env-setup</span><br></pre></td></tr></table></figure>
+<p>内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HTTP_PROXY=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> HTTPS_PROXY=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> ALL_PROXY=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> http_proxy=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> https_proxy=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> all_proxy=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> NO_PROXY=localhost,127.0.0.1,::1</span><br><span class="line"><span class="built_in">export</span> no_proxy=localhost,127.0.0.1,::1</span><br></pre></td></tr></table></figure>
+<h3 id="2-VS-Code-Remote-settings"><a href="#2-VS-Code-Remote-settings" class="headerlink" title="2. VS Code Remote settings"></a>2. VS Code Remote settings</h3><p>文件：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/root/.vscode-server/data/Machine/settings.json</span><br></pre></td></tr></table></figure>
+<p>需要包含：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">	<span class="attr">&quot;http.proxy&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://host.docker.internal:7897&quot;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;http.proxyStrictSSL&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;http.proxySupport&quot;</span><span class="punctuation">:</span> <span class="string">&quot;off&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ul>
+<li><code>http.proxy</code>：设置容器可访问的代理地址</li>
+<li><code>http.proxySupport: off</code>：避免 VS Code Remote 继续把宿主机的 <code>127.0.0.1:7897</code> 代理注入到容器内部</li>
+</ul>
+<h3 id="3-Git-全局代理"><a href="#3-Git-全局代理" class="headerlink" title="3. Git 全局代理"></a>3. Git 全局代理</h3><p>在容器中执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy http://host.docker.internal:7897</span><br><span class="line">git config --global https.proxy http://host.docker.internal:7897</span><br></pre></td></tr></table></figure>
+<p>检查：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global --get-regexp proxy</span><br></pre></td></tr></table></figure>
+<p>正确结果应类似：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http.proxy http://host.docker.internal:7897</span><br><span class="line">https.proxy http://host.docker.internal:7897</span><br></pre></td></tr></table></figure>
+<h3 id="4-Codex-插件启动脚本"><a href="#4-Codex-插件启动脚本" class="headerlink" title="4. Codex 插件启动脚本"></a>4. Codex 插件启动脚本</h3><p>Codex 插件自带的启动文件位置类似：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/root/.vscode-server/extensions/openai.chatgpt-版本号-linux-x64/bin/linux-x86_64/codex</span><br></pre></td></tr></table></figure>
+<p>需要将其替换为 wrapper，使 Codex app-server 启动时继承正确代理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">export</span> HTTP_PROXY=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> HTTPS_PROXY=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> ALL_PROXY=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> http_proxy=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> https_proxy=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> all_proxy=http://host.docker.internal:7897</span><br><span class="line"><span class="built_in">export</span> NO_PROXY=localhost,127.0.0.1,::1</span><br><span class="line"><span class="built_in">export</span> no_proxy=localhost,127.0.0.1,::1</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span> -v /usr/local/bin/codex &gt;/dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">exec</span> /usr/local/bin/codex <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">exec</span> <span class="string">&quot;<span class="subst">$(dirname <span class="string">&quot;<span class="variable">$0</span>&quot;</span>)</span>/codex.real&quot;</span> <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ul>
+<li>原始插件二进制保存为：<code>codex.real</code></li>
+<li>优先使用 npm 安装的稳定版：<code>/usr/local/bin/codex</code></li>
+<li>如果没有 npm 版本，则回退到插件自带的 <code>codex.real</code></li>
+</ul>
+<h2 id="一键修复脚本"><a href="#一键修复脚本" class="headerlink" title="一键修复脚本"></a>一键修复脚本</h2><p>已经在项目中保存脚本：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/mnt/f/code/road_ortho/road_ortho_code/road_lunwen_code/merge_tiffs_lunwen_code_newest/scripts/fix_codex_vscode_proxy.sh</span><br></pre></td></tr></table></figure>
+<p>以后再次出现类似问题，直接在项目根目录执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/fix_codex_vscode_proxy.sh</span><br></pre></td></tr></table></figure>
+<p>脚本默认参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CONTAINER_NAME=road_ortho</span><br><span class="line">PROXY_URL=http://host.docker.internal:7897</span><br><span class="line">RESTART_VSCODE=1</span><br></pre></td></tr></table></figure>
+<p>如果容器名或代理端口变化，可以这样运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONTAINER_NAME=road_ortho PROXY_URL=http://host.docker.internal:7897 ./scripts/fix_codex_vscode_proxy.sh</span><br></pre></td></tr></table></figure>
+<p>如果只想写配置，不想立即停止 VS Code 相关进程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RESTART_VSCODE=0 ./scripts/fix_codex_vscode_proxy.sh</span><br></pre></td></tr></table></figure>
+<h2 id="修复后需要做的操作"><a href="#修复后需要做的操作" class="headerlink" title="修复后需要做的操作"></a>修复后需要做的操作</h2><p>执行脚本后，需要在 VS Code 中执行：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Reload Window</span><br></pre></td></tr></table></figure>
+<p>或者重新连接 Dev Container。</p>
+<p>原因是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/root/.vscode-server/server-env-setup</span><br></pre></td></tr></table></figure>
+<p>只会在新的 VS Code Remote Server / extensionHost 启动时读取。旧进程不会自动更新已经继承的环境变量。</p>
+<h2 id="验证方法"><a href="#验证方法" class="headerlink" title="验证方法"></a>验证方法</h2><h3 id="查看-Codex-进程"><a href="#查看-Codex-进程" class="headerlink" title="查看 Codex 进程"></a>查看 Codex 进程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> road_ortho sh -lc <span class="string">&#x27;ps aux | grep -E &quot;openai.chatgpt|codex|extensionHost&quot; | grep -v grep&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="查看-Codex-app-server-环境变量"><a href="#查看-Codex-app-server-环境变量" class="headerlink" title="查看 Codex app-server 环境变量"></a>查看 Codex app-server 环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> road_ortho sh -lc <span class="string">&#x27;pid=$(pgrep -f &quot;codex app-server&quot; | head -n 1); tr &quot;\0&quot; &quot;\n&quot; &lt; /proc/$pid/environ | grep -i proxy&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>正确结果应包含：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTP_PROXY=http://host.docker.internal:7897</span><br><span class="line">HTTPS_PROXY=http://host.docker.internal:7897</span><br><span class="line">ALL_PROXY=http://host.docker.internal:7897</span><br><span class="line">NO_PROXY=localhost,127.0.0.1,::1</span><br></pre></td></tr></table></figure>
+<h3 id="查看-Git-代理"><a href="#查看-Git-代理" class="headerlink" title="查看 Git 代理"></a>查看 Git 代理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> road_ortho git config --global --get-regexp proxy</span><br></pre></td></tr></table></figure>
+<p>正确结果：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http.proxy http://host.docker.internal:7897</span><br><span class="line">https.proxy http://host.docker.internal:7897</span><br></pre></td></tr></table></figure>
+<h3 id="测试容器访问代理"><a href="#测试容器访问代理" class="headerlink" title="测试容器访问代理"></a>测试容器访问代理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> road_ortho curl -I --max-time 8 -x http://host.docker.internal:7897 https://chatgpt.com</span><br></pre></td></tr></table></figure>
+<p>如果能返回 HTTP 响应，说明容器可以通过宿主机代理访问外网。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p><strong><em><code>unsupported feature enablement workspace_dependencies</code> 不一定是代理问题。</em></strong></p>
+<p>这个错误表示当前 Codex app-server 不支持 VS Code 插件尝试启用的某个 experimental feature。它可能和插件版本、Codex CLI 版本有关。</p>
+<p>但是如果同时出现：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TypeError: fetch failed</span><br><span class="line">Failed to connect to 127.0.0.1 port 7897</span><br><span class="line">PROXY 127.0.0.1:7897</span><br></pre></td></tr></table></figure>
+<p>则优先处理代理问题。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个问题的关键不是代理端口本身，而是 Docker 容器中的地址语义：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:7897</span><br></pre></td></tr></table></figure>
+<p>在容器中表示容器自己，不是 Windows 宿主机。</p>
+<p>因此容器内所有 VS Code、Codex、Git 相关代理都应统一改为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://host.docker.internal:7897</span><br></pre></td></tr></table></figure>
+<p>并在修改后重启 VS Code Remote / Dev Container，使新环境变量生效。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2026/05/06/pwa%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%8F%91%E5%B8%83%E5%88%B0github-pages%E5%B9%B6%E5%9C%A8iphone%E7%A6%BB%E7%BA%BF%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -227,13 +382,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>PWA小游戏发布到GitHub Pages并在iPhone离线使用</h1>
-<p>这里记录一个完整流程：把一个普通的 HTML/CSS/JS 小功能改造成 PWA 离线应用，发布到 GitHub Pages，然后在 iPhone Safari 中“添加到主屏幕”。第一次联网打开后，后面断网也可以从主屏幕图标进入。</p>
+          <h1 id="PWA小游戏发布到GitHub-Pages并在iPhone离线使用"><a href="#PWA小游戏发布到GitHub-Pages并在iPhone离线使用" class="headerlink" title="PWA小游戏发布到GitHub Pages并在iPhone离线使用"></a>PWA小游戏发布到GitHub Pages并在iPhone离线使用</h1><p>这里记录一个完整流程：把一个普通的 HTML/CSS/JS 小功能改造成 PWA 离线应用，发布到 GitHub Pages，然后在 iPhone Safari 中“添加到主屏幕”。第一次联网打开后，后面断网也可以从主屏幕图标进入。</p>
 <p>示例地址：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://ouwenwu.github.io/minesweeper/</span><br></pre></td></tr></table></figure>
 <p>其中 <code>minesweeper</code> 是仓库名。以后换成自己的项目时，把它替换为自己的仓库名即可。</p>
-<h1>一、核心思路</h1>
-<p>PWA 不需要打包成 iOS 安装包，也不需要 Xcode。它的核心是：</p>
+<h1 id="一、核心思路"><a href="#一、核心思路" class="headerlink" title="一、核心思路"></a>一、核心思路</h1><p>PWA 不需要打包成 iOS 安装包，也不需要 Xcode。它的核心是：</p>
 <ul>
 <li>用 HTML/CSS/JS 写好网页功能</li>
 <li>加一个 <code>manifest.webmanifest</code>，让系统知道应用名称、图标、启动方式</li>
@@ -243,12 +396,10 @@
 <li>之后从主屏幕图标打开，已经缓存的资源可以离线使用</li>
 </ul>
 <p>注意：第一次必须联网访问一次，离线能力是在第一次访问时缓存下来的。</p>
-<h1>二、项目结构</h1>
-<p>一个最小结构可以这样：</p>
+<h1 id="二、项目结构"><a href="#二、项目结构" class="headerlink" title="二、项目结构"></a>二、项目结构</h1><p>一个最小结构可以这样：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">my-game/</span><br><span class="line">├── index.html</span><br><span class="line">├── package.json</span><br><span class="line">├── public/</span><br><span class="line">│   ├── manifest.webmanifest</span><br><span class="line">│   ├── service-worker.js</span><br><span class="line">│   └── icons/</span><br><span class="line">│       ├── icon-192.png</span><br><span class="line">│       ├── icon-512.png</span><br><span class="line">│       └── apple-touch-icon.png</span><br><span class="line">├── src/</span><br><span class="line">│   ├── main.js</span><br><span class="line">│   └── styles.css</span><br><span class="line">└── vite.config.js</span><br></pre></td></tr></table></figure>
 <p>如果不是 Vite 项目，也可以直接用静态 HTML，只要最后发布出去的是 <code>index.html</code>、<code>manifest.webmanifest</code>、<code>service-worker.js</code> 和相关资源即可。</p>
-<h1>三、添加 manifest.webmanifest</h1>
-<p>在 <code>public/manifest.webmanifest</code> 中写入：</p>
+<h1 id="三、添加-manifest-webmanifest"><a href="#三、添加-manifest-webmanifest" class="headerlink" title="三、添加 manifest.webmanifest"></a>三、添加 manifest.webmanifest</h1><p>在 <code>public/manifest.webmanifest</code> 中写入：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;扫雷&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;short_name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;扫雷&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;可离线游玩的扫雷小游戏&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;start_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scope&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;display&quot;</span><span class="punctuation">:</span> <span class="string">&quot;standalone&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;background_color&quot;</span><span class="punctuation">:</span> <span class="string">&quot;#c8d2e1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;theme_color&quot;</span><span class="punctuation">:</span> <span class="string">&quot;#f3f6fb&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;orientation&quot;</span><span class="punctuation">:</span> <span class="string">&quot;portrait&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;icons&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;src&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./icons/icon-192.png&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;sizes&quot;</span><span class="punctuation">:</span> <span class="string">&quot;192x192&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;image/png&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;purpose&quot;</span><span class="punctuation">:</span> <span class="string">&quot;any maskable&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;src&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./icons/icon-512.png&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;sizes&quot;</span><span class="punctuation">:</span> <span class="string">&quot;512x512&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;image/png&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;purpose&quot;</span><span class="punctuation">:</span> <span class="string">&quot;any maskable&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 <p>图标至少准备：</p>
 <ul>
@@ -257,29 +408,24 @@
 <li><code>public/icons/apple-touch-icon.png</code></li>
 </ul>
 <p>其中 <code>apple-touch-icon.png</code> 是 iPhone 添加到主屏幕后显示的图标，建议使用 <code>180x180</code> 或更高分辨率的 PNG。</p>
-<h1>四、在 index.html 中引入 PWA 配置</h1>
-<p>在 <code>index.html</code> 的 <code>&lt;head&gt;</code> 中加入：</p>
+<h1 id="四、在-index-html-中引入-PWA-配置"><a href="#四、在-index-html-中引入-PWA-配置" class="headerlink" title="四、在 index.html 中引入 PWA 配置"></a>四、在 index.html 中引入 PWA 配置</h1><p>在 <code>index.html</code> 的 <code>&lt;head&gt;</code> 中加入：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;theme-color&quot;</span> <span class="attr">content</span>=<span class="string">&quot;#f3f6fb&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;description&quot;</span> <span class="attr">content</span>=<span class="string">&quot;可离线游玩的扫雷小游戏&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;mobile-web-app-capable&quot;</span> <span class="attr">content</span>=<span class="string">&quot;yes&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;apple-mobile-web-app-capable&quot;</span> <span class="attr">content</span>=<span class="string">&quot;yes&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;apple-mobile-web-app-title&quot;</span> <span class="attr">content</span>=<span class="string">&quot;扫雷&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;apple-mobile-web-app-status-bar-style&quot;</span> <span class="attr">content</span>=<span class="string">&quot;default&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;manifest&quot;</span> <span class="attr">href</span>=<span class="string">&quot;./manifest.webmanifest&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;apple-touch-icon&quot;</span> <span class="attr">href</span>=<span class="string">&quot;./icons/apple-touch-icon.png&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 <p>这里使用 <code>./manifest.webmanifest</code> 和 <code>./icons/...</code>，是为了让项目部署到 GitHub Pages 的子路径时也能正常加载。</p>
-<h1>五、添加 service-worker.js</h1>
-<p>在 <code>public/service-worker.js</code> 中写入：</p>
+<h1 id="五、添加-service-worker-js"><a href="#五、添加-service-worker-js" class="headerlink" title="五、添加 service-worker.js"></a>五、添加 service-worker.js</h1><p>在 <code>public/service-worker.js</code> 中写入：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="variable constant_">CACHE_NAME</span> = <span class="string">&#x27;minesweeper-pwa-v1&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">APP_SHELL</span> = [</span><br><span class="line">  <span class="string">&#x27;./&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;./index.html&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;./manifest.webmanifest&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;./icons/icon-192.png&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;./icons/icon-512.png&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;./icons/apple-touch-icon.png&#x27;</span>,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;install&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  event.<span class="title function_">waitUntil</span>(</span><br><span class="line">    caches</span><br><span class="line">      .<span class="title function_">open</span>(<span class="variable constant_">CACHE_NAME</span>)</span><br><span class="line">      .<span class="title function_">then</span>(<span class="keyword">async</span> (cache) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> shellUrls = <span class="variable constant_">APP_SHELL</span>.<span class="title function_">map</span>(<span class="function">(<span class="params">path</span>) =&gt;</span> <span class="keyword">new</span> <span class="title function_">URL</span>(path, self.<span class="property">registration</span>.<span class="property">scope</span>));</span><br><span class="line">        <span class="keyword">await</span> cache.<span class="title function_">addAll</span>(shellUrls);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> indexUrl = <span class="keyword">new</span> <span class="title function_">URL</span>(<span class="string">&#x27;./index.html&#x27;</span>, self.<span class="property">registration</span>.<span class="property">scope</span>);</span><br><span class="line">        <span class="keyword">const</span> indexResponse = <span class="keyword">await</span> <span class="title function_">fetch</span>(indexUrl);</span><br><span class="line">        <span class="keyword">const</span> indexHtml = <span class="keyword">await</span> indexResponse.<span class="title function_">clone</span>().<span class="title function_">text</span>();</span><br><span class="line">        <span class="keyword">await</span> cache.<span class="title function_">put</span>(indexUrl, indexResponse);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> assetUrls = [...indexHtml.<span class="title function_">matchAll</span>(<span class="regexp">/(?:src|href)=&quot;([^&quot;]+)&quot;/g</span>)]</span><br><span class="line">          .<span class="title function_">map</span>(<span class="function">(<span class="params">match</span>) =&gt;</span> <span class="keyword">new</span> <span class="title function_">URL</span>(match[<span class="number">1</span>], indexUrl))</span><br><span class="line">          .<span class="title function_">filter</span>(<span class="function">(<span class="params">url</span>) =&gt;</span> url.<span class="property">origin</span> === self.<span class="property">location</span>.<span class="property">origin</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> cache.<span class="title function_">addAll</span>(assetUrls);</span><br><span class="line">      &#125;)</span><br><span class="line">      .<span class="title function_">then</span>(<span class="function">() =&gt;</span> self.<span class="title function_">skipWaiting</span>()),</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;activate&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  event.<span class="title function_">waitUntil</span>(</span><br><span class="line">    caches</span><br><span class="line">      .<span class="title function_">keys</span>()</span><br><span class="line">      .<span class="title function_">then</span>(<span class="function">(<span class="params">cacheNames</span>) =&gt;</span></span><br><span class="line">        <span class="title class_">Promise</span>.<span class="title function_">all</span>(cacheNames.<span class="title function_">filter</span>(<span class="function">(<span class="params">name</span>) =&gt;</span> name !== <span class="variable constant_">CACHE_NAME</span>).<span class="title function_">map</span>(<span class="function">(<span class="params">name</span>) =&gt;</span> caches.<span class="title function_">delete</span>(name))),</span><br><span class="line">      )</span><br><span class="line">      .<span class="title function_">then</span>(<span class="function">() =&gt;</span> self.<span class="property">clients</span>.<span class="title function_">claim</span>()),</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;fetch&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">request</span>.<span class="property">method</span> !== <span class="string">&#x27;GET&#x27;</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  event.<span class="title function_">respondWith</span>(</span><br><span class="line">    caches.<span class="title function_">match</span>(event.<span class="property">request</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">cachedResponse</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (cachedResponse) <span class="keyword">return</span> cachedResponse;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">fetch</span>(event.<span class="property">request</span>)</span><br><span class="line">        .<span class="title function_">then</span>(<span class="function">(<span class="params">networkResponse</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">const</span> shouldCache =</span><br><span class="line">            networkResponse.<span class="property">ok</span> &amp;&amp;</span><br><span class="line">            <span class="keyword">new</span> <span class="title function_">URL</span>(event.<span class="property">request</span>.<span class="property">url</span>).<span class="property">origin</span> === self.<span class="property">location</span>.<span class="property">origin</span> &amp;&amp;</span><br><span class="line">            [<span class="string">&#x27;document&#x27;</span>, <span class="string">&#x27;script&#x27;</span>, <span class="string">&#x27;style&#x27;</span>, <span class="string">&#x27;image&#x27;</span>, <span class="string">&#x27;manifest&#x27;</span>].<span class="title function_">includes</span>(event.<span class="property">request</span>.<span class="property">destination</span>);</span><br><span class="line"></span><br><span class="line">          <span class="keyword">if</span> (shouldCache) &#123;</span><br><span class="line">            <span class="keyword">const</span> responseCopy = networkResponse.<span class="title function_">clone</span>();</span><br><span class="line">            caches.<span class="title function_">open</span>(<span class="variable constant_">CACHE_NAME</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">cache</span>) =&gt;</span> cache.<span class="title function_">put</span>(event.<span class="property">request</span>, responseCopy));</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">return</span> networkResponse;</span><br><span class="line">        &#125;)</span><br><span class="line">        .<span class="title function_">catch</span>(<span class="function">() =&gt;</span> caches.<span class="title function_">match</span>(<span class="keyword">new</span> <span class="title function_">URL</span>(<span class="string">&#x27;./index.html&#x27;</span>, self.<span class="property">registration</span>.<span class="property">scope</span>)));</span><br><span class="line">    &#125;),</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p><code>CACHE_NAME</code> 是缓存版本号。以后修改了 JS、CSS、图标或缓存策略，建议把它改成新的名字，例如：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="variable constant_">CACHE_NAME</span> = <span class="string">&#x27;minesweeper-pwa-v2&#x27;</span>;</span><br></pre></td></tr></table></figure>
 <p>这样 iPhone 下次联网打开时会更新缓存。</p>
-<h1>六、注册 service worker</h1>
-<p>在入口 JS 中加入：</p>
+<h1 id="六、注册-service-worker"><a href="#六、注册-service-worker" class="headerlink" title="六、注册 service worker"></a>六、注册 service worker</h1><p>在入口 JS 中加入：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="string">&#x27;serviceWorker&#x27;</span> <span class="keyword">in</span> navigator) &#123;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    navigator.<span class="property">serviceWorker</span>.<span class="title function_">register</span>(<span class="string">`<span class="subst">$&#123;<span class="keyword">import</span>.meta.env.BASE_URL&#125;</span>service-worker.js`</span>).<span class="title function_">catch</span>(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;Service worker registration failed:&#x27;</span>, error);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果不是 Vite 项目，可以写成：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="string">&#x27;serviceWorker&#x27;</span> <span class="keyword">in</span> navigator) &#123;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    navigator.<span class="property">serviceWorker</span>.<span class="title function_">register</span>(<span class="string">&#x27;./service-worker.js&#x27;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1>七、Vite 项目配置相对路径</h1>
-<p>GitHub Pages 的项目站点通常是子路径，例如：</p>
+<h1 id="七、Vite-项目配置相对路径"><a href="#七、Vite-项目配置相对路径" class="headerlink" title="七、Vite 项目配置相对路径"></a>七、Vite 项目配置相对路径</h1><p>GitHub Pages 的项目站点通常是子路径，例如：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://ouwenwu.github.io/minesweeper/</span><br></pre></td></tr></table></figure>
 <p>为了避免资源路径从域名根目录开始找，Vite 项目建议加 <code>vite.config.js</code>：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">base</span>: <span class="string">&#x27;./&#x27;</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>这样构建后的 JS、CSS 会使用相对路径，部署到 <code>/minesweeper/</code> 这种子路径也能正常访问。</p>
-<h1>八、本地构建验证</h1>
-<p>安装依赖：</p>
+<h1 id="八、本地构建验证"><a href="#八、本地构建验证" class="headerlink" title="八、本地构建验证"></a>八、本地构建验证</h1><p>安装依赖：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
 <p>构建：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
@@ -287,26 +433,22 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run preview</span><br></pre></td></tr></table></figure>
 <p>确认 <code>dist/</code> 中有这些文件：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dist/index.html</span><br><span class="line">dist/manifest.webmanifest</span><br><span class="line">dist/service-worker.js</span><br><span class="line">dist/icons/icon-192.png</span><br><span class="line">dist/icons/icon-512.png</span><br><span class="line">dist/icons/apple-touch-icon.png</span><br></pre></td></tr></table></figure>
-<h1>九、创建 GitHub 仓库</h1>
-<p>新建一个独立仓库，例如：</p>
+<h1 id="九、创建-GitHub-仓库"><a href="#九、创建-GitHub-仓库" class="headerlink" title="九、创建 GitHub 仓库"></a>九、创建 GitHub 仓库</h1><p>新建一个独立仓库，例如：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minesweeper</span><br></pre></td></tr></table></figure>
 <p>不要直接放到 <code>ouwenwu.github.io</code> 这个 Hexo 根站仓库里，避免影响原来的博客。独立仓库发布后访问地址是：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://ouwenwu.github.io/minesweeper/</span><br></pre></td></tr></table></figure>
-<h1>十、提交源码到 main 分支</h1>
-<p>在项目目录中执行：</p>
+<h1 id="十、提交源码到-main-分支"><a href="#十、提交源码到-main-分支" class="headerlink" title="十、提交源码到 main 分支"></a>十、提交源码到 main 分支</h1><p>在项目目录中执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;Add minesweeper PWA&quot;</span></span><br><span class="line">git branch -M main</span><br><span class="line">git remote add origin https://github.com/ouwenwu/minesweeper.git</span><br><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure>
 <p>如果你的仓库名不是 <code>minesweeper</code>，把命令里的仓库地址改成自己的：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://github.com/你的用户名/你的仓库名.git</span><br></pre></td></tr></table></figure>
-<h1>十一、把 dist 发布到 gh-pages 分支</h1>
-<p>先确保已经构建：</p>
+<h1 id="十一、把-dist-发布到-gh-pages-分支"><a href="#十一、把-dist-发布到-gh-pages-分支" class="headerlink" title="十一、把 dist 发布到 gh-pages 分支"></a>十一、把 dist 发布到 gh-pages 分支</h1><p>先确保已经构建：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
 <p>然后把 <code>dist/</code> 单独推送到 <code>gh-pages</code> 分支：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git subtree <span class="built_in">split</span> --prefix dist -b gh-pages</span><br><span class="line">git push -u origin gh-pages</span><br></pre></td></tr></table></figure>
 <p>如果之前已经有本地 <code>gh-pages</code> 分支，更新时可以先删除本地临时分支再重新生成：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git branch -D gh-pages</span><br><span class="line">git subtree <span class="built_in">split</span> --prefix dist -b gh-pages</span><br><span class="line">git push origin gh-pages --force</span><br></pre></td></tr></table></figure>
 <p>这里的 <code>gh-pages</code> 分支只放构建后的静态文件，<code>main</code> 分支保留源码。</p>
-<h1>十二、配置 GitHub Pages</h1>
-<p>进入仓库：</p>
+<h1 id="十二、配置-GitHub-Pages"><a href="#十二、配置-GitHub-Pages" class="headerlink" title="十二、配置 GitHub Pages"></a>十二、配置 GitHub Pages</h1><p>进入仓库：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/ouwenwu/minesweeper</span><br></pre></td></tr></table></figure>
 <p>然后：</p>
 <ol>
@@ -320,8 +462,7 @@
 <p>等待一两分钟后访问：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://ouwenwu.github.io/minesweeper/</span><br></pre></td></tr></table></figure>
 <p>如果能打开页面，说明 GitHub Pages 已经发布成功。</p>
-<h1>十三、iPhone 添加到主屏幕</h1>
-<p>在 iPhone 上操作：</p>
+<h1 id="十三、iPhone-添加到主屏幕"><a href="#十三、iPhone-添加到主屏幕" class="headerlink" title="十三、iPhone 添加到主屏幕"></a>十三、iPhone 添加到主屏幕</h1><p>在 iPhone 上操作：</p>
 <ol>
 <li>用 Safari 打开 <code>https://ouwenwu.github.io/minesweeper/</code></li>
 <li>等页面完整加载</li>
@@ -331,8 +472,7 @@
 <li>点击“添加”</li>
 </ol>
 <p>之后桌面会出现一个类似 app 的图标。点击它会以独立窗口打开，不像普通网页那样显示 Safari 地址栏。</p>
-<h1>十四、离线测试</h1>
-<p>第一次添加后，建议联网状态下从主屏幕图标打开一次，停留几秒，让 service worker 完成安装和缓存。</p>
+<h1 id="十四、离线测试"><a href="#十四、离线测试" class="headerlink" title="十四、离线测试"></a>十四、离线测试</h1><p>第一次添加后，建议联网状态下从主屏幕图标打开一次，停留几秒，让 service worker 完成安装和缓存。</p>
 <p>然后测试：</p>
 <ol>
 <li>关闭 Wi-Fi 和蜂窝网络</li>
@@ -340,26 +480,19 @@
 <li>如果页面正常打开，说明离线缓存成功</li>
 </ol>
 <p>如果第一次离线打不开，通常是缓存还没安装完成。重新联网打开一次，停留几秒，再断网测试。</p>
-<h1>十五、更新版本</h1>
-<p>修改代码后，按这个流程更新：</p>
+<h1 id="十五、更新版本"><a href="#十五、更新版本" class="headerlink" title="十五、更新版本"></a>十五、更新版本</h1><p>修改代码后，按这个流程更新：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;Update PWA&quot;</span></span><br><span class="line">git push origin main</span><br><span class="line">git branch -D gh-pages</span><br><span class="line">git subtree <span class="built_in">split</span> --prefix dist -b gh-pages</span><br><span class="line">git push origin gh-pages --force</span><br></pre></td></tr></table></figure>
 <p>如果改动涉及缓存资源，记得更新 <code>public/service-worker.js</code> 里的缓存名：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="variable constant_">CACHE_NAME</span> = <span class="string">&#x27;minesweeper-pwa-v2&#x27;</span>;</span><br></pre></td></tr></table></figure>
 <p>iPhone 下次联网打开后会拿到新缓存。如果仍然看到旧页面，可以删除主屏幕图标后重新添加，或者在 Safari 中清理网站数据后再访问。</p>
-<h1>十六、常见问题</h1>
-<h2 id="1-为什么不能直接把源码作为-Pages-发布？">1. 为什么不能直接把源码作为 Pages 发布？</h2>
-<p>Vite 项目的开发版 <code>index.html</code> 通常引用 <code>/src/main.js</code>，浏览器不能像 Vite dev server 那样直接处理模块和打包。因此应发布 <code>npm run build</code> 生成的 <code>dist/</code>。</p>
-<h2 id="2-为什么推荐独立仓库？">2. 为什么推荐独立仓库？</h2>
-<p>因为 <code>ouwenwu.github.io</code> 已经是 Hexo 博客根站。小游戏放到独立仓库后，会发布到：</p>
+<h1 id="十六、常见问题"><a href="#十六、常见问题" class="headerlink" title="十六、常见问题"></a>十六、常见问题</h1><h2 id="1-为什么不能直接把源码作为-Pages-发布？"><a href="#1-为什么不能直接把源码作为-Pages-发布？" class="headerlink" title="1. 为什么不能直接把源码作为 Pages 发布？"></a>1. 为什么不能直接把源码作为 Pages 发布？</h2><p>Vite 项目的开发版 <code>index.html</code> 通常引用 <code>/src/main.js</code>，浏览器不能像 Vite dev server 那样直接处理模块和打包。因此应发布 <code>npm run build</code> 生成的 <code>dist/</code>。</p>
+<h2 id="2-为什么推荐独立仓库？"><a href="#2-为什么推荐独立仓库？" class="headerlink" title="2. 为什么推荐独立仓库？"></a>2. 为什么推荐独立仓库？</h2><p>因为 <code>ouwenwu.github.io</code> 已经是 Hexo 博客根站。小游戏放到独立仓库后，会发布到：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://ouwenwu.github.io/minesweeper/</span><br></pre></td></tr></table></figure>
 <p>这样不会影响博客首页：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://ouwenwu.github.io/</span><br></pre></td></tr></table></figure>
-<h2 id="3-iPhone-能不能完全不联网使用？">3. iPhone 能不能完全不联网使用？</h2>
-<p>第一次必须联网打开一次，因为需要下载网页资源并安装 service worker。只要缓存成功，后面就可以离线打开已经缓存的应用。</p>
-<h2 id="4-这是不是-iOS-原生-app？">4. 这是不是 iOS 原生 app？</h2>
-<p>不是。它是 PWA，本质上还是网页应用，但可以添加到主屏幕，并且支持离线缓存。优点是不需要 Xcode 和 Apple 开发者账号；缺点是不能使用所有原生 iOS 能力。</p>
-<h1>十七、最终效果</h1>
-<p>完成后，可以把这个地址分享给别人：</p>
+<h2 id="3-iPhone-能不能完全不联网使用？"><a href="#3-iPhone-能不能完全不联网使用？" class="headerlink" title="3. iPhone 能不能完全不联网使用？"></a>3. iPhone 能不能完全不联网使用？</h2><p>第一次必须联网打开一次，因为需要下载网页资源并安装 service worker。只要缓存成功，后面就可以离线打开已经缓存的应用。</p>
+<h2 id="4-这是不是-iOS-原生-app？"><a href="#4-这是不是-iOS-原生-app？" class="headerlink" title="4. 这是不是 iOS 原生 app？"></a>4. 这是不是 iOS 原生 app？</h2><p>不是。它是 PWA，本质上还是网页应用，但可以添加到主屏幕，并且支持离线缓存。优点是不需要 Xcode 和 Apple 开发者账号；缺点是不能使用所有原生 iOS 能力。</p>
+<h1 id="十七、最终效果"><a href="#十七、最终效果" class="headerlink" title="十七、最终效果"></a>十七、最终效果</h1><p>完成后，可以把这个地址分享给别人：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://ouwenwu.github.io/minesweeper/</span><br></pre></td></tr></table></figure>
 <p>对方在 iPhone Safari 打开后，也可以通过“分享” -&gt; “添加到主屏幕”安装成一个离线可用的小应用。</p>
 
@@ -484,53 +617,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>高斯泼溅形状</h1>
-<h2 id="为什么是椭球">为什么是椭球</h2>
-<h3 id="一维高斯分布函数">一维高斯分布函数</h3>
-<p>一维高斯分布（Gaussian Distribution），通常被称为<strong>正态分布</strong>（Normal Distribution），其概率密度函数（PDF）的数学方程如下：<br>
-$$<br>
-f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}<br>
-$$<br>
-当概率取某个值时，x也对应的为一个常数值</p>
-<h3 id="二维高斯分布函数">二维高斯分布函数</h3>
-<p>二维高斯分布（Bivariate Gaussian Distribution 或 2D Normal Distribution）是一维高斯分布在二维平面上的推广。它的图像不再是一条平面曲线，而是一个三维空间中的“山包”或“钟形曲面”。</p>
-<p>**矩阵形式：**若二维随机向量 $\mathbf{x} = [x, y]^T$ 服从均值向量为 $\mathbf{\mu}$，协方差矩阵为 $\mathbf{\Sigma}$ 的正态分布，其概率密度函数为：<br>
-$$<br>
-f(\mathbf{x}) = \frac{1}{2\pi \sqrt{|\mathbf{\Sigma}|}} \exp\left( -\frac{1}{2} (\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu}) \right)<br>
-$$<br>
-其中：</p>
+          <h1 id="高斯泼溅形状"><a href="#高斯泼溅形状" class="headerlink" title="高斯泼溅形状"></a>高斯泼溅形状</h1><h2 id="为什么是椭球"><a href="#为什么是椭球" class="headerlink" title="为什么是椭球"></a>为什么是椭球</h2><h3 id="一维高斯分布函数"><a href="#一维高斯分布函数" class="headerlink" title="一维高斯分布函数"></a>一维高斯分布函数</h3><p>一维高斯分布（Gaussian Distribution），通常被称为<strong>正态分布</strong>（Normal Distribution），其概率密度函数（PDF）的数学方程如下：</p>
+<script type="math/tex; mode=display">
+f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}</script><p>当概率取某个值时，x也对应的为一个常数值</p>
+<h3 id="二维高斯分布函数"><a href="#二维高斯分布函数" class="headerlink" title="二维高斯分布函数"></a>二维高斯分布函数</h3><p>二维高斯分布（Bivariate Gaussian Distribution 或 2D Normal Distribution）是一维高斯分布在二维平面上的推广。它的图像不再是一条平面曲线，而是一个三维空间中的“山包”或“钟形曲面”。</p>
+<p><strong>矩阵形式：</strong>若二维随机向量 $\mathbf{x} = [x, y]^T$ 服从均值向量为 $\mathbf{\mu}$，协方差矩阵为 $\mathbf{\Sigma}$ 的正态分布，其概率密度函数为：</p>
+<script type="math/tex; mode=display">
+f(\mathbf{x}) = \frac{1}{2\pi \sqrt{|\mathbf{\Sigma}|}} \exp\left( -\frac{1}{2} (\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu}) \right)</script><p>其中：</p>
 <ul>
-<li>$$\mathbf{x} = \begin{bmatrix} x \ y \end{bmatrix}$$是二维变量</li>
-<li>$$ y=\begin{bmatrix}u_x \u_y \end{bmatrix}$$是均值向量，决定了中心点的位置</li>
+<li><script type="math/tex">\mathbf{x} = \begin{bmatrix} x \\ y \end{bmatrix}</script>是二维变量</li>
+<li><script type="math/tex">y=\begin{bmatrix}u_x \\u_y \end{bmatrix}</script>是均值向量，决定了中心点的位置</li>
 <li>$\mathbf{\Sigma} = \begin{bmatrix} \sigma_x^2 &amp; \rho\sigma_x\sigma_y \ \rho\sigma_x\sigma_y &amp; \sigma_y^2 \end{bmatrix}$是协方差矩阵，决定了分布的形状、方向和散度</li>
 </ul>
-<p>当概率取某个常数值时：<br>
-$$<br>
-\left{\begin{array}{l}(\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu})=constant_1 \<br>
-\frac{(x-\mu_x)^2}{\sigma_x^2} - 2\rho\frac{(x-\mu_x)(y-\mu_y)}{\sigma_x\sigma_y} + \frac{(y-\mu_y)^2}{\sigma_y^2}=constant_2<br>
-\end{array}\right.<br>
-$$<br>
-此时xy的分布是一个椭圆，当概率值从［0,1］发生变化时，则x和y组成很多个椭圆，整体来说构成一个实心的椭圆面</p>
-<h3 id="三维高斯分布函数">三维高斯分布函数</h3>
-<p>在二维中，高斯分布是一个平面上的“山包”（等高线是椭圆）。 到了三维中，高斯分布描述的是三维空间中的一个**“云团”<strong>或</strong>“雾状球体”<strong>。它的等值面（密度相同点的集合）是三维空间中的</strong>椭球体 (Ellipsoid)**</p>
-<p>设三维随机向量 $\mathbf{x} = [x, y, z]^T$，其概率密度函数为：<br>
-$$<br>
-f(\mathbf{x}) = \frac{1}{(2\pi)^{3/2} |\mathbf{\Sigma}|^{1/2}} \exp\left( -\frac{1}{2} (\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu}) \right)<br>
-$$<br>
-其中：</p>
+<p>当概率取某个常数值时：</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}(\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu})=constant_1 \\
+\frac{(x-\mu_x)^2}{\sigma_x^2} - 2\rho\frac{(x-\mu_x)(y-\mu_y)}{\sigma_x\sigma_y} + \frac{(y-\mu_y)^2}{\sigma_y^2}=constant_2
+\end{array}\right.</script><p>此时xy的分布是一个椭圆，当概率值从［0,1］发生变化时，则x和y组成很多个椭圆，整体来说构成一个实心的椭圆面</p>
+<h3 id="三维高斯分布函数"><a href="#三维高斯分布函数" class="headerlink" title="三维高斯分布函数"></a>三维高斯分布函数</h3><p>在二维中，高斯分布是一个平面上的“山包”（等高线是椭圆）。 到了三维中，高斯分布描述的是三维空间中的一个<strong>“云团”</strong>或<strong>“雾状球体”</strong>。它的等值面（密度相同点的集合）是三维空间中的<strong>椭球体 (Ellipsoid)</strong></p>
+<p>设三维随机向量 $\mathbf{x} = [x, y, z]^T$，其概率密度函数为：</p>
+<script type="math/tex; mode=display">
+f(\mathbf{x}) = \frac{1}{(2\pi)^{3/2} |\mathbf{\Sigma}|^{1/2}} \exp\left( -\frac{1}{2} (\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu}) \right)</script><p>其中：</p>
 <ul>
-<li>
-<p><strong>$\mathbf{x}$ - 输入变量 (Input Vector):</strong> 三维空间中的一个点。 $\mathbf{x} = \begin{bmatrix} x \cr y \cr z \end{bmatrix}$</p>
+<li><p><strong>$\mathbf{x}$ - 输入变量 (Input Vector):</strong> 三维空间中的一个点。 $\mathbf{x} = \begin{bmatrix} x \cr y \cr z \end{bmatrix}$</p>
 </li>
-<li>
-<p><strong>$\mathbf{\mu}$ - 均值向量 (Mean Vector):</strong> 这个三维“云团”中心点的位置坐标。 $\mathbf{\mu} = \begin{bmatrix} \mu_x \cr \mu_y \cr \mu_z \end{bmatrix}$</p>
+<li><p><strong>$\mathbf{\mu}$ - 均值向量 (Mean Vector):</strong> 这个三维“云团”中心点的位置坐标。 $\mathbf{\mu} = \begin{bmatrix} \mu_x \cr \mu_y \cr \mu_z \end{bmatrix}$</p>
 </li>
-<li>
-<p>$\mathbf{\Sigma}$ - 3x3 协方差矩阵 (Covariance Matrix):</p>
-<p>这是最核心的部分，它定义了椭球体的形状、大小和方向。$$\mathbf{\Sigma} = \begin{bmatrix} \sigma_x^2 &amp; \sigma_{xy} &amp; \sigma_{xz} \cr \sigma_{yx} &amp; \sigma_y^2 &amp; \sigma_{yz} \cr \sigma_{zx} &amp; \sigma_{zy} &amp; \sigma_z^2 \end{bmatrix}$$</p>
+<li><p>$\mathbf{\Sigma}$ - 3x3 协方差矩阵 (Covariance Matrix):</p>
+<p>这是最核心的部分，它定义了椭球体的形状、大小和方向。<script type="math/tex">\mathbf{\Sigma} = \begin{bmatrix} \sigma_x^2 & \sigma_{xy} & \sigma_{xz} \cr \sigma_{yx} & \sigma_y^2 & \sigma_{yz} \cr \sigma_{zx} & \sigma_{zy} & \sigma_z^2 \end{bmatrix}</script></p>
 <ul>
 <li><strong>对角线元素 ($\sigma_x^2, \sigma_y^2, \sigma_z^2$)</strong>：也就是方差，决定了椭球体沿 XYZ 三个轴向的拉伸程度（“胖瘦”）。</li>
-<li><strong>非对角线元素 ($$\sigma_{xy}, \sigma_{xz},…$$)</strong>：也就是协方差，表示了分布的x轴、y轴、z轴之间的关系，决定了椭球体在空间中的<strong>旋转姿态</strong>。如果它们全为 0，说明分布的xyz是独立的，椭球体的轴就与坐标轴平行。</li>
+<li><strong>非对角线元素 (<script type="math/tex">\sigma_{xy}, \sigma_{xz},...</script>)</strong>：也就是协方差，表示了分布的x轴、y轴、z轴之间的关系，决定了椭球体在空间中的<strong>旋转姿态</strong>。如果它们全为 0，说明分布的xyz是独立的，椭球体的轴就与坐标轴平行。</li>
 </ul>
 <p>同时可以用来表示分布的特性</p>
 <ul>
@@ -540,76 +657,148 @@ $$<br>
 </li>
 </ul>
 <p>当概率值取某个常数时$(\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu})=constant$,x的分布为椭球体，则当概率从[0,1]发生变化时，组成很多个椭球体，则所有的分布构成一个实心的椭球，这个就是高斯椭球</p>
-<h2 id="椭球形状的控制">椭球形状的控制</h2>
-<p>上面已经推断出协方差矩阵$$\mathbf{\Sigma} = \begin{bmatrix} \sigma_x^2 &amp; \sigma_{xy} &amp; \sigma_{xz} \cr \sigma_{yx} &amp; \sigma_y^2 &amp; \sigma_{yz} \cr \sigma_{zx} &amp; \sigma_{zy} &amp; \sigma_z^2 \end{bmatrix}$$控制了椭球的中心和各方向上的方向，根据椭球在空间上可以通过球进行仿射变换得到推出椭球的协方差矩阵可以通过球的协方差矩阵通过变换得到，即任意高斯可以看作标准高斯通过仿射变换得到。</p>
-<p>对于高斯分布$$x \sim N\left( \mu ,I \right) $$，假设其每个x均经过$$w=Ax+b$$的仿射变换，那么其新的分布为$$x \sim N(A\mu+b, AI A^T)$$</p>
-<p>仿射变换可以分解为旋转和缩放，即$A=RS$,$$\Sigma=AIA^T=RSIS^TR^T$$,反之，通过协方差矩阵之后可以通过特征值分求出R和S，即将高斯椭球的协方差矩阵用R、S进行表示，R作为旋转矩阵又可以通过四元数q进行表示，即最终的椭球，我们通过q、s进行表示</p>
+<h2 id="椭球形状的控制"><a href="#椭球形状的控制" class="headerlink" title="椭球形状的控制"></a>椭球形状的控制</h2><p>上面已经推断出协方差矩阵<script type="math/tex">\mathbf{\Sigma} = \begin{bmatrix} \sigma_x^2 & \sigma_{xy} & \sigma_{xz} \cr \sigma_{yx} & \sigma_y^2 & \sigma_{yz} \cr \sigma_{zx} & \sigma_{zy} & \sigma_z^2 \end{bmatrix}</script>控制了椭球的中心和各方向上的方向，根据椭球在空间上可以通过球进行仿射变换得到推出椭球的协方差矩阵可以通过球的协方差矩阵通过变换得到，即任意高斯可以看作标准高斯通过仿射变换得到。</p>
+<p>对于高斯分布<script type="math/tex">x \sim N\left( \mu ,I \right)</script>，假设其每个x均经过<script type="math/tex">w=Ax+b</script>的仿射变换，那么其新的分布为<script type="math/tex">x \sim N(A\mu+b, AI A^T)</script></p>
+<p>仿射变换可以分解为旋转和缩放，即$A=RS$,<script type="math/tex">\Sigma=AIA^T=RSIS^TR^T</script>,反之，通过协方差矩阵之后可以通过特征值分求出R和S，即将高斯椭球的协方差矩阵用R、S进行表示，R作为旋转矩阵又可以通过四元数q进行表示，即最终的椭球，我们通过q、s进行表示</p>
 <p>所以对于椭球的形状共有4元数+缩放3+中心3共10个参数</p>
-<h1>椭球的颜色</h1>
-<h3 id="球谐函数">球谐函数</h3>
-<p>要理解球谐函数，你只需要理解一个概念：<strong>傅里叶变换（Fourier Transform）</strong>。</p>
+<h1 id="椭球的颜色"><a href="#椭球的颜色" class="headerlink" title="椭球的颜色"></a>椭球的颜色</h1><h3 id="球谐函数"><a href="#球谐函数" class="headerlink" title="球谐函数"></a>球谐函数</h3><p>要理解球谐函数，你只需要理解一个概念：<strong>傅里叶变换（Fourier Transform）</strong>。</p>
 <ol>
-<li><strong>一维的情况（傅里叶级数）：</strong> 想象一段复杂的声波（音乐）。我们知道，这段复杂的波形其实是由无数个简单的**正弦波（Sine waves）**叠加而成的。
-<ul>
+<li><strong>一维的情况（傅里叶级数）：</strong> 想象一段复杂的声波（音乐）。我们知道，这段复杂的波形其实是由无数个简单的<strong>正弦波（Sine waves）</strong>叠加而成的。<ul>
 <li>低频正弦波决定了整体的大调。</li>
 <li>高频正弦波决定了细节和音色。</li>
 <li><strong>结论：</strong> 任何一维周期函数，都可以分解为一组正弦波的加权和。</li>
 </ul>
 </li>
-<li><strong>二维的情况（球谐函数）：</strong> 现在，把目光从“一根线（声波）”移到“一个球（地球仪或灯光球）”上。 如果我想描述一个球体表面的颜色分布、凹凸起伏或者是围绕球体的光照强度，该怎么办？
-<ul>
+<li><strong>二维的情况（球谐函数）：</strong> 现在，把目光从“一根线（声波）”移到“一个球（地球仪或灯光球）”上。 如果我想描述一个球体表面的颜色分布、凹凸起伏或者是围绕球体的光照强度，该怎么办？<ul>
 <li>球谐函数就是<strong>定义在球表面上的“正弦波”</strong>。</li>
 <li><strong>结论：</strong> 任何定义在球表面上的函数（比如地球的地形、环境光照），都可以分解为一组球谐函数的加权和。</li>
 </ul>
 </li>
 </ol>
 <p><strong>一句话总结定义：</strong> 球谐函数就是球面上的<strong>基函数（Basis Functions）</strong>，就像积木一样，通过组合不同形状的积木（球谐函数），你可以拼出任何复杂的球面信号。</p>
-<h4 id="球谐函数公式">球谐函数公式</h4>
-<p>$$<br>
-\begin{gathered}<br>
-y_{l}^{m}\left( \theta ,\varphi \right) =\left{ \begin{array}{l}<br>
-\sqrt{2}K_{l}^{m}\cos \left( m\varphi \right) P_{l}^{m}\left( \cos \theta \right) \ \ \ m&gt;0\<br>
-\sqrt{2}K_{l}^{m}\sin \left( -m\varphi \right) P_{l}^{-m}\left( \cos \theta \right) \ m&lt;0\<br>
-K_{l}^{0}P_{l}^{0}\left( \cos \theta \right) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m=0\<br>
-\end{array} \right. \cr<br>
-P_n\left( x \right) =\frac{1}{2^n\cdot n!}\frac{d^n}{dx^n}\left[ \left( x^2-1 \right) ^n \right] \cr<br>
-P_{l}^{m}=\left( -1 \right) ^m\left( 1-x^2 \right) ^{\frac{m}{2}}\frac{d^m}{dx^m}\left( P_l\left( x \right) \right) \cr<br>
-K_{l}^{m}=\sqrt{\frac{\left( 2l+1 \right) \left( l-|m| \right) !}{4\pi \left( l+|m| \right) !}}<br>
-\end{gathered}<br>
-$$</p>
-<p><strong>对于一个球谐函数有4个输入分别代表</strong>：</p>
+<h4 id="球谐函数公式"><a href="#球谐函数公式" class="headerlink" title="球谐函数公式"></a>球谐函数公式</h4><script type="math/tex; mode=display">
+\begin{gathered}
+y_{l}^{m}\left( \theta ,\varphi \right) =\left\{ \begin{array}{l}
+    \sqrt{2}K_{l}^{m}\cos \left( m\varphi \right) P_{l}^{m}\left( \cos \theta \right) \ \ \ m>0\\
+    \sqrt{2}K_{l}^{m}\sin \left( -m\varphi \right) P_{l}^{-m}\left( \cos \theta \right) \ m<0\\
+    K_{l}^{0}P_{l}^{0}\left( \cos \theta \right) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m=0\\
+\end{array} \right. \cr
+P_n\left( x \right) =\frac{1}{2^n\cdot n!}\frac{d^n}{dx^n}\left[ \left( x^2-1 \right) ^n \right] \cr
+P_{l}^{m}=\left( -1 \right) ^m\left( 1-x^2 \right) ^{\frac{m}{2}}\frac{d^m}{dx^m}\left( P_l\left( x \right) \right) \cr
+K_{l}^{m}=\sqrt{\frac{\left( 2l+1 \right) \left( l-|m| \right) !}{4\pi \left( l+|m| \right) !}}
+\end{gathered}</script><p><strong>对于一个球谐函数有4个输入分别代表</strong>：</p>
 <ul>
-<li>$$\theta、\varphi$$: 指定的角度，也就是一个球谐函数可以求出空间中任意角度的值y，y代表的是这个球谐函数在这个角度的l，即长度</li>
+<li><script type="math/tex">\theta、\varphi</script>: 指定的角度，也就是一个球谐函数可以求出空间中任意角度的值y，y代表的是这个球谐函数在这个角度的l，即长度</li>
 <li>l(Degree, 阶数): 代表频率或细节程度、l越大球表面的褶皱越多，能表现的细节越明显。l=0是光滑的球；</li>
-<li>m(order，阶次): 代表方向和纹理分布，范围m为整数，且$$-l&lt;=m&lt;=l$$. 正负代表了是否旋转90度</li>
+<li>m(order，阶次): 代表方向和纹理分布，范围m为整数，且<script type="math/tex">-l<=m<=l</script>. 正负代表了是否旋转90度</li>
 </ul>
 <p><strong>部件的作用：</strong></p>
 <ul>
-<li>$$K_{l}^{m}$$:归一化常数，使得l和m不管怎么变，球谐函数在球面上的积分都等于1</li>
-<li>$$P_{l}^m$$:伴随勒让德多项式,这是核心形状生成器，专门负责切分<strong>南北（纬度）方向</strong>的形状</li>
+<li><script type="math/tex">K_{l}^{m}</script>:归一化常数，使得l和m不管怎么变，球谐函数在球面上的积分都等于1</li>
+<li><script type="math/tex">P_{l}^m</script>:伴随勒让德多项式,这是核心形状生成器，专门负责切分<strong>南北（纬度）方向</strong>的形状</li>
 </ul>
 <p>下面是l取3时m的所有取值所得出的表面图像:</p>
 <p><img src="/2025/12/10/%E9%AB%98%E6%96%AF%E6%B3%BC%E6%BA%85/%E9%AB%98%E6%96%AF%E6%B3%BC%E6%BA%85%E5%8E%9F%E7%90%86/m_3.png" alt="m_3"></p>
-<h3 id="椭球的颜色">椭球的颜色</h3>
-<p>我们要让椭球的颜色真实，就不能让椭球的颜色在各个角度看都意义，因此引入球谐函数，因为球谐函数恰好定义了每个不同的角度的值，我们可以将这个值作为颜色，也就是上图中不同方向的值不一样，代表颜色的占比不必要。</p>
-<p>但是不能用一个球谐函数去代表颜色，因为实际上各个方向的并不规则，与傅里叶变换一样，可以用多个正余弦函数去拟合场景中的任意波形，因此，可以考虑多个球谐函数的叠加，去拟合空间中的任意椭球，也就是颜色的公式如下：<br>
-$$<br>
-\begin{aligned}<br>
-f\left( t \right) &amp;\approx \sum_l{\sum_{m=-l}^l{c_{l}^{m}y_{l}^{m}\left( \theta ,\varphi \right)}}\<br>
-&amp;=c_{0}^{0}y_{0}^{0}+\<br>
-&amp;\quad c_{1}^{-1}y_{1}^{-1}+c_{1}^{0}y_{1}^{0}+c_{1}^{1}y_{1}^{1}+\<br>
-&amp;\quad c_{2}^{-2}y_{2}^{-2}+c_{2}^{-1}y_{2}^{-1}+c_{2}^{0}y_{2}^{0}+c_{2}^{1}y_{2}^{1}+c_{2}^{2}y_{2}^{2}+\<br>
-&amp;\quad c_{3}^{-3}y_{3}^{-3}+…\<br>
-\end{aligned}<br>
-$$<br>
-在高斯椭球颜色的渲染中，选择3阶即l等于3,其中的每个y都可以通过公式计算出来，所有的c为参数。且可以得出对于l，他的参数为2*l+1当最高取3时，所有的参数量为$$1+3+5+7=16$$,同时，这仅能代表一个颜色值，对于真实的RGB，则需要$$16\cdot 3=48$$个参数</p>
-<h3 id="高斯椭球参数">高斯椭球参数</h3>
-<ul>
+<h3 id="椭球的颜色-1"><a href="#椭球的颜色-1" class="headerlink" title="椭球的颜色"></a>椭球的颜色</h3><p>我们要让椭球的颜色真实，就不能让椭球的颜色在各个角度看都意义，因此引入球谐函数，因为球谐函数恰好定义了每个不同的角度的值，我们可以将这个值作为颜色，也就是上图中不同方向的值不一样，代表颜色的占比不必要。</p>
+<p>但是不能用一个球谐函数去代表颜色，因为实际上各个方向的并不规则，与傅里叶变换一样，可以用多个正余弦函数去拟合场景中的任意波形，因此，可以考虑多个球谐函数的叠加，去拟合空间中的任意椭球，也就是颜色的公式如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    f\left( t \right) &\approx \sum_l{\sum_{m=-l}^l{c_{l}^{m}y_{l}^{m}\left( \theta ,\varphi \right)}}\\
+    &=c_{0}^{0}y_{0}^{0}+\\
+    &\quad c_{1}^{-1}y_{1}^{-1}+c_{1}^{0}y_{1}^{0}+c_{1}^{1}y_{1}^{1}+\\
+    &\quad c_{2}^{-2}y_{2}^{-2}+c_{2}^{-1}y_{2}^{-1}+c_{2}^{0}y_{2}^{0}+c_{2}^{1}y_{2}^{1}+c_{2}^{2}y_{2}^{2}+\\
+    &\quad c_{3}^{-3}y_{3}^{-3}+...\\
+\end{aligned}</script><p>在高斯椭球颜色的渲染中，选择3阶即l等于3,其中的每个y都可以通过公式计算出来，所有的c为参数。且可以得出对于l，他的参数为2*l+1当最高取3时，所有的参数量为<script type="math/tex">1+3+5+7=16</script>,同时，这仅能代表一个颜色值，对于真实的RGB，则需要<script type="math/tex">16\cdot 3=48</script>个参数</p>
+<h3 id="高斯椭球参数"><a href="#高斯椭球参数" class="headerlink" title="高斯椭球参数"></a>高斯椭球参数</h3><ul>
 <li>形状参数：4个四元数+3个缩放+3个中心位置参数 =10</li>
 <li>颜色参数：16·3=48</li>
 <li>不透明度：1个$\alpha$</li>
 </ul>
 <p><strong>一共10+48+1=59个参数</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/" class="post-title-link" itemprop="url">简易刷铁机</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-10-07 16:02:59 / 修改时间：21:48:49" itemprop="dateCreated datePublished" datetime="2025-10-07T16:02:59+08:00">2025-10-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简易刷铁机的制作"><a href="#简易刷铁机的制作" class="headerlink" title="简易刷铁机的制作"></a>简易刷铁机的制作</h1><h2 id="原料"><a href="#原料" class="headerlink" title="原料:"></a>原料:</h2><p>任意方框: 泥土、玻璃、石头均可以</p>
+<h2 id="收集装置"><a href="#收集装置" class="headerlink" title="收集装置"></a>收集装置</h2><p>首先搭建下面的装置,一格深的装置,两个小箱子组成的大箱子——箱子*2 方块*15</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/收集1.png" alt="收集1"></p>
+<p>接下来放置9个漏斗,漏斗连接到箱子上,方法是shift+右键点击对应方块,即可将漏斗连接到方块上、将红色线圈内的漏斗连接到箱子,其余漏斗依次连接</p>
+<p>检验是否安装成果: 向漏斗里面丢东西,最后可以在箱子里面找到</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/漏斗安装.png" alt="漏斗安装"></p>
+<h2 id="铁傀儡处死装置"><a href="#铁傀儡处死装置" class="headerlink" title="铁傀儡处死装置"></a>铁傀儡处死装置</h2><p>在收集装置基础上向上搭建20格,并形成通道,部分区域可简化,以节省方块,当然也可以想底下挖,将收集装置位于-20处以节省方块,需要方块16*20=320,告示牌*9</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/玻璃通道.png" alt="玻璃通道"></p>
+<p>在距收集装置2格处放置告示牌,悬浮告示牌放置需要将光标指向告示牌右侧 shift+右键单机(下面的截图均高了一格)</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/告示牌放置方法.png" alt="告示牌放置方法"></p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/告示牌安置结果.png" alt="告示牌安置结果"></p>
+<p>在告示牌安置上一个放置岩浆,上图红框范围</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/岩浆放置结果.png" alt="岩浆放置结果"></p>
+<h2 id="铁傀儡生成"><a href="#铁傀儡生成" class="headerlink" title="铁傀儡生成"></a>铁傀儡生成</h2><h3 id="搭建铁傀儡生成后的移动平台-利用水流将铁傀儡推到处死装置里"><a href="#搭建铁傀儡生成后的移动平台-利用水流将铁傀儡推到处死装置里" class="headerlink" title="搭建铁傀儡生成后的移动平台,利用水流将铁傀儡推到处死装置里"></a>搭建铁傀儡生成后的移动平台,利用水流将铁傀儡推到处死装置里</h3><p>搭建9*9的方格,并在方格外侧添加围栏,挡住水的流动</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/铁傀儡流动平台.png" alt="铁傀儡流动平台"></p>
+<p>先在中心添加栅栏门,挡住水流向下的移动,在四个角的方块上放置水源,将铁傀儡向中心推动</p>
+<p>![水流装置](水流装置.p</p>
+<h3 id="僵尸放置轨道"><a href="#僵尸放置轨道" class="headerlink" title="僵尸放置轨道"></a>僵尸放置轨道</h3><p>在水流上方四格处,放置一个横着的9格,并搭建为如图所示,其中最上方为半砖</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/僵尸行动轨道.png" alt="僵尸行动轨道"></p>
+<p>在僵尸过道两侧建立有3*3*2空间的空间的村民房</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/村民房.png" alt="村民房"></p>
+<p>放入床并封顶,注意床要顶格放,否则僵尸吓不到村民,如果夜晚村民睡觉了,说明距离太远了,以及注意床的方向,床的方向不对,村民不会睡觉</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/村民床.png" alt="村民床"></p>
+<p>在最底下可以放置灵魂篝火,以加快效率</p>
+<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/灵魂篝火.png" alt="灵魂篝火"></p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意:"></a>注意:</h2><p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/铁傀儡生成规则.png" alt="铁傀儡生成规则"></p>
 
       
     </div>
@@ -674,100 +863,7 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>本篇介绍我的世界的各种特性</h1>
-<p>**铁傀儡刷新机制:**村民被吓+区域内5个以上村民,僵尸吓村民表现为晚上上床后立马起床</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ouwenwu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ouwenwu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/" class="post-title-link" itemprop="url">简易刷铁机</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-10-07 16:02:59 / 修改时间：21:48:49" itemprop="dateCreated datePublished" datetime="2025-10-07T16:02:59+08:00">2025-10-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>简易刷铁机的制作</h1>
-<h2 id="原料">原料:</h2>
-<p>任意方框: 泥土、玻璃、石头均可以</p>
-<h2 id="收集装置">收集装置</h2>
-<p>首先搭建下面的装置,一格深的装置,两个小箱子组成的大箱子----箱子*2 方块*15</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E6%94%B6%E9%9B%861.png" alt="收集1"></p>
-<p>接下来放置9个漏斗,漏斗连接到箱子上,方法是shift+右键点击对应方块,即可将漏斗连接到方块上、将红色线圈内的漏斗连接到箱子,其余漏斗依次连接</p>
-<p>检验是否安装成果: 向漏斗里面丢东西,最后可以在箱子里面找到</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E6%BC%8F%E6%96%97%E5%AE%89%E8%A3%85.png" alt="漏斗安装"></p>
-<h2 id="铁傀儡处死装置">铁傀儡处死装置</h2>
-<p>在收集装置基础上向上搭建20格,并形成通道,部分区域可简化,以节省方块,当然也可以想底下挖,将收集装置位于-20处以节省方块,需要方块16*20=320,告示牌*9</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E7%8E%BB%E7%92%83%E9%80%9A%E9%81%93.png" alt="玻璃通道"></p>
-<p>在距收集装置2格处放置告示牌,悬浮告示牌放置需要将光标指向告示牌右侧 shift+右键单机(下面的截图均高了一格)</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E5%91%8A%E7%A4%BA%E7%89%8C%E6%94%BE%E7%BD%AE%E6%96%B9%E6%B3%95.png" alt="告示牌放置方法"></p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E5%91%8A%E7%A4%BA%E7%89%8C%E5%AE%89%E7%BD%AE%E7%BB%93%E6%9E%9C.png" alt="告示牌安置结果"></p>
-<p>在告示牌安置上一个放置岩浆,上图红框范围</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E5%B2%A9%E6%B5%86%E6%94%BE%E7%BD%AE%E7%BB%93%E6%9E%9C.png" alt="岩浆放置结果"></p>
-<h2 id="铁傀儡生成">铁傀儡生成</h2>
-<h3 id="搭建铁傀儡生成后的移动平台-利用水流将铁傀儡推到处死装置里">搭建铁傀儡生成后的移动平台,利用水流将铁傀儡推到处死装置里</h3>
-<p>搭建9*9的方格,并在方格外侧添加围栏,挡住水的流动</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E9%93%81%E5%82%80%E5%84%A1%E6%B5%81%E5%8A%A8%E5%B9%B3%E5%8F%B0.png" alt="铁傀儡流动平台"></p>
-<p>先在中心添加栅栏门,挡住水流向下的移动,在四个角的方块上放置水源,将铁傀儡向中心推动</p>
-<p>![水流装置](水流装置.p</p>
-<h3 id="僵尸放置轨道">僵尸放置轨道</h3>
-<p>在水流上方四格处,放置一个横着的9格,并搭建为如图所示,其中最上方为半砖</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E5%83%B5%E5%B0%B8%E8%A1%8C%E5%8A%A8%E8%BD%A8%E9%81%93.png" alt="僵尸行动轨道"></p>
-<p>在僵尸过道两侧建立有3*3*2空间的空间的村民房</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E6%9D%91%E6%B0%91%E6%88%BF.png" alt="村民房"></p>
-<p>放入床并封顶,注意床要顶格放,否则僵尸吓不到村民,如果夜晚村民睡觉了,说明距离太远了,以及注意床的方向,床的方向不对,村民不会睡觉</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E6%9D%91%E6%B0%91%E5%BA%8A.png" alt="村民床"></p>
-<p>在最底下可以放置灵魂篝火,以加快效率</p>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E7%81%B5%E9%AD%82%E7%AF%9D%E7%81%AB.png" alt="灵魂篝火"></p>
-<h2 id="注意">注意:</h2>
-<p><img src="/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/%E9%93%81%E5%82%80%E5%84%A1%E7%94%9F%E6%88%90%E8%A7%84%E5%88%99.png" alt="铁傀儡生成规则"></p>
+          <h1 id="本篇介绍我的世界的各种特性"><a href="#本篇介绍我的世界的各种特性" class="headerlink" title="本篇介绍我的世界的各种特性"></a>本篇介绍我的世界的各种特性</h1><p><strong>铁傀儡刷新机制:</strong>村民被吓+区域内5个以上村民,僵尸吓村民表现为晚上上床后立马起床</p>
 
       
     </div>
@@ -826,21 +922,16 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>一、ContextCapture先降低图像分辨率做空三再恢复继续做</h1>
-<p>首先下采样图像分辨率,一般为30%</p>
-<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/%E4%B8%8B%E9%99%8D%E5%88%86%E8%BE%A8%E7%8E%87.png" alt="下降分辨率"></p>
+          <h1 id="一、ContextCapture先降低图像分辨率做空三再恢复继续做"><a href="#一、ContextCapture先降低图像分辨率做空三再恢复继续做" class="headerlink" title="一、ContextCapture先降低图像分辨率做空三再恢复继续做"></a>一、ContextCapture先降低图像分辨率做空三再恢复继续做</h1><p>首先下采样图像分辨率,一般为30%</p>
+<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/下降分辨率.png" alt="下降分辨率"></p>
 <p>提交空三</p>
-<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/%E6%8F%90%E4%BA%A4%E7%A9%BA%E4%B8%891.png" alt="image-20250804100937058"></p>
-<h1>二、已有图像初始位姿,计算准确位姿</h1>
-<p>针对于:手持激光扫描仪由于时间同步或标定或者其他问题导致的图像位姿不准,但已有较好的初值,需要计算更为准确的位姿</p>
-<h3 id="将初始位姿转为blockexchange-的xml格式">将初始位姿转为blockexchange 的xml格式</h3>
-<p>这个格式是COntextCapture、Photoscan等软件的通用格式</p>
-<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture%E5%AF%BC%E5%85%A5xml.png" alt="image-20250804142715704"></p>
-<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture%E5%AF%BC%E5%85%A5xml%E7%BB%93%E6%9E%9C.png" alt="contextCapture导入xml结果"></p>
-<h2 id="在已有位姿上提交空三">在已有位姿上提交空三</h2>
-<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture%E6%8F%90%E4%BA%A4%E7%A9%BA%E4%B8%89.png" alt="contextCapture提交空三"></p>
-<h2 id="最后导出block-在metashape中生成稀疏点云即可">最后导出block,在metashape中生成稀疏点云即可</h2>
-
+<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/提交空三1.png" alt="image-20250804100937058"></p>
+<h1 id="二、已有图像初始位姿-计算准确位姿"><a href="#二、已有图像初始位姿-计算准确位姿" class="headerlink" title="二、已有图像初始位姿,计算准确位姿"></a>二、已有图像初始位姿,计算准确位姿</h1><p>针对于:手持激光扫描仪由于时间同步或标定或者其他问题导致的图像位姿不准,但已有较好的初值,需要计算更为准确的位姿</p>
+<h3 id="将初始位姿转为blockexchange-的xml格式"><a href="#将初始位姿转为blockexchange-的xml格式" class="headerlink" title="将初始位姿转为blockexchange 的xml格式"></a>将初始位姿转为blockexchange 的xml格式</h3><p>这个格式是COntextCapture、Photoscan等软件的通用格式</p>
+<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture导入xml.png" alt="image-20250804142715704"></p>
+<p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture导入xml结果.png" alt="contextCapture导入xml结果"></p>
+<h2 id="在已有位姿上提交空三"><a href="#在已有位姿上提交空三" class="headerlink" title="在已有位姿上提交空三"></a>在已有位姿上提交空三</h2><p><img src="/2025/08/04/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E4%B8%89%E6%8A%80%E5%B7%A7/contextCapture提交空三.png" alt="contextCapture提交空三"></p>
+<h2 id="最后导出block-在metashape中生成稀疏点云即可"><a href="#最后导出block-在metashape中生成稀疏点云即可" class="headerlink" title="最后导出block,在metashape中生成稀疏点云即可"></a>最后导出block,在metashape中生成稀疏点云即可</h2>
       
     </div>
 
@@ -900,14 +991,12 @@ $$<br>
       
           <p><strong>指定ip走指定的网卡</strong></p>
 <p><strong>本文实验适用于,vpn走wifi的网卡,其余走网线,这样vpn不会影响其余端口的实用</strong></p>
-<h1>查询本地网卡与网关</h1>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route print</span><br></pre></td></tr></table></figure>
-<p><img src="/2025/08/01/%E4%B8%8D%E5%90%8Cip%E8%B5%B0%E4%B8%8D%E5%90%8C%E7%9A%84%E7%BD%91%E5%8D%A1/%E7%BD%91%E5%8D%A1%E4%B8%8E%E7%BD%91%E5%85%B3%E4%BF%A1%E6%81%AF.png" alt="网卡与网关信息"></p>
+<h1 id="查询本地网卡与网关"><a href="#查询本地网卡与网关" class="headerlink" title="查询本地网卡与网关"></a>查询本地网卡与网关</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route print</span><br></pre></td></tr></table></figure>
+<p><img src="/2025/08/01/%E4%B8%8D%E5%90%8Cip%E8%B5%B0%E4%B8%8D%E5%90%8C%E7%9A%84%E7%BD%91%E5%8D%A1/网卡与网关信息.png" alt="网卡与网关信息"></p>
 <p>其中:10.104.255.254是网线的网关、192.168.1.1是wifi的网关</p>
-<h2 id="添加条件-指定的ip走指定的网关">添加条件:指定的ip走指定的网关</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route add 219.139.228.228 mask 255.255.255.255 192.168.1.1 metric 10 <span class="keyword">if</span> 6</span><br></pre></td></tr></table></figure>
+<h2 id="添加条件-指定的ip走指定的网关"><a href="#添加条件-指定的ip走指定的网关" class="headerlink" title="添加条件:指定的ip走指定的网关"></a>添加条件:指定的ip走指定的网关</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route add 219.139.228.228 mask 255.255.255.255 192.168.1.1 metric 10 <span class="keyword">if</span> 6</span><br></pre></td></tr></table></figure>
 <p>其中219.139.228.228是指定的ip 192.168.1.1是这个ip走的网关,其中6是指wifi对于的接口</p>
-<p><img src="/2025/08/01/%E4%B8%8D%E5%90%8Cip%E8%B5%B0%E4%B8%8D%E5%90%8C%E7%9A%84%E7%BD%91%E5%8D%A1/wifi%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF.png" alt="wifi接口信息"></p>
+<p><img src="/2025/08/01/%E4%B8%8D%E5%90%8Cip%E8%B5%B0%E4%B8%8D%E5%90%8C%E7%9A%84%E7%BD%91%E5%8D%A1/wifi接口信息.png" alt="wifi接口信息"></p>
 <p>即可实现219.139.228.228走wifi,其余走网线</p>
 
       
@@ -973,30 +1062,21 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>常见命令</h1>
-<h2 id="拉取容器">拉取容器</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull image_name</span><br></pre></td></tr></table></figure>
-<h2 id="创建镜像">创建镜像</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -i -d --gpus all --shm-size=24g -v F:/ubuntu/docker_data/fast-livo2:/data --name fast-livo2 cuda_11_8</span><br></pre></td></tr></table></figure>
+          <h1 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h1><h2 id="拉取容器"><a href="#拉取容器" class="headerlink" title="拉取容器"></a>拉取容器</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull image_name</span><br></pre></td></tr></table></figure>
+<h2 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -i -d --gpus all --shm-size=24g -v F:/ubuntu/docker_data/fast-livo2:/data --name fast-livo2 cuda_11_8</span><br></pre></td></tr></table></figure>
 <ul>
 <li>-d: 容器在后台运行,并返回容器的id</li>
-<li>–gpus all: 该镜像可以访问到的gpu设置为全部</li>
-<li>–shm-size=24g: 设置容器的共享内存,默认为64MB,对于深度学习等应用来说,不够</li>
+<li>—gpus all: 该镜像可以访问到的gpu设置为全部</li>
+<li>—shm-size=24g: 设置容器的共享内存,默认为64MB,对于深度学习等应用来说,不够</li>
 <li>-v local_path:image_path : 将容器路径映射到本地路径,用于存放代码和数据等等</li>
-<li>–name: 容器名称</li>
+<li>—name: 容器名称</li>
 <li>cuda_11_8: 镜像名称</li>
 </ul>
-<h2 id="进入已有容器的命令行进行操作">进入已有容器的命令行进行操作</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br><span class="line">docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>或名称&gt; /bin/bash</span><br></pre></td></tr></table></figure>
-<h2 id="删除容器和镜像">删除容器和镜像</h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="加载本地镜像">加载本地镜像</h2>
-<h1>常见问题</h1>
-<h3 id="vscode连接远程docker权限问题">vscode连接远程docker权限问题</h3>
-<p>Failed to connect. Is Docker runing?</p>
+<h2 id="进入已有容器的命令行进行操作"><a href="#进入已有容器的命令行进行操作" class="headerlink" title="进入已有容器的命令行进行操作"></a>进入已有容器的命令行进行操作</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br><span class="line">docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>或名称&gt; /bin/bash</span><br></pre></td></tr></table></figure>
+<h2 id="删除容器和镜像"><a href="#删除容器和镜像" class="headerlink" title="删除容器和镜像"></a>删除容器和镜像</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="加载本地镜像"><a href="#加载本地镜像" class="headerlink" title="加载本地镜像"></a>加载本地镜像</h2><h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><h3 id="vscode连接远程docker权限问题"><a href="#vscode连接远程docker权限问题" class="headerlink" title="vscode连接远程docker权限问题"></a>vscode连接远程docker权限问题</h3><p>Failed to connect. Is Docker runing?</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">chmod</span> 777 /var/run/docker.sock</span><br></pre></td></tr></table></figure>
-<h2 id="vscode连接远程本地docker版本冲突">vscode连接远程本地docker版本冲突</h2>
-<p>Failed to connect to the remote extension host server (Error: Connection error: Client refused: version mismatch)</p>
+<h2 id="vscode连接远程本地docker版本冲突"><a href="#vscode连接远程本地docker版本冲突" class="headerlink" title="vscode连接远程本地docker版本冲突"></a>vscode连接远程本地docker版本冲突</h2><p>Failed to connect to the remote extension host server (Error: Connection error: Client refused: version mismatch)</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pkill -f vscode-server || true</span><br><span class="line">rm -rf ~/.vscode-server ~/.vscode-server-insiders</span><br></pre></td></tr></table></figure>
 
       
@@ -1056,146 +1136,17 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>pyinstaller常用参数</h1>
-<ul>
-<li>
-<p>-F: 打包为一整个exe</p>
+          <h1 id="pyinstaller常用参数"><a href="#pyinstaller常用参数" class="headerlink" title="pyinstaller常用参数"></a>pyinstaller常用参数</h1><ul>
+<li><p>-F: 打包为一整个exe</p>
 </li>
-<li>
-<p>-D: 打包为一个文件夹</p>
+<li><p>-D: 打包为一个文件夹</p>
 </li>
-<li>
-<p>-w: 运行时不显示命令行窗口(仅对windows有效)</p>
+<li><p>-w: 运行时不显示命令行窗口(仅对windows有效)</p>
 </li>
-<li>
-<p>-i: 图标路径</p>
+<li><p>-i: 图标路径</p>
 </li>
 </ul>
-<h2 id="基础命令">基础命令</h2>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ouwenwu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ouwenwu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/" class="post-title-link" itemprop="url">空地融合空三</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-07-31 10:49:32" itemprop="dateCreated datePublished" datetime="2025-07-31T10:49:32+08:00">2025-07-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-08-04 11:39:53" itemprop="dateModified" datetime="2025-08-04T11:39:53+08:00">2025-08-04</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文代码:<a target="_blank" rel="noopener" href="https://github.com/ouwenwu/UAV2GroundMapper.git">https://github.com/ouwenwu/UAV2GroundMapper.git</a></p>
-<h1>一、数据准备</h1>
-<p>无人机数据</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E6%97%A0%E4%BA%BA%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%9B%BE%E7%89%87.png" alt="无人机数据图片"></p>
-<p>手持扫码仪数据</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E6%89%8B%E6%8C%81%E6%89%AB%E6%8F%8F%E4%BB%AA%E6%95%B0%E6%8D%AE.png" alt="手持扫描仪数据"></p>
-<h1>二、无人机数据处理</h1>
-<h2 id="Photoscan无人机处理流程">Photoscan无人机处理流程</h2>
-<p>Align Photos-&gt;Build Point Cloud</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E6%97%A0%E4%BA%BA%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E7%BB%93%E6%9E%9C.png" alt="无人机数据处理结果"></p>
-<p>导出camera.xml和点云备用,需要设置导出格式为blockexchange同时不需要导出tiepoints</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/photoscan%E5%AF%BC%E5%87%BAcamera.png" alt="photoscan导出camera"></p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E5%AF%BC%E5%87%BA%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE.png" alt="导出参数设置"></p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E7%82%B9%E4%BA%91%E5%AF%BC%E5%87%BA%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE.png" alt="点云导出参数设置"></p>
-<h2 id="手持激光扫描仪处理流程">手持激光扫描仪处理流程</h2>
-<h3 id="RayStudio打开工程文件—Basic-Data解算图片和点云数据">RayStudio打开工程文件—Basic Data解算图片和点云数据</h3>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/Raystudio%E8%A7%A3%E7%AE%97%E6%95%B0%E6%8D%AE.png" alt="Raystudio解算数据"></p>
-<h3 id="点云赋色">点云赋色</h3>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E7%82%B9%E4%BA%91%E8%B5%8B%E8%89%B2.png" alt="点云赋色"></p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/slam%E5%A4%84%E7%90%86%E7%BB%93%E6%9E%9C.png" alt="slam处理结果"></p>
-<h3 id="RayStudio导出图片使用Photoscan空三">RayStudio导出图片使用Photoscan空三</h3>
-<p>将RayStudio的文件导出图像初始位置</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py getImageXYZ --colmap_dir J:/jyg/chibi/zhihuilou/outdoor/shading/Colmap/sparse/0/images.txt --output_path J:/jyg/chibi/zhihuilou/outdoor/shading/Colmap/image_xyz.txt</span><br></pre></td></tr></table></figure>
-<p>图片路径位于:./image_undistorted/camera_front</p>
-<p>Photoscan添加图片后,在Reference(参考页)添加图像位置作为参考,并选择之前输出的图像位置</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/phtotscan%E5%AF%BC%E5%85%A5%E5%8F%82%E8%80%83.png" alt="phtotscan导入参考"></p>
-<p>可以适量的删除影像(只保留研究区域)以及稀疏影像,当前影像采集频率高于需求,适当减少加快效率,删除后align photos(对齐图片)-&gt;Build Point Cloud</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E6%89%8B%E6%8C%81%E5%AF%86%E9%9B%86%E7%82%B9%E4%BA%91.png" alt="手持密集点云"></p>
-<p>导出camera.xml和点云备用,需要设置导出格式为blockexchange同时不需要导出tiepoints</p>
-<h1>手持与无人机融合</h1>
-<h2 id="手持到无人机坐标系统转换">手持到无人机坐标系统转换</h2>
-<h3 id="cloudcampare计算变换矩阵">cloudcampare计算变换矩阵</h3>
-<p>包含粗配准和精配准两个步骤:其中粗配准为手动调整点云使得两个点云具有初步配齐,再使用icp进行精配准.</p>
-<p>记录下每一步点云的变换矩阵</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E6%97%8B%E8%BD%AC%E5%B9%B3%E7%A7%BB%E6%96%B9%E6%B3%95.png" alt="旋转平移方法"></p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E7%B2%97%E9%85%8D%E5%87%86%E7%BB%93%E6%9E%9C.png" alt="粗配准结果"></p>
-<p>裁剪两个点云至相同范围,并做精配准</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E7%B2%BE%E9%85%8D%E5%87%86.png" alt="精配准"></p>
-<p>记录下每一步的变换矩阵如下:</p>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5.png" alt="变换矩阵"></p>
-<h2 id="将手持坐标系按照变换关系旋转">将手持坐标系按照变换关系旋转</h2>
-<p>将无人机的photoscan的xml格式转为colmap格式</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py from_photoscan_xml_2_colmap_txt --xml_path J:/jyg/test/camera_shouchi.xml --output_path J:/jyg/test/colmap</span><br></pre></td></tr></table></figure>
-<h3 id="根据colmap结果计算图像位置">根据colmap结果计算图像位置</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py getImageXYZ --colmap_dir J:/jyg/test/colmap --output_path J:/jyg/test/image_xyz.txt</span><br></pre></td></tr></table></figure>
-<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/%E5%9B%BE%E5%83%8F%E4%BD%8D%E5%A7%BF.png" alt="图像位姿"></p>
-<h3 id="旋转图像位置到无人机的坐标系下">旋转图像位置到无人机的坐标系下:</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py rotate_image_xyz --image_xyz J:/jyg/test/image_xyz.txt --output_path J:/jyg/test/image_xyz_out.txt --matrix_path J:/jyg/test/matrix.txt</span><br></pre></td></tr></table></figure>
-<h3 id="根据旋转后的图像位置去纠正colmap文件到指定坐标系">根据旋转后的图像位置去纠正colmap文件到指定坐标系</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colmap model_aligner --input_path J:/jyg/test/colmap --output_path J:/jyg/test/colmap_rotate --ref_images_path J:/jyg/test/image_xyz_out.txt --alignment_type enu --ref_is_gps 0  --robust_alignment_max_error 3</span><br></pre></td></tr></table></figure>
-<p>将旋转后的bin文件转为txt格式</p>
-<p>colmap-&gt;import model-&gt;export model as text</p>
-<h3 id="将旋转后的colmap的txt文件-写为photoscan的xml文件">将旋转后的colmap的txt文件,写为photoscan的xml文件</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py write_colmap_txt_2_photoscan_xml --colmap_txt_path J:/jyg/test/colmap_rotate --output_xml_path J:/jyg/test/camera_shouchi_rotate.xml --image_path J:/jyg/test/20250726162036/image_undistorted/camera_front</span><br></pre></td></tr></table></figure>
-<h1>融合无人机和手持影像</h1>
-<p>合并无人机的xml和手持影像的xml</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py merge_photoscan_xml --xml_lists J:/jyg/test/camera_wrj.xml J:/jyg/test/camera_shouchi_rotate.xml --output_xml_path J:/jyg/test/merged_camera.xml</span><br></pre></td></tr></table></figure>
-<p>将xml文件导出为colmap的txt格式</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python main.py from_photoscan_xml_2_colmap_txt --xml_path J:/jyg/test/merged_camera.xml --output_path J:/jyg/test/colmap_m</span><br><span class="line">erge</span><br></pre></td></tr></table></figure>
-
+<h2 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h2>
       
     </div>
 
@@ -1279,7 +1230,7 @@ $$<br>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">45</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1292,7 +1243,7 @@ $$<br>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -188,6 +188,113 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/" class="post-title-link" itemprop="url">空地融合空三</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-07-31 10:49:32" itemprop="dateCreated datePublished" datetime="2025-07-31T10:49:32+08:00">2025-07-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-08-04 11:39:53" itemprop="dateModified" datetime="2025-08-04T11:39:53+08:00">2025-08-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> 本文代码:<a target="_blank" rel="noopener" href="https://github.com/ouwenwu/UAV2GroundMapper.git">https://github.com/ouwenwu/UAV2GroundMapper.git</a></p>
+<h1 id="一、数据准备"><a href="#一、数据准备" class="headerlink" title="一、数据准备"></a>一、数据准备</h1><p>无人机数据</p>
+<p> <img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/无人机数据图片.png" alt="无人机数据图片"></p>
+<p>手持扫码仪数据</p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/手持扫描仪数据.png" alt="手持扫描仪数据"></p>
+<h1 id="二、无人机数据处理"><a href="#二、无人机数据处理" class="headerlink" title="二、无人机数据处理"></a>二、无人机数据处理</h1><h2 id="Photoscan无人机处理流程"><a href="#Photoscan无人机处理流程" class="headerlink" title="Photoscan无人机处理流程"></a>Photoscan无人机处理流程</h2><p>Align Photos-&gt;Build Point Cloud</p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/无人机数据处理结果.png" alt="无人机数据处理结果"></p>
+<p>导出camera.xml和点云备用,需要设置导出格式为blockexchange同时不需要导出tiepoints</p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/photoscan导出camera.png" alt="photoscan导出camera"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/导出参数设置.png" alt="导出参数设置"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/点云导出参数设置.png" alt="点云导出参数设置"></p>
+<h2 id="手持激光扫描仪处理流程"><a href="#手持激光扫描仪处理流程" class="headerlink" title="手持激光扫描仪处理流程"></a>手持激光扫描仪处理流程</h2><h3 id="RayStudio打开工程文件—-Basic-Data解算图片和点云数据"><a href="#RayStudio打开工程文件—-Basic-Data解算图片和点云数据" class="headerlink" title="RayStudio打开工程文件—-Basic Data解算图片和点云数据"></a>RayStudio打开工程文件—-Basic Data解算图片和点云数据</h3><p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/Raystudio解算数据.png" alt="Raystudio解算数据"></p>
+<h3 id="点云赋色"><a href="#点云赋色" class="headerlink" title="点云赋色"></a>点云赋色</h3><p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/点云赋色.png" alt="点云赋色"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/slam处理结果.png" alt="slam处理结果"></p>
+<h3 id="RayStudio导出图片使用Photoscan空三"><a href="#RayStudio导出图片使用Photoscan空三" class="headerlink" title="RayStudio导出图片使用Photoscan空三"></a>RayStudio导出图片使用Photoscan空三</h3><p>将RayStudio的文件导出图像初始位置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py getImageXYZ --colmap_dir J:/jyg/chibi/zhihuilou/outdoor/shading/Colmap/sparse/0/images.txt --output_path J:/jyg/chibi/zhihuilou/outdoor/shading/Colmap/image_xyz.txt</span><br></pre></td></tr></table></figure>
+<p>图片路径位于:./image_undistorted/camera_front</p>
+<p>Photoscan添加图片后,在Reference(参考页)添加图像位置作为参考,并选择之前输出的图像位置</p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/phtotscan导入参考.png" alt="phtotscan导入参考"></p>
+<p>可以适量的删除影像(只保留研究区域)以及稀疏影像,当前影像采集频率高于需求,适当减少加快效率,删除后align photos(对齐图片)-&gt;Build Point Cloud</p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/手持密集点云.png" alt="手持密集点云"></p>
+<p>导出camera.xml和点云备用,需要设置导出格式为blockexchange同时不需要导出tiepoints</p>
+<h1 id="手持与无人机融合"><a href="#手持与无人机融合" class="headerlink" title="手持与无人机融合"></a>手持与无人机融合</h1><h2 id="手持到无人机坐标系统转换"><a href="#手持到无人机坐标系统转换" class="headerlink" title="手持到无人机坐标系统转换"></a>手持到无人机坐标系统转换</h2><h3 id="cloudcampare计算变换矩阵"><a href="#cloudcampare计算变换矩阵" class="headerlink" title="cloudcampare计算变换矩阵"></a>cloudcampare计算变换矩阵</h3><p>包含粗配准和精配准两个步骤:其中粗配准为手动调整点云使得两个点云具有初步配齐,再使用icp进行精配准.</p>
+<p>记录下每一步点云的变换矩阵</p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/旋转平移方法.png" alt="旋转平移方法"></p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/粗配准结果.png" alt="粗配准结果"></p>
+<p>裁剪两个点云至相同范围,并做精配准</p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/精配准.png" alt="精配准"></p>
+<p>记录下每一步的变换矩阵如下:</p>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/变换矩阵.png" alt="变换矩阵"></p>
+<h2 id="将手持坐标系按照变换关系旋转"><a href="#将手持坐标系按照变换关系旋转" class="headerlink" title="将手持坐标系按照变换关系旋转"></a>将手持坐标系按照变换关系旋转</h2><p>将无人机的photoscan的xml格式转为colmap格式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py from_photoscan_xml_2_colmap_txt --xml_path J:/jyg/test/camera_shouchi.xml --output_path J:/jyg/test/colmap</span><br></pre></td></tr></table></figure>
+<h3 id="根据colmap结果计算图像位置"><a href="#根据colmap结果计算图像位置" class="headerlink" title="根据colmap结果计算图像位置"></a>根据colmap结果计算图像位置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py getImageXYZ --colmap_dir J:/jyg/test/colmap --output_path J:/jyg/test/image_xyz.txt</span><br></pre></td></tr></table></figure>
+<p><img src="/2025/07/31/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/%E7%A9%BA%E5%9C%B0%E8%9E%8D%E5%90%88%E7%A9%BA%E4%B8%89/图像位姿.png" alt="图像位姿"></p>
+<h3 id="旋转图像位置到无人机的坐标系下"><a href="#旋转图像位置到无人机的坐标系下" class="headerlink" title="旋转图像位置到无人机的坐标系下:"></a>旋转图像位置到无人机的坐标系下:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py rotate_image_xyz --image_xyz J:/jyg/test/image_xyz.txt --output_path J:/jyg/test/image_xyz_out.txt --matrix_path J:/jyg/test/matrix.txt</span><br></pre></td></tr></table></figure>
+<h3 id="根据旋转后的图像位置去纠正colmap文件到指定坐标系"><a href="#根据旋转后的图像位置去纠正colmap文件到指定坐标系" class="headerlink" title="根据旋转后的图像位置去纠正colmap文件到指定坐标系"></a>根据旋转后的图像位置去纠正colmap文件到指定坐标系</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">colmap model_aligner --input_path J:/jyg/test/colmap --output_path J:/jyg/test/colmap_rotate --ref_images_path J:/jyg/test/image_xyz_out.txt --alignment_type enu --ref_is_gps 0  --robust_alignment_max_error 3</span><br></pre></td></tr></table></figure>
+<p>将旋转后的bin文件转为txt格式</p>
+<p>colmap-&gt;import model-&gt;export model as text</p>
+<h3 id="将旋转后的colmap的txt文件-写为photoscan的xml文件"><a href="#将旋转后的colmap的txt文件-写为photoscan的xml文件" class="headerlink" title="将旋转后的colmap的txt文件,写为photoscan的xml文件"></a>将旋转后的colmap的txt文件,写为photoscan的xml文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py write_colmap_txt_2_photoscan_xml --colmap_txt_path J:/jyg/test/colmap_rotate --output_xml_path J:/jyg/test/camera_shouchi_rotate.xml --image_path J:/jyg/test/20250726162036/image_undistorted/camera_front</span><br></pre></td></tr></table></figure>
+<h1 id="融合无人机和手持影像"><a href="#融合无人机和手持影像" class="headerlink" title="融合无人机和手持影像"></a>融合无人机和手持影像</h1><p>合并无人机的xml和手持影像的xml</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py merge_photoscan_xml --xml_lists J:/jyg/test/camera_wrj.xml J:/jyg/test/camera_shouchi_rotate.xml --output_xml_path J:/jyg/test/merged_camera.xml</span><br></pre></td></tr></table></figure>
+<p>将xml文件导出为colmap的txt格式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python main.py from_photoscan_xml_2_colmap_txt --xml_path J:/jyg/test/merged_camera.xml --output_path J:/jyg/test/colmap_m</span><br><span class="line">erge</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/07/27/%E8%AE%BA%E6%96%87%E7%BC%96%E5%86%99%E4%B8%8E%E5%AE%A1%E7%A8%BF/%E8%AE%BA%E6%96%87%E5%AE%A1%E7%A8%BF%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -228,8 +335,7 @@
 
       
           <ol>
-<li>
-<p>Equations: conclude with comma or dot depending on what follows.</p>
+<li><p>Equations: conclude with comma or dot depending on what follows.</p>
 <p>公式后要根据后续的内容添加逗号或句号</p>
 </li>
 </ol>
@@ -291,13 +397,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>一、创建文档</h1>
-<h2 id="1-创建到-post默认的文件夹中">1.创建到_post默认的文件夹中</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new name</span><br></pre></td></tr></table></figure>
-<h2 id="2-创建到-post下的指定子文件夹中">2.创建到_post下的指定子文件夹中</h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post &quot;title&quot; --path=latex/name.md</span><br></pre></td></tr></table></figure>
-<h1>二、部署到github</h1>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>
+          <h1 id="一、创建文档"><a href="#一、创建文档" class="headerlink" title="一、创建文档"></a>一、创建文档</h1><h2 id="1-创建到-post默认的文件夹中"><a href="#1-创建到-post默认的文件夹中" class="headerlink" title="1.创建到_post默认的文件夹中"></a>1.创建到_post默认的文件夹中</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new name</span><br></pre></td></tr></table></figure>
+<h2 id="2-创建到-post下的指定子文件夹中"><a href="#2-创建到-post下的指定子文件夹中" class="headerlink" title="2.创建到_post下的指定子文件夹中"></a>2.创建到_post下的指定子文件夹中</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post &quot;title&quot; --path=latex/name.md</span><br></pre></td></tr></table></figure>
+<h1 id="二、部署到github"><a href="#二、部署到github" class="headerlink" title="二、部署到github"></a>二、部署到github</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -439,17 +541,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>仪器安装</h1>
-<p>无人机安装+RTK安装</p>
-<h1>航线规划</h1>
-<p>按照公司给的文件计算飞速等设置（要求其中一条航线包含灰布）</p>
-<h1>参数设置</h1>
-<p>自动曝光+白帧+黑帧</p>
-<p>***自动曝光：***将飞机抬起来对着灰布，要求迎着太阳，摄像头拍的灰布区域不会被影子挡住，点击自动曝光</p>
-<p>***白帧：***将飞机抬起来对着灰布，要求迎着太阳，摄像头拍的灰布区域不会被影子挡住，点击白帧</p>
-<p>***黑帧：***将飞机放在地面上，盖着镜头盖，点击黑帧</p>
-<h1>飞行</h1>
-<p>起飞+绕8字+按航线飞行+(过灰布)</p>
+          <h1 id="仪器安装"><a href="#仪器安装" class="headerlink" title="仪器安装"></a>仪器安装</h1><p>无人机安装+RTK安装</p>
+<h1 id="航线规划"><a href="#航线规划" class="headerlink" title="航线规划"></a>航线规划</h1><p>按照公司给的文件计算飞速等设置（要求其中一条航线包含灰布）</p>
+<h1 id="参数设置"><a href="#参数设置" class="headerlink" title="参数设置"></a>参数设置</h1><p>自动曝光+白帧+黑帧</p>
+<p><strong><em>自动曝光：</em></strong>将飞机抬起来对着灰布，要求迎着太阳，摄像头拍的灰布区域不会被影子挡住，点击自动曝光</p>
+<p><strong><em>白帧：</em></strong>将飞机抬起来对着灰布，要求迎着太阳，摄像头拍的灰布区域不会被影子挡住，点击白帧</p>
+<p><strong><em>黑帧：</em></strong>将飞机放在地面上，盖着镜头盖，点击黑帧</p>
+<h1 id="飞行"><a href="#飞行" class="headerlink" title="飞行"></a>飞行</h1><p>起飞+绕8字+按航线飞行+(过灰布)</p>
 <p>如果航线不过灰布的话需要手动飞一条航线过灰布</p>
 
       
@@ -509,42 +607,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>ar-app使用教程</h1>
-<p><em><strong>ar_app文件夹：</strong></em></p>
+          <h1 id="ar-app使用教程"><a href="#ar-app使用教程" class="headerlink" title="ar-app使用教程"></a>ar-app使用教程</h1><p><strong><em>ar_app文件夹：</em></strong></p>
 <p><img src="/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230911090458858-16944013591941.png" alt="image-20230911090458858"></p>
-<p>***数据与输出文件夹：***建议按以下路径放置，可以更改</p>
+<p><strong><em>数据与输出文件夹：</em></strong>建议按以下路径放置，可以更改</p>
 <p><img src="/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230911090809952-16944013762242.png" alt="image-20230911090809952"></p>
-<h2 id="ar-app使用">ar_app使用</h2>
-<p><img src="/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230911095706333-16944013919213.png" alt="image-20230911095706333"></p>
+<h2 id="ar-app使用"><a href="#ar-app使用" class="headerlink" title="ar_app使用"></a>ar_app使用</h2><p><img src="/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230911095706333-16944013919213.png" alt="image-20230911095706333"></p>
 <p>其中：</p>
-<h3 id="–input-path：输入路径">–input_path：输入路径</h3>
-<p><em><strong>路径下有两个文件夹：</strong></em></p>
+<h3 id="—input-path：输入路径"><a href="#—input-path：输入路径" class="headerlink" title="—input_path：输入路径"></a>—input_path：输入路径</h3><p><strong><em>路径下有两个文件夹：</em></strong></p>
 <ul>
 <li>mapping：构建库的图片（不可动）</li>
 <li>query：存储定位图片的临时文件夹（需要定期删除里面的图片）</li>
 </ul>
 <p><img src="/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230911103431355-16944014043194.png" alt="image-20230911103431355"></p>
-<h3 id="–output-path：输出路径">–output_path：输出路径</h3>
-<p><em><strong>里面有若干定位所需要的文件，不可更改</strong></em></p>
+<h3 id="—output-path：输出路径"><a href="#—output-path：输出路径" class="headerlink" title="—output_path：输出路径"></a>—output_path：输出路径</h3><p><strong><em>里面有若干定位所需要的文件，不可更改</em></strong></p>
 <p><img src="/2023/09/11/ar-app%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230911103637786-16944014159535.png" alt="image-20230911103637786"></p>
-<h3 id="–host：本机IP">–host：本机IP</h3>
-<p><em><strong>本机电脑IP地址，服务发布的位置</strong></em></p>
-<h3 id="–port：服务运行的IP">–port：服务运行的IP</h3>
-<h3 id="–number-retrieval：定位前图片检索的张数">–number_retrieval：定位前图片检索的张数</h3>
-<p>数量可以设置为100，可以根据定位效果调整，这个对定位效率影响较小</p>
-<h3 id="–init-match-num：初始化图片用于定位需要的图片数目">–init_match_num：初始化图片用于定位需要的图片数目</h3>
-<p>这个对初始化定位速率影响较大，数量越多，定位精度越高，但定位效率越低</p>
-<h3 id="–navigation-match-num：导航过程中用于定位的图片数目">–navigation_match_num：导航过程中用于定位的图片数目</h3>
-<p>这个对导航定位数量影响较大，如上所述，可以根据精度和定位效率要求进行更改，默认为10</p>
-<h1>发起请求与返回</h1>
-<ul>
-<li>***请求地址：***<a target="_blank" rel="noopener" href="http://host">http://host</a>:ip/upLoadImg_api</li>
-<li><em><strong>使用方法如下所示：</strong></em></li>
+<h3 id="—host：本机IP"><a href="#—host：本机IP" class="headerlink" title="—host：本机IP"></a>—host：本机IP</h3><p><strong><em>本机电脑IP地址，服务发布的位置</em></strong></p>
+<h3 id="—port：服务运行的IP"><a href="#—port：服务运行的IP" class="headerlink" title="—port：服务运行的IP"></a>—port：服务运行的IP</h3><h3 id="—number-retrieval：定位前图片检索的张数"><a href="#—number-retrieval：定位前图片检索的张数" class="headerlink" title="—number_retrieval：定位前图片检索的张数"></a>—number_retrieval：定位前图片检索的张数</h3><p>数量可以设置为100，可以根据定位效果调整，这个对定位效率影响较小</p>
+<h3 id="—init-match-num：初始化图片用于定位需要的图片数目"><a href="#—init-match-num：初始化图片用于定位需要的图片数目" class="headerlink" title="—init_match_num：初始化图片用于定位需要的图片数目"></a>—init_match_num：初始化图片用于定位需要的图片数目</h3><p>这个对初始化定位速率影响较大，数量越多，定位精度越高，但定位效率越低</p>
+<h3 id="—navigation-match-num：导航过程中用于定位的图片数目"><a href="#—navigation-match-num：导航过程中用于定位的图片数目" class="headerlink" title="—navigation_match_num：导航过程中用于定位的图片数目"></a>—navigation_match_num：导航过程中用于定位的图片数目</h3><p>这个对导航定位数量影响较大，如上所述，可以根据精度和定位效率要求进行更改，默认为10</p>
+<h1 id="发起请求与返回"><a href="#发起请求与返回" class="headerlink" title="发起请求与返回"></a>发起请求与返回</h1><ul>
+<li><strong><em>请求地址：</em></strong><a href="http://host:ip/upLoadImg_api">http://host:ip/upLoadImg_api</a></li>
+<li><strong><em>使用方法如下所示：</em></strong></li>
 </ul>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> wx.<span class="title function_">uploadFile</span>(&#123;</span><br><span class="line">     <span class="attr">filePath</span>: res.<span class="property">tempFilePath</span>,</span><br><span class="line">     <span class="attr">name</span>: <span class="string">&#x27;image&#x27;</span>,</span><br><span class="line">     <span class="attr">url</span>: <span class="string">&#x27;http://10.104.31.14:5001/upLoadImg_api&#x27;</span>,</span><br><span class="line">     <span class="attr">success</span>:<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">         <span class="keyword">let</span> x_y_data = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(res.<span class="property">data</span>)</span><br><span class="line">         <span class="keyword">if</span>(x_y_data.<span class="property">status</span> === <span class="string">&quot;floor&quot;</span>)&#123;</span><br><span class="line">         wx.<span class="title function_">showLoading</span>(&#123;</span><br><span class="line">             <span class="attr">title</span>: <span class="string">&#x27;行走楼梯中&#x27;</span>,</span><br><span class="line">             <span class="attr">mask</span>: <span class="title class_">True</span></span><br><span class="line">         &#125;)</span><br><span class="line">         &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">             <span class="variable language_">this</span>.<span class="title function_">addPointToMap</span>(x_y_data.<span class="property">x</span>, x_y_data.<span class="property">y</span>,<span class="string">&quot;image&quot;</span>)</span><br><span class="line">             wx.<span class="title function_">hideLoading</span>()</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">this</span>.<span class="property">is_end</span> === <span class="literal">false</span>)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">upLoadImage</span>()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">fail</span>:<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">    	<span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">&quot;http://192.168.20.146:5001/upLoadImg_api&quot;</span></span><br><span class="line">src_dir = <span class="string">&quot;cz_1&quot;</span></span><br><span class="line">images = os.listdir(src_dir)</span><br><span class="line">images = <span class="built_in">sorted</span>(images, key=<span class="keyword">lambda</span> x: <span class="built_in">int</span>(x.split(<span class="string">&quot;.&quot;</span>)[<span class="number">0</span>]))</span><br><span class="line"><span class="keyword">for</span> image <span class="keyword">in</span> images:</span><br><span class="line">    file = os.path.join(src_dir, image)</span><br><span class="line">    files = &#123;<span class="string">&#x27;image&#x27;</span>: <span class="built_in">open</span>(file, <span class="string">&#x27;rb&#x27;</span>)&#125;</span><br><span class="line">    start_time = time.time()</span><br><span class="line">    r = requests.post(url=url, files=files)</span><br><span class="line">    end_time = time.time()</span><br><span class="line">    <span class="built_in">print</span>(end_time-start_time, r.content)</span><br></pre></td></tr></table></figure>
-<h1>返回值：</h1>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"></span><br><span class="line">	x<span class="punctuation">:</span>x坐标<span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">	y<span class="punctuation">:</span>坐标<span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">	status<span class="punctuation">:</span><span class="string">&quot;floor&quot;</span>时表示定位失误</span><br><span class="line"></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h1 id="返回值："><a href="#返回值：" class="headerlink" title="返回值："></a>返回值：</h1><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"></span><br><span class="line">	x<span class="punctuation">:</span>x坐标<span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">	y<span class="punctuation">:</span>坐标<span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">	status<span class="punctuation">:</span><span class="string">&quot;floor&quot;</span>时表示定位失误</span><br><span class="line"></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -612,42 +699,34 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>一、本地使用</h1>
-<h2 id="1-一般使用">1.一般使用</h2>
-<p><em><strong>新建项目：</strong></em></p>
+          <h1 id="一、本地使用"><a href="#一、本地使用" class="headerlink" title="一、本地使用"></a>一、本地使用</h1><h2 id="1-一般使用"><a href="#1-一般使用" class="headerlink" title="1.一般使用"></a>1.一般使用</h2><p><strong><em>新建项目：</em></strong></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907161016140.png" alt="image-20230907161016140"></p>
-<p>***引擎设置：***确保项目的jobs路径和引擎监听的jobs路径相同</p>
+<p><strong><em>引擎设置：</em></strong>确保项目的jobs路径和引擎监听的jobs路径相同</p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907162128310.png" alt="image-20230907162128310"></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907162234601.png" alt="image-20230907162234601"></p>
-<p><em><strong>导入图片：</strong></em></p>
+<p><strong><em>导入图片：</em></strong></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907161046985.png" alt="image-20230907161046985"></p>
-<p>***空三：***block名上右键</p>
+<p><strong><em>空三：</em></strong>block名上右键</p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907162010342.png" alt="image-20230907162010342"></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907164531702.png" alt="image-20230907164531702"></p>
-<p>***重建：***空三后的block上右键</p>
+<p><strong><em>重建：</em></strong>空三后的block上右键</p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907164632789.png" alt="image-20230907164632789"></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907164809754.png" alt="image-20230907164809754"></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907164831639.png" alt="image-20230907164831639"></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907164924132.png" alt="image-20230907164924132"></p>
-<h2 id="2-导入其他软件的空三结果">2.导入其他软件的空三结果</h2>
-<p><em><strong>注意导入的xml文件中图片的路径要和导入图片的路径一样，也就是需要更改一下这个路径，在3D view里去看一下是否图片可以找到</strong></em></p>
+<h2 id="2-导入其他软件的空三结果"><a href="#2-导入其他软件的空三结果" class="headerlink" title="2.导入其他软件的空三结果"></a>2.导入其他软件的空三结果</h2><p><strong><em>注意导入的xml文件中图片的路径要和导入图片的路径一样，也就是需要更改一下这个路径，在3D view里去看一下是否图片可以找到</em></strong></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907170005855.png" alt="image-20230907170005855"></p>
-<h1>二、集群使用</h1>
-<p>***集群三个部分：***Master机器+文件存储机器+工作机器（引擎）</p>
-<h2 id="1-集群项目的建立">1.集群项目的建立</h2>
-<p><em><strong>项目路径要为网络路径</strong></em></p>
+<h1 id="二、集群使用"><a href="#二、集群使用" class="headerlink" title="二、集群使用"></a>二、集群使用</h1><p><strong><em>集群三个部分：</em></strong>Master机器+文件存储机器+工作机器（引擎）</p>
+<h2 id="1-集群项目的建立"><a href="#1-集群项目的建立" class="headerlink" title="1.集群项目的建立"></a>1.集群项目的建立</h2><p><strong><em>项目路径要为网络路径</em></strong></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907171142785.png" alt="image-20230907171142785"></p>
-<p><em><strong>引擎设置：</strong></em></p>
+<p><strong><em>引擎设置：</em></strong></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907171421385.png" alt="image-20230907171421385"></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907171459799.png" alt="image-20230907171459799"></p>
-<p><em><strong>其余和非集群类似</strong></em></p>
+<p><strong><em>其余和非集群类似</em></strong></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907171558691.png" alt="image-20230907171558691"></p>
-<h2 id="2-特殊处理方法（特殊问题）">2.特殊处理方法（特殊问题）</h2>
-<h3 id="2-1-带宽限制">2.1.带宽限制</h3>
-<p><em><strong>集群所有的机器都会在文件存储机器上面读写，因此有一定的带宽限制，开的集群机器数目不能太多，可以适当超过带宽限制一点点</strong></em></p>
+<h2 id="2-特殊处理方法（特殊问题）"><a href="#2-特殊处理方法（特殊问题）" class="headerlink" title="2.特殊处理方法（特殊问题）"></a>2.特殊处理方法（特殊问题）</h2><h3 id="2-1-带宽限制"><a href="#2-1-带宽限制" class="headerlink" title="2.1.带宽限制"></a>2.1.带宽限制</h3><p><strong><em>集群所有的机器都会在文件存储机器上面读写，因此有一定的带宽限制，开的集群机器数目不能太多，可以适当超过带宽限制一点点</em></strong></p>
 <p><img src="/2023/09/07/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/ContextCapture%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20230907172028754.png" alt="image-20230907172028754"></p>
-<h2 id="2-2-项目太大，导致提交项目后有一定的问题">2.2.项目太大，导致提交项目后有一定的问题</h2>
-<p>分tiles提交，一次只提交一部分tiles</p>
+<h2 id="2-2-项目太大，导致提交项目后有一定的问题"><a href="#2-2-项目太大，导致提交项目后有一定的问题" class="headerlink" title="2.2.项目太大，导致提交项目后有一定的问题"></a>2.2.项目太大，导致提交项目后有一定的问题</h2><p>分tiles提交，一次只提交一部分tiles</p>
 
       
     </div>
@@ -712,11 +791,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>python中常见错误</h1>
-<h2 id="opencv相关">opencv相关</h2>
-<h3 id="最基础的imread、imwrite都不能使用">最基础的imread、imwrite都不能使用</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cv2.error: OpenCV(4.2.0) C:\projects\opencv-python\opencv\modules\highgui\src\window.cpp:651: error: (-2:Unspecified error) The <span class="keyword">function</span> is not implemented.</span><br></pre></td></tr></table></figure>
-<p>***解决办法：***降低python版本为3.7</p>
+          <h1 id="python中常见错误"><a href="#python中常见错误" class="headerlink" title="python中常见错误"></a>python中常见错误</h1><h2 id="opencv相关"><a href="#opencv相关" class="headerlink" title="opencv相关"></a>opencv相关</h2><h3 id="最基础的imread、imwrite都不能使用"><a href="#最基础的imread、imwrite都不能使用" class="headerlink" title="最基础的imread、imwrite都不能使用"></a>最基础的imread、imwrite都不能使用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cv2.error: OpenCV(4.2.0) C:\projects\opencv-python\opencv\modules\highgui\src\window.cpp:651: error: (-2:Unspecified error) The <span class="keyword">function</span> is not implemented.</span><br></pre></td></tr></table></figure>
+<p><strong><em>解决办法：</em></strong>降低python版本为3.7</p>
 
       
     </div>
@@ -790,12 +866,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>环境配置</h1>
-<p><a target="_blank" rel="noopener" href="https://mmpose.readthedocs.io/zh_CN/latest/installation.html">安装 — MMPose 1.1.0 文档</a></p>
-<p>***注意：***python版本使用3.7的，要不然opencv会出错，什么原因不知道</p>
+          <h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p><a target="_blank" rel="noopener" href="https://mmpose.readthedocs.io/zh_CN/latest/installation.html">安装 — MMPose 1.1.0 文档</a></p>
+<p><strong><em>注意：</em></strong>python版本使用3.7的，要不然opencv会出错，什么原因不知道</p>
 <p><a href>错误明细</a></p>
-<h1>手势识别运行</h1>
-<ul>
+<h1 id="手势识别运行"><a href="#手势识别运行" class="headerlink" title="手势识别运行"></a>手势识别运行</h1><ul>
 <li>图片手势识别</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/topdown_demo_with_mmdet.py demo/mmdetection_cfg/cascade_rcnn_x101_64x4d_fpn_1class.py cascade_rcnn_x101_64x4d_fpn_20e_onehand10k-dac19597_20201030.pth configs/hand_2d_keypoint/topdown_heatmap/onehand10k/td-hm_hrnetv2-w18_8xb64-210e_onehand10k-256x256.py hrnetv2_w18_onehand10k_256x256-30bc9c6b_20210330.pth --input tests/data/onehand10k/9.jpg --show --draw-heatmap</span><br></pre></td></tr></table></figure>
@@ -872,15 +946,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>深度学习原理</h1>
-<p><em><strong>梯度下降</strong></em></p>
-<h1>深度学习简单实现</h1>
-<h2 id="最基础线性规划实现">最基础线性规划实现</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> datasets</span><br><span class="line">(x, y), (x_val, y_val) = datasets.mnist.load_data()</span><br><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">x = tf.convert_to_tensor(x, dtype=tf.float32) / <span class="number">255.</span></span><br><span class="line">y = tf.convert_to_tensor(y, dtype=tf.int32)</span><br><span class="line"><span class="built_in">print</span>(x.shape, y.shape)</span><br><span class="line"><span class="comment"># 将x、y转为tensorflow的db</span></span><br><span class="line">train_dataset = tf.data.Dataset.from_tensor_slices((x, y))</span><br><span class="line"><span class="comment"># 设置batch</span></span><br><span class="line">train_dataset = train_dataset.batch(<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># [b, 784] =&gt; [b, 256] =&gt; [b, 128] =&gt; [b, 10]</span></span><br><span class="line"><span class="comment"># []</span></span><br><span class="line"><span class="comment"># 这是在计算过程中需要的参数，也是梯度下降时要变化的东西</span></span><br><span class="line">w1 = tf.Variable(tf.random.truncated_normal([<span class="number">784</span>, <span class="number">256</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b1 = tf.Variable(tf.zeros([<span class="number">256</span>]))</span><br><span class="line">w2 = tf.Variable(tf.random.truncated_normal([<span class="number">256</span>, <span class="number">128</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b2 = tf.Variable(tf.zeros([<span class="number">128</span>]))</span><br><span class="line">w3 = tf.Variable(tf.random.truncated_normal([<span class="number">128</span>, <span class="number">10</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b3 = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br><span class="line"></span><br><span class="line">lr = <span class="number">1e-3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> step, (x, y) <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_dataset):</span><br><span class="line">    <span class="comment"># x:[128, 28, 28]</span></span><br><span class="line">    <span class="comment"># y:[128]</span></span><br><span class="line">    <span class="comment"># [b, 28, 28] =&gt; [b, 28*28]</span></span><br><span class="line">    x = tf.reshape(x, [-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        <span class="comment"># x:[b, 28*28]</span></span><br><span class="line">        <span class="comment"># h1 = x@w1 + b1</span></span><br><span class="line">        <span class="comment"># [b, 784]@[784, 256] + [256]=&gt;[b,256] + [256] =&gt; [b, 256]</span></span><br><span class="line">        h1 = x@w1 + b1</span><br><span class="line">        h1 = tf.nn.relu(h1)</span><br><span class="line">        <span class="comment"># [b, 256] =&gt; [b, 128]</span></span><br><span class="line">        h2 = h1@w2 + b2</span><br><span class="line">        h2 = tf.nn.relu(h2)</span><br><span class="line">        <span class="comment"># [b, 128] =&gt; [b, 10]</span></span><br><span class="line">        out = h2@w3 + b3</span><br><span class="line"></span><br><span class="line">        <span class="comment"># compute loss</span></span><br><span class="line">        <span class="comment"># out: [b, 10]</span></span><br><span class="line">        <span class="comment"># y:[b] =&gt; [b, 10]</span></span><br><span class="line">        y = tf.one_hot(y, depth=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># mse = mean(sum(y-out)^2)</span></span><br><span class="line">        <span class="comment"># [b,10]</span></span><br><span class="line">        loss = tf.square(y-out)</span><br><span class="line">        <span class="comment"># mean: scalar</span></span><br><span class="line">        loss = tf.reduce_mean(loss)</span><br><span class="line">	<span class="comment"># 梯度计算</span></span><br><span class="line">    grads = tape.gradient(loss, [w1, b1, w2, b2, w3, b3])</span><br><span class="line">    <span class="comment"># 梯度更新</span></span><br><span class="line">    <span class="comment"># w1 = w1 - lr * grads[0]</span></span><br><span class="line">    w1.assign_sub(lr * grads[<span class="number">0</span>])</span><br><span class="line">    b1.assign_sub(lr * grads[<span class="number">1</span>])</span><br><span class="line">    w2.assign_sub(lr * grads[<span class="number">2</span>])</span><br><span class="line">    b2.assign_sub(lr * grads[<span class="number">3</span>])</span><br><span class="line">    w3.assign_sub(lr * grads[<span class="number">4</span>])</span><br><span class="line">    b3.assign_sub(lr * grads[<span class="number">5</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> step % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(step, <span class="string">&#x27;loss&#x27;</span>, <span class="built_in">float</span>(loss))</span><br></pre></td></tr></table></figure>
-<h2 id="使用tensorflow的部分接口实现">使用tensorflow的部分接口实现</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> datasets, optimizers, Sequential, layers</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">data_pre_process</span>(<span class="params">x, y</span>):</span><br><span class="line">    x = tf.cast(x, dtype=tf.float32) / <span class="number">255.</span></span><br><span class="line">    y = tf.cast(y, dtype=tf.int32)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x, y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dataLoader</span>():</span><br><span class="line">    (x, y), (x_val, y_val) = datasets.fashion_mnist.load_data()</span><br><span class="line">    db = tf.data.Dataset.from_tensor_slices((x, y))</span><br><span class="line">    db = db.<span class="built_in">map</span>(data_pre_process).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line">    db_val = tf.data.Dataset.from_tensor_slices((x_val, y_val))</span><br><span class="line">    db_val = db_val.<span class="built_in">map</span>(data_pre_process).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> db, db_val</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 数据加载</span></span><br><span class="line">    db, db_val = dataLoader()</span><br><span class="line"></span><br><span class="line">    model = Sequential([</span><br><span class="line">        layers.Dense(<span class="number">256</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">128</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">64</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">32</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">10</span>, activation=tf.nn.relu),</span><br><span class="line">    ])</span><br><span class="line">    model.build(input_shape=[<span class="literal">None</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">    model.summary()</span><br><span class="line"></span><br><span class="line">    optimizers = optimizers.Adam(lr=<span class="number">1e-3</span>)</span><br><span class="line">    <span class="comment"># 迭代</span></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">30</span>):</span><br><span class="line">        <span class="comment"># 每次迭代过程中会根据batchsize分块计算</span></span><br><span class="line">        <span class="keyword">for</span> step, (x, y) <span class="keyword">in</span> <span class="built_in">enumerate</span>(db):</span><br><span class="line">            x = tf.reshape(x, [-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">            <span class="comment"># 梯度计算</span></span><br><span class="line">            <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">                logits = model(x)</span><br><span class="line">                y_onehot = tf.one_hot(y, depth=<span class="number">10</span>)</span><br><span class="line">                loss_mse = tf.reduce_mean(tf.losses.MSE(y_onehot, logits))</span><br><span class="line">                loss_ce = tf.reduce_mean(tf.losses.categorical_crossentropy(y_onehot, logits, from_logits=<span class="literal">True</span>))</span><br><span class="line"></span><br><span class="line">            grads = tape.gradient(loss_ce, model.trainable_variables)</span><br><span class="line">            <span class="comment"># 梯度更新</span></span><br><span class="line">            optimizers.apply_gradients(<span class="built_in">zip</span>(grads, model.trainable_variables))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> step % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">                <span class="built_in">print</span>(epoch, step, <span class="string">&#x27;loss:&#x27;</span>, <span class="built_in">float</span>(loss_ce), <span class="built_in">float</span>(loss_mse))</span><br><span class="line">        <span class="comment"># 测试/验证集精度计算</span></span><br><span class="line">        total_correct = <span class="number">0</span></span><br><span class="line">        total_num = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> x, y <span class="keyword">in</span> db_val:</span><br><span class="line">            x = tf.reshape(x, [-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">            logits = model(x)</span><br><span class="line">            prob = tf.nn.softmax(logits, axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">            pred = tf.argmax(prob, axis=<span class="number">1</span>)</span><br><span class="line">            pred = tf.cast(pred, dtype=tf.int32)</span><br><span class="line"></span><br><span class="line">            correct = tf.equal(pred, y)</span><br><span class="line">            correct = tf.reduce_sum(tf.cast(correct, dtype=tf.int32))</span><br><span class="line">            total_correct += <span class="built_in">int</span>(correct)</span><br><span class="line">            total_num += x.shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        acc = total_correct/total_num</span><br><span class="line">        <span class="built_in">print</span>(epoch, <span class="string">&#x27;test acc:&#x27;</span>, <span class="built_in">float</span>(acc))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="tensorflow高级api使用">tensorflow高级api使用</h2>
-<p>所有的深度学习都包含上面几个步骤</p>
+          <h1 id="深度学习原理"><a href="#深度学习原理" class="headerlink" title="深度学习原理"></a>深度学习原理</h1><p><strong><em>梯度下降</em></strong></p>
+<h1 id="深度学习简单实现"><a href="#深度学习简单实现" class="headerlink" title="深度学习简单实现"></a>深度学习简单实现</h1><h2 id="最基础线性规划实现"><a href="#最基础线性规划实现" class="headerlink" title="最基础线性规划实现"></a>最基础线性规划实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> datasets</span><br><span class="line">(x, y), (x_val, y_val) = datasets.mnist.load_data()</span><br><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">x = tf.convert_to_tensor(x, dtype=tf.float32) / <span class="number">255.</span></span><br><span class="line">y = tf.convert_to_tensor(y, dtype=tf.int32)</span><br><span class="line"><span class="built_in">print</span>(x.shape, y.shape)</span><br><span class="line"><span class="comment"># 将x、y转为tensorflow的db</span></span><br><span class="line">train_dataset = tf.data.Dataset.from_tensor_slices((x, y))</span><br><span class="line"><span class="comment"># 设置batch</span></span><br><span class="line">train_dataset = train_dataset.batch(<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># [b, 784] =&gt; [b, 256] =&gt; [b, 128] =&gt; [b, 10]</span></span><br><span class="line"><span class="comment"># []</span></span><br><span class="line"><span class="comment"># 这是在计算过程中需要的参数，也是梯度下降时要变化的东西</span></span><br><span class="line">w1 = tf.Variable(tf.random.truncated_normal([<span class="number">784</span>, <span class="number">256</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b1 = tf.Variable(tf.zeros([<span class="number">256</span>]))</span><br><span class="line">w2 = tf.Variable(tf.random.truncated_normal([<span class="number">256</span>, <span class="number">128</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b2 = tf.Variable(tf.zeros([<span class="number">128</span>]))</span><br><span class="line">w3 = tf.Variable(tf.random.truncated_normal([<span class="number">128</span>, <span class="number">10</span>], stddev=<span class="number">0.1</span>))</span><br><span class="line">b3 = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br><span class="line"></span><br><span class="line">lr = <span class="number">1e-3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> step, (x, y) <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_dataset):</span><br><span class="line">    <span class="comment"># x:[128, 28, 28]</span></span><br><span class="line">    <span class="comment"># y:[128]</span></span><br><span class="line">    <span class="comment"># [b, 28, 28] =&gt; [b, 28*28]</span></span><br><span class="line">    x = tf.reshape(x, [-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        <span class="comment"># x:[b, 28*28]</span></span><br><span class="line">        <span class="comment"># h1 = x@w1 + b1</span></span><br><span class="line">        <span class="comment"># [b, 784]@[784, 256] + [256]=&gt;[b,256] + [256] =&gt; [b, 256]</span></span><br><span class="line">        h1 = x@w1 + b1</span><br><span class="line">        h1 = tf.nn.relu(h1)</span><br><span class="line">        <span class="comment"># [b, 256] =&gt; [b, 128]</span></span><br><span class="line">        h2 = h1@w2 + b2</span><br><span class="line">        h2 = tf.nn.relu(h2)</span><br><span class="line">        <span class="comment"># [b, 128] =&gt; [b, 10]</span></span><br><span class="line">        out = h2@w3 + b3</span><br><span class="line"></span><br><span class="line">        <span class="comment"># compute loss</span></span><br><span class="line">        <span class="comment"># out: [b, 10]</span></span><br><span class="line">        <span class="comment"># y:[b] =&gt; [b, 10]</span></span><br><span class="line">        y = tf.one_hot(y, depth=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># mse = mean(sum(y-out)^2)</span></span><br><span class="line">        <span class="comment"># [b,10]</span></span><br><span class="line">        loss = tf.square(y-out)</span><br><span class="line">        <span class="comment"># mean: scalar</span></span><br><span class="line">        loss = tf.reduce_mean(loss)</span><br><span class="line">	<span class="comment"># 梯度计算</span></span><br><span class="line">    grads = tape.gradient(loss, [w1, b1, w2, b2, w3, b3])</span><br><span class="line">    <span class="comment"># 梯度更新</span></span><br><span class="line">    <span class="comment"># w1 = w1 - lr * grads[0]</span></span><br><span class="line">    w1.assign_sub(lr * grads[<span class="number">0</span>])</span><br><span class="line">    b1.assign_sub(lr * grads[<span class="number">1</span>])</span><br><span class="line">    w2.assign_sub(lr * grads[<span class="number">2</span>])</span><br><span class="line">    b2.assign_sub(lr * grads[<span class="number">3</span>])</span><br><span class="line">    w3.assign_sub(lr * grads[<span class="number">4</span>])</span><br><span class="line">    b3.assign_sub(lr * grads[<span class="number">5</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> step % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(step, <span class="string">&#x27;loss&#x27;</span>, <span class="built_in">float</span>(loss))</span><br></pre></td></tr></table></figure>
+<h2 id="使用tensorflow的部分接口实现"><a href="#使用tensorflow的部分接口实现" class="headerlink" title="使用tensorflow的部分接口实现"></a>使用tensorflow的部分接口实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> datasets, optimizers, Sequential, layers</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">data_pre_process</span>(<span class="params">x, y</span>):</span><br><span class="line">    x = tf.cast(x, dtype=tf.float32) / <span class="number">255.</span></span><br><span class="line">    y = tf.cast(y, dtype=tf.int32)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x, y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dataLoader</span>():</span><br><span class="line">    (x, y), (x_val, y_val) = datasets.fashion_mnist.load_data()</span><br><span class="line">    db = tf.data.Dataset.from_tensor_slices((x, y))</span><br><span class="line">    db = db.<span class="built_in">map</span>(data_pre_process).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line">    db_val = tf.data.Dataset.from_tensor_slices((x_val, y_val))</span><br><span class="line">    db_val = db_val.<span class="built_in">map</span>(data_pre_process).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> db, db_val</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 数据加载</span></span><br><span class="line">    db, db_val = dataLoader()</span><br><span class="line"></span><br><span class="line">    model = Sequential([</span><br><span class="line">        layers.Dense(<span class="number">256</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">128</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">64</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">32</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">10</span>, activation=tf.nn.relu),</span><br><span class="line">    ])</span><br><span class="line">    model.build(input_shape=[<span class="literal">None</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">    model.summary()</span><br><span class="line"></span><br><span class="line">    optimizers = optimizers.Adam(lr=<span class="number">1e-3</span>)</span><br><span class="line">    <span class="comment"># 迭代</span></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">30</span>):</span><br><span class="line">        <span class="comment"># 每次迭代过程中会根据batchsize分块计算</span></span><br><span class="line">        <span class="keyword">for</span> step, (x, y) <span class="keyword">in</span> <span class="built_in">enumerate</span>(db):</span><br><span class="line">            x = tf.reshape(x, [-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">            <span class="comment"># 梯度计算</span></span><br><span class="line">            <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">                logits = model(x)</span><br><span class="line">                y_onehot = tf.one_hot(y, depth=<span class="number">10</span>)</span><br><span class="line">                loss_mse = tf.reduce_mean(tf.losses.MSE(y_onehot, logits))</span><br><span class="line">                loss_ce = tf.reduce_mean(tf.losses.categorical_crossentropy(y_onehot, logits, from_logits=<span class="literal">True</span>))</span><br><span class="line"></span><br><span class="line">            grads = tape.gradient(loss_ce, model.trainable_variables)</span><br><span class="line">            <span class="comment"># 梯度更新</span></span><br><span class="line">            optimizers.apply_gradients(<span class="built_in">zip</span>(grads, model.trainable_variables))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> step % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">                <span class="built_in">print</span>(epoch, step, <span class="string">&#x27;loss:&#x27;</span>, <span class="built_in">float</span>(loss_ce), <span class="built_in">float</span>(loss_mse))</span><br><span class="line">        <span class="comment"># 测试/验证集精度计算</span></span><br><span class="line">        total_correct = <span class="number">0</span></span><br><span class="line">        total_num = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> x, y <span class="keyword">in</span> db_val:</span><br><span class="line">            x = tf.reshape(x, [-<span class="number">1</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">            logits = model(x)</span><br><span class="line">            prob = tf.nn.softmax(logits, axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">            pred = tf.argmax(prob, axis=<span class="number">1</span>)</span><br><span class="line">            pred = tf.cast(pred, dtype=tf.int32)</span><br><span class="line"></span><br><span class="line">            correct = tf.equal(pred, y)</span><br><span class="line">            correct = tf.reduce_sum(tf.cast(correct, dtype=tf.int32))</span><br><span class="line">            total_correct += <span class="built_in">int</span>(correct)</span><br><span class="line">            total_num += x.shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        acc = total_correct/total_num</span><br><span class="line">        <span class="built_in">print</span>(epoch, <span class="string">&#x27;test acc:&#x27;</span>, <span class="built_in">float</span>(acc))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="tensorflow高级api使用"><a href="#tensorflow高级api使用" class="headerlink" title="tensorflow高级api使用"></a>tensorflow高级api使用</h2><p>所有的深度学习都包含上面几个步骤</p>
 <ul>
 <li>加载数据</li>
 <li>迭代</li>
@@ -889,41 +958,32 @@
 </ul>
 <p>因此，tensorflow将上面的固定步骤写在同一的接口中方便使用</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> datasets, optimizers, Sequential, layers</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">data_pre_process</span>(<span class="params">x, y</span>):</span><br><span class="line">    x = tf.cast(x, dtype=tf.float32) / <span class="number">255.</span></span><br><span class="line">    y = tf.cast(y, dtype=tf.int32)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x, y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dataLoader</span>():</span><br><span class="line">    (x, y), (x_val, y_val) = datasets.fashion_mnist.load_data()</span><br><span class="line">    x = x.reshape(<span class="number">60000</span>, <span class="number">28</span>*<span class="number">28</span>)</span><br><span class="line">    y = tf.one_hot(y, depth=<span class="number">10</span>)</span><br><span class="line">    db = tf.data.Dataset.from_tensor_slices((x, y))</span><br><span class="line">    db = db.<span class="built_in">map</span>(data_pre_process).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line">    db_val = tf.data.Dataset.from_tensor_slices((x_val, y_val))</span><br><span class="line">    db_val = db_val.<span class="built_in">map</span>(data_pre_process).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> db, db_val</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    db, db_val = dataLoader()</span><br><span class="line"></span><br><span class="line">    model = Sequential([</span><br><span class="line">        layers.Dense(<span class="number">256</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">128</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">64</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">32</span>, activation=tf.nn.relu),</span><br><span class="line">        layers.Dense(<span class="number">10</span>, activation=tf.nn.relu),</span><br><span class="line">    ])</span><br><span class="line">    model.build(input_shape=[<span class="literal">None</span>, <span class="number">28</span>*<span class="number">28</span>])</span><br><span class="line">    model.summary()</span><br><span class="line">    <span class="comment"># compile中会提供若干参数，如梯度优化方式、误差计算方式、精度评定方式，当然还有更多参数，请阅读文档</span></span><br><span class="line">    model.<span class="built_in">compile</span>(optimizer=optimizers.Adam(lr=<span class="number">0.0001</span>), loss=tf.losses.CategoricalCrossentropy(from_logits=<span class="literal">True</span>),</span><br><span class="line">                  metrics=[<span class="string">&#x27;accuracy&#x27;</span>])</span><br><span class="line">	<span class="comment"># fit即开始训练，需要输入db和要迭代的次数，注意db中的x和y要和model的输入与输出维度一致</span></span><br><span class="line">    model.fit(db, epochs=<span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
-<h1>常见问题</h1>
-<h2 id="过拟合和欠拟合">过拟合和欠拟合</h2>
-<p>***过拟合：***训练精度很高，测试精度不够（可能）</p>
-<p>***欠拟合：***训练精度不够，测试精度也不够（可能）——模型复杂度不够</p>
-<h3 id="过拟合解决">过拟合解决</h3>
-<ul>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><h2 id="过拟合和欠拟合"><a href="#过拟合和欠拟合" class="headerlink" title="过拟合和欠拟合"></a>过拟合和欠拟合</h2><p><strong><em>过拟合：</em></strong>训练精度很高，测试精度不够（可能）</p>
+<p><strong><em>欠拟合：</em></strong>训练精度不够，测试精度也不够（可能）——模型复杂度不够</p>
+<h3 id="过拟合解决"><a href="#过拟合解决" class="headerlink" title="过拟合解决"></a>过拟合解决</h3><ul>
 <li>更多数据</li>
 <li>更简单的模型</li>
 <li>数据增强</li>
 </ul>
-<h4 id="Regularization">Regularization</h4>
-<p><img src="/2023/07/02/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/tensorflow/image-20230702195941412.png" alt="image-20230702195941412"></p>
+<h4 id="Regularization"><a href="#Regularization" class="headerlink" title="Regularization"></a>Regularization</h4><p><img src="/2023/07/02/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/tensorflow/image-20230702195941412.png" alt="image-20230702195941412"></p>
 <p>前面是误差，后面是参数的范式，参数的一范式越小说明参数越接近于0，那么拟合出来的模型就越平滑，出现过拟合的可能性就越小</p>
 <p><img src="/2023/07/02/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/tensorflow/image-20230702200316610.png" alt="image-20230702200316610"></p>
 <p>两张regularization方式，分别是一范数二范数</p>
-<h4 id="Momentum">Momentum</h4>
-<p><img src="/2023/07/02/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/tensorflow/image-20230702200957049.png" alt="image-20230702200957049"></p>
+<h4 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h4><p><img src="/2023/07/02/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/tensorflow/image-20230702200957049.png" alt="image-20230702200957049"></p>
 <p>动量设置，参数更改的不仅仅由当前梯度的影像，还与上一次梯度的方向有关</p>
-<h4 id="Learning-rate">Learning rate</h4>
-<p><img src="/2023/07/02/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/tensorflow/image-20230702201327476.png" alt="image-20230702201327476"></p>
+<h4 id="Learning-rate"><a href="#Learning-rate" class="headerlink" title="Learning rate"></a>Learning rate</h4><p><img src="/2023/07/02/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/tensorflow/image-20230702201327476.png" alt="image-20230702201327476"></p>
 <p>学习率一般刚开始比较大，后续慢慢变小，前期学习率大变化快，后续会较慢</p>
-<h4 id="提前取消">提前取消</h4>
-<p>如果出现了训练精度还在提高，测试精度不提高了，说明已经过拟合，可以停止训练</p>
-<h4 id="Dropout">Dropout</h4>
-<p><img src="/2023/07/02/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/tensorflow/image-20230703092847561.png" alt="image-20230703092847561"></p>
+<h4 id="提前取消"><a href="#提前取消" class="headerlink" title="提前取消"></a>提前取消</h4><p>如果出现了训练精度还在提高，测试精度不提高了，说明已经过拟合，可以停止训练</p>
+<h4 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h4><p><img src="/2023/07/02/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/tensorflow/image-20230703092847561.png" alt="image-20230703092847561"></p>
 <p>每一次训练都有一些连线可能中断</p>
 <p>tensorflow和pytorch的dropout参数是相反的</p>
 <p>dropout在做test时不能使用——要手动取消</p>
-<h1>为什么要卷积</h1>
-<p><em><strong>为什么要卷积？不使用简单的Dense层？</strong></em></p>
+<h1 id="为什么要卷积"><a href="#为什么要卷积" class="headerlink" title="为什么要卷积"></a>为什么要卷积</h1><p><strong><em>为什么要卷积？不使用简单的Dense层？</em></strong></p>
 <ul>
 <li>数据存储需求大</li>
 </ul>
 <p>视野？滑动窗口？这个窗口是卷积核？cv里面锐化模糊边缘提取的卷积核</p>
-<p><em><strong>卷积核的个数，也就是con2d中的两个参数：</strong></em></p>
+<p><strong><em>卷积核的个数，也就是con2d中的两个参数：</em></strong></p>
 <ul>
 <li>卷积核的大小问题</li>
 </ul>
@@ -934,67 +994,9 @@
 <p>如下面的(64, 3)其中的64就是上面的N代表着64个通道的特征，3是卷积核的大小，也就是[c, 3, 3]中的3，c会默认与图片的通道数相同，所以不需要额外设置</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conv1 = Conv2D(<span class="number">64</span>, <span class="number">3</span>, activation=<span class="string">&#x27;relu&#x27;</span>, padding=<span class="string">&#x27;same&#x27;</span>)(inputs)</span><br></pre></td></tr></table></figure>
 <p><img src="/2023/07/02/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/tensorflow/image-20230702203217415.png" alt="image-20230702203217415"></p>
-<h1>为什么要下采样（池化）</h1>
-<p>不同的程度可以获取到不同层级的特征</p>
+<h1 id="为什么要下采样（池化）"><a href="#为什么要下采样（池化）" class="headerlink" title="为什么要下采样（池化）"></a>为什么要下采样（池化）</h1><p>不同的程度可以获取到不同层级的特征</p>
 <p><img src="/2023/07/02/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/tensorflow/image-20230703095836625.png" alt="image-20230703095836625"></p>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/20/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/CSS%E5%85%83%E7%B4%A0%E7%9A%84%E5%AE%9A%E4%BD%8D%E4%B8%8E%E6%B5%AE%E5%8A%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ouwenwu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ouwenwu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/04/20/%E5%89%8D%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99/CSS%E5%85%83%E7%B4%A0%E7%9A%84%E5%AE%9A%E4%BD%8D%E4%B8%8E%E6%B5%AE%E5%8A%A8/" class="post-title-link" itemprop="url">CSS元素的定位与浮动</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-04-20 19:06:34" itemprop="dateCreated datePublished" datetime="2023-04-20T19:06:34+08:00">2023-04-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
       
     </div>
 
@@ -1078,7 +1080,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">45</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1091,7 +1093,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
