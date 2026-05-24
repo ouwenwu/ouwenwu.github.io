@@ -188,6 +188,286 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/05/24/%E6%9C%8D%E5%8A%A1%E5%99%A8Codex%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/05/24/%E6%9C%8D%E5%8A%A1%E5%99%A8Codex%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" class="post-title-link" itemprop="url">服务器 Codex 反向代理使用说明</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-05-24 00:00:00 / 修改时间：10:19:13" itemprop="dateCreated datePublished" datetime="2026-05-24T00:00:00+08:00">2026-05-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">服务器</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>服务器 Codex 反向代理使用说明</h1>
+<h2 id="1-使用场景">1. 使用场景</h2>
+<p>服务器无法直接访问外网，但本地 Windows 电脑可以通过 v2rayN、Clash 等代理访问外网。</p>
+<p>目标链路如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">服务器上的 Codex</span><br><span class="line">    ↓</span><br><span class="line">服务器 127.0.0.1:代理端口</span><br><span class="line">    ↓ SSH 反向隧道</span><br><span class="line">本地电脑 127.0.0.1:7897</span><br><span class="line">    ↓</span><br><span class="line">外网</span><br></pre></td></tr></table></figure>
+<p>该配置只在当前用户账户下生效，不修改服务器全局代理，不影响其他 Linux 用户。</p>
+<h2 id="2-前提条件">2. 前提条件</h2>
+<h3 id="2-1-本地电脑">2.1 本地电脑</h3>
+<p>本地电脑需要已经有可用代理，例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:7897</span><br></pre></td></tr></table></figure>
+<p>可在 Windows PowerShell 中测试：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl.exe <span class="literal">-I</span> <span class="literal">-x</span> http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7897</span> https://www.google.com</span><br></pre></td></tr></table></figure>
+<p>如果返回 <code>HTTP/2 200</code> 或类似结果，说明本地代理可用。</p>
+<h3 id="2-2-服务器">2.2 服务器</h3>
+<p>服务器需要能够通过 SSH 登录：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh ouwenwu@<span class="number">10.101</span>.<span class="number">250.12</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-在本地电脑建立-SSH-反向代理">3. 在本地电脑建立 SSH 反向代理</h2>
+<p>在 Windows PowerShell 中执行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="literal">-N</span> <span class="literal">-T</span> <span class="literal">-o</span> ExitOnForwardFailure=yes <span class="literal">-R</span> <span class="number">43897</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7897</span> ouwenwu@<span class="number">10.101</span>.<span class="number">250.12</span></span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-N：只建立隧道，不进入远程 shell</span><br><span class="line">-T：不分配伪终端</span><br><span class="line">-o ExitOnForwardFailure=yes：如果端口转发失败则直接退出</span><br><span class="line">-R 43897:127.0.0.1:7897：</span><br><span class="line">    在服务器上监听 127.0.0.1:43897</span><br><span class="line">    并转发到本地电脑的 127.0.0.1:7897</span><br></pre></td></tr></table></figure>
+<p>执行后窗口看起来会停住，这是正常现象。该窗口用于保持 SSH 隧道连接，不要关闭。</p>
+<p>如需中断隧道，在该 PowerShell 窗口按：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + C</span><br></pre></td></tr></table></figure>
+<h2 id="4-在服务器上测试代理是否可用">4. 在服务器上测试代理是否可用</h2>
+<p>另开一个 PowerShell 窗口，登录服务器：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh ouwenwu@<span class="number">10.101</span>.<span class="number">250.12</span></span><br></pre></td></tr></table></figure>
+<p>在服务器中执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -I -x http://127.0.0.1:43897 https://www.google.com</span><br></pre></td></tr></table></figure>
+<p>如果出现类似结果：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 Connection established</span><br><span class="line"></span><br><span class="line">HTTP/2 200</span><br></pre></td></tr></table></figure>
+<p>说明反向代理已经成功。</p>
+<p>也可以测试 OpenAI：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -I -x http://127.0.0.1:43897 https://api.openai.com</span><br></pre></td></tr></table></figure>
+<h2 id="5-检查服务器端监听端口">5. 检查服务器端监听端口</h2>
+<p>在服务器上执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss -lntp | grep 43897</span><br></pre></td></tr></table></figure>
+<p>正常情况下应看到类似：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LISTEN 0 128 127.0.0.1:43897 0.0.0.0:*</span><br></pre></td></tr></table></figure>
+<p>重点是监听地址应为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:43897</span><br></pre></td></tr></table></figure>
+<p>不要是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.0.0.0:43897</span><br></pre></td></tr></table></figure>
+<p><code>127.0.0.1</code> 表示该端口只在服务器本机可访问，不暴露给外部网络。</p>
+<p>注意：同一台服务器上的其他 Linux 用户理论上也可能访问 <code>127.0.0.1:43897</code>。因此建议使用随机高位端口，并且不要公开端口号。</p>
+<h2 id="6-安装-Node-js-和-npm">6. 安装 Node.js 和 npm</h2>
+<p>先检查服务器是否已有 Node.js 和 npm：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+<p>如果能正常显示版本号，可以跳过本节。</p>
+<p>如果没有 Node.js，且没有 sudo 权限，建议使用 nvm 安装到当前用户目录。</p>
+<p>通过代理安装 nvm：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HTTPS_PROXY=http://127.0.0.1:43897 \</span><br><span class="line">HTTP_PROXY=http://127.0.0.1:43897 \</span><br><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash</span><br></pre></td></tr></table></figure>
+<p>加载 nvm：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>安装 Node.js LTS：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm install --lts</span><br><span class="line">nvm use --lts</span><br></pre></td></tr></table></figure>
+<p>再次检查：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+<h2 id="7-配置-npm-只安装到当前用户目录">7. 配置 npm 只安装到当前用户目录</h2>
+<p>不要使用系统级全局安装路径，避免影响服务器其他用户。</p>
+<p>在服务器中执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ~/.npm-global</span><br><span class="line">npm config <span class="built_in">set</span> prefix <span class="string">&quot;<span class="variable">$HOME</span>/.npm-global&quot;</span></span><br></pre></td></tr></table></figure>
+<p>将当前用户的 npm bin 目录加入 PATH：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PATH=&quot;$HOME/.npm-global/bin:$PATH&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>检查 npm 全局安装目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config get prefix</span><br></pre></td></tr></table></figure>
+<p>期望输出类似：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/ouwenwu/.npm-global</span><br></pre></td></tr></table></figure>
+<h2 id="8-通过代理安装-Codex-CLI">8. 通过代理安装 Codex CLI</h2>
+<p>在服务器中执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTPS_PROXY=http://127.0.0.1:43897 \</span><br><span class="line">HTTP_PROXY=http://127.0.0.1:43897 \</span><br><span class="line">ALL_PROXY=http://127.0.0.1:43897 \</span><br><span class="line">npm install -g @openai/codex</span><br></pre></td></tr></table></figure>
+<p>安装完成后检查：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> codex</span><br><span class="line">codex --version</span><br></pre></td></tr></table></figure>
+<p>期望结果类似：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/ouwenwu/.npm-global/bin/codex</span><br></pre></td></tr></table></figure>
+<p>如果 <code>which codex</code> 指向 <code>/home/ouwenwu/.npm-global/bin/codex</code>，说明 Codex 安装在当前用户目录下，不影响其他用户。</p>
+<h2 id="9-创建只对-Codex-生效的代理启动脚本">9. 创建只对 Codex 生效的代理启动脚本</h2>
+<p>不要把代理变量直接写入 <code>~/.bashrc</code>，否则当前账户下的其他程序也会默认走代理。</p>
+<p>推荐创建单独脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ~/bin</span><br><span class="line"><span class="built_in">cat</span> &gt; ~/bin/codex-proxy &lt;&lt;<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line"><span class="comment">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HTTP_PROXY=http://127.0.0.1:43897</span><br><span class="line"><span class="built_in">export</span> HTTPS_PROXY=http://127.0.0.1:43897</span><br><span class="line"><span class="built_in">export</span> ALL_PROXY=http://127.0.0.1:43897</span><br><span class="line"><span class="built_in">export</span> NO_PROXY=localhost,127.0.0.1,::1</span><br><span class="line"></span><br><span class="line"><span class="built_in">exec</span> codex <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>赋予执行权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x ~/bin/codex-proxy</span><br></pre></td></tr></table></figure>
+<p>将 <code>~/bin</code> 加入当前用户 PATH：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PATH=&quot;$HOME/bin:$PATH&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>检查：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> codex-proxy</span><br></pre></td></tr></table></figure>
+<p>期望结果：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/ouwenwu/bin/codex-proxy</span><br></pre></td></tr></table></figure>
+<h2 id="10-登录-Codex">10. 登录 Codex</h2>
+<p>使用代理脚本启动登录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy login</span><br></pre></td></tr></table></figure>
+<p>如果支持设备码登录，也可以使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy login --device-auth</span><br></pre></td></tr></table></figure>
+<p>服务器无浏览器时，终端一般会显示登录链接或设备码。将链接复制到本地浏览器完成登录即可。</p>
+<h2 id="11-启动-Codex">11. 启动 Codex</h2>
+<p>进入项目目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/project</span><br></pre></td></tr></table></figure>
+<p>启动 Codex：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy</span><br></pre></td></tr></table></figure>
+<p>不要直接运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex</span><br></pre></td></tr></table></figure>
+<p>因为直接运行 <code>codex</code> 不会自动带上代理环境变量。</p>
+<h2 id="12-Docker-容器内使用-Codex">12. Docker 容器内使用 Codex</h2>
+<p>如果 Codex 或开发环境在 Docker 容器内，不要修改 Docker daemon 全局代理。</p>
+<p>建议只给自己的容器传入代理变量。</p>
+<p>启动容器时：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -it \</span><br><span class="line">  --add-host=host.docker.internal:host-gateway \</span><br><span class="line">  -e HTTP_PROXY=http://host.docker.internal:43897 \</span><br><span class="line">  -e HTTPS_PROXY=http://host.docker.internal:43897 \</span><br><span class="line">  -e ALL_PROXY=http://host.docker.internal:43897 \</span><br><span class="line">  your_image bash</span><br></pre></td></tr></table></figure>
+<p>如果使用 docker compose，只在自己的服务中添加：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">dev:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">your_image</span></span><br><span class="line">    <span class="attr">extra_hosts:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;host.docker.internal:host-gateway&quot;</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">HTTP_PROXY:</span> <span class="string">http://host.docker.internal:43897</span></span><br><span class="line">      <span class="attr">HTTPS_PROXY:</span> <span class="string">http://host.docker.internal:43897</span></span><br><span class="line">      <span class="attr">ALL_PROXY:</span> <span class="string">http://host.docker.internal:43897</span></span><br></pre></td></tr></table></figure>
+<p>不要修改：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
+<p>否则可能影响服务器其他用户的 Docker 网络行为。</p>
+<h2 id="13-多用户服务器注意事项">13. 多用户服务器注意事项</h2>
+<h3 id="13-1-Codex-程序隔离">13.1 Codex 程序隔离</h3>
+<p>如果 Codex 安装在：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/ouwenwu/.npm-global/bin/codex</span><br></pre></td></tr></table></figure>
+<p>并且只将路径写入：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/ouwenwu/.bashrc</span><br></pre></td></tr></table></figure>
+<p>则其他用户默认无法直接通过 <code>codex</code> 命令访问你的 Codex。</p>
+<p>检查方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> codex</span><br><span class="line"><span class="built_in">ls</span> -l $(<span class="built_in">which</span> codex)</span><br></pre></td></tr></table></figure>
+<p>期望结果：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/ouwenwu/.npm-global/bin/codex</span><br></pre></td></tr></table></figure>
+<h3 id="13-2-代理端口风险">13.2 代理端口风险</h3>
+<p>SSH 反向代理监听在服务器本机：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:43897</span><br></pre></td></tr></table></figure>
+<p>外部机器不能直接访问，但同一台服务器上的其他用户理论上可能访问该本机端口。</p>
+<p>降低风险的方法：</p>
+<ol>
+<li>使用随机高位端口，例如 <code>59173</code>、<code>47281</code> 等。</li>
+<li>不要将代理端口写入公共文档或共享脚本。</li>
+<li>不要将代理环境变量写入全局配置。</li>
+<li>只在 <code>~/bin/codex-proxy</code> 中使用代理。</li>
+<li>使用完后关闭 SSH 隧道。</li>
+</ol>
+<p>例如将端口换为 <code>59173</code>。</p>
+<p>本地电脑执行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="literal">-N</span> <span class="literal">-T</span> <span class="literal">-o</span> ExitOnForwardFailure=yes <span class="literal">-R</span> <span class="number">59173</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7897</span> ouwenwu@<span class="number">10.101</span>.<span class="number">250.12</span></span><br></pre></td></tr></table></figure>
+<p>服务器脚本中对应修改为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HTTP_PROXY=http://127.0.0.1:59173</span><br><span class="line"><span class="built_in">export</span> HTTPS_PROXY=http://127.0.0.1:59173</span><br><span class="line"><span class="built_in">export</span> ALL_PROXY=http://127.0.0.1:59173</span><br></pre></td></tr></table></figure>
+<h2 id="14-权限加固">14. 权限加固</h2>
+<p>如果不希望其他用户浏览你的用户目录，可执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 700 ~</span><br><span class="line"><span class="built_in">chmod</span> 700 ~/.npm-global ~/bin</span><br></pre></td></tr></table></figure>
+<p>检查权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -ld ~</span><br><span class="line"><span class="built_in">ls</span> -ld ~/.npm-global ~/bin</span><br></pre></td></tr></table></figure>
+<h2 id="15-常见问题">15. 常见问题</h2>
+<h3 id="15-1-PowerShell-执行-SSH-后卡住">15.1 PowerShell 执行 SSH 后卡住</h3>
+<p>正常。</p>
+<p>如果使用了：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="literal">-N</span> <span class="literal">-R</span> <span class="number">43897</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7897</span> ouwenwu@<span class="number">10.101</span>.<span class="number">250.12</span></span><br></pre></td></tr></table></figure>
+<p><code>-N</code> 表示只建立隧道，不打开远程 shell，因此不会出现服务器命令行提示符。</p>
+<p>该窗口需要保持打开，关闭后隧道断开。</p>
+<h3 id="15-2-curl-测试返回-Connection-refused">15.2 curl 测试返回 <code>Connection refused</code></h3>
+<p>可能原因：</p>
+<ol>
+<li>本地代理端口不是 <code>7897</code>。</li>
+<li>本地 v2rayN 或 Clash 没有开启。</li>
+<li>SSH 反向隧道没有成功。</li>
+<li>服务器端口 <code>43897</code> 被占用。</li>
+<li>本地代理只监听了其他地址或端口。</li>
+</ol>
+<p>检查本地代理端口是否正确。</p>
+<h3 id="15-3-curl-测试返回-Could-not-resolve-host">15.3 curl 测试返回 <code>Could not resolve host</code></h3>
+<p>可能是代理没有生效，或者命令没有指定 <code>-x</code>。</p>
+<p>应使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -I -x http://127.0.0.1:43897 https://www.google.com</span><br></pre></td></tr></table></figure>
+<h3 id="15-4-npm-install-仍然无法联网">15.4 npm install 仍然无法联网</h3>
+<p>使用显式代理变量安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTPS_PROXY=http://127.0.0.1:43897 \</span><br><span class="line">HTTP_PROXY=http://127.0.0.1:43897 \</span><br><span class="line">ALL_PROXY=http://127.0.0.1:43897 \</span><br><span class="line">npm install -g @openai/codex</span><br></pre></td></tr></table></figure>
+<p>必要时也可以设置 npm 代理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> proxy http://127.0.0.1:43897</span><br><span class="line">npm config <span class="built_in">set</span> https-proxy http://127.0.0.1:43897</span><br></pre></td></tr></table></figure>
+<p>如果后续不想让 npm 默认走代理，可以删除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config delete proxy</span><br><span class="line">npm config delete https-proxy</span><br></pre></td></tr></table></figure>
+<h3 id="15-5-codex-proxy-提示-command-not-found">15.5 codex-proxy 提示 <code>command not found</code></h3>
+<p>检查 <code>~/bin</code> 是否加入 PATH：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<p>重新执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PATH=&quot;$HOME/bin:$PATH&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>检查脚本是否存在：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -l ~/bin/codex-proxy</span><br></pre></td></tr></table></figure>
+<h3 id="15-6-codex-命令找不到">15.6 codex 命令找不到</h3>
+<p>检查 Codex 是否安装成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm list -g --depth=0</span><br></pre></td></tr></table></figure>
+<p>检查 npm 全局 bin 目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm bin -g</span><br></pre></td></tr></table></figure>
+<p>检查 PATH：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<p>确保包含：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/ouwenwu/.npm-global/bin</span><br></pre></td></tr></table></figure>
+<h2 id="16-日常使用流程">16. 日常使用流程</h2>
+<h3 id="第一步：本地电脑打开-SSH-隧道">第一步：本地电脑打开 SSH 隧道</h3>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="literal">-N</span> <span class="literal">-T</span> <span class="literal">-o</span> ExitOnForwardFailure=yes <span class="literal">-R</span> <span class="number">43897</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7897</span> ouwenwu@<span class="number">10.101</span>.<span class="number">250.12</span></span><br></pre></td></tr></table></figure>
+<p>保持该窗口不关闭。</p>
+<h3 id="第二步：另开终端登录服务器">第二步：另开终端登录服务器</h3>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh ouwenwu@<span class="number">10.101</span>.<span class="number">250.12</span></span><br></pre></td></tr></table></figure>
+<h3 id="第三步：进入项目目录">第三步：进入项目目录</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/project</span><br></pre></td></tr></table></figure>
+<h3 id="第四步：启动-Codex">第四步：启动 Codex</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy</span><br></pre></td></tr></table></figure>
+<h3 id="第五步：使用结束后关闭隧道">第五步：使用结束后关闭隧道</h3>
+<p>回到保持隧道的 PowerShell 窗口，按：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + C</span><br></pre></td></tr></table></figure>
+<h2 id="17-最小命令汇总">17. 最小命令汇总</h2>
+<h3 id="本地电脑">本地电脑</h3>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="literal">-N</span> <span class="literal">-T</span> <span class="literal">-o</span> ExitOnForwardFailure=yes <span class="literal">-R</span> <span class="number">43897</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7897</span> ouwenwu@<span class="number">10.101</span>.<span class="number">250.12</span></span><br></pre></td></tr></table></figure>
+<h3 id="服务器测试代理">服务器测试代理</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -I -x http://127.0.0.1:43897 https://www.google.com</span><br></pre></td></tr></table></figure>
+<h3 id="服务器安装-Codex">服务器安装 Codex</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ~/.npm-global</span><br><span class="line">npm config <span class="built_in">set</span> prefix <span class="string">&quot;<span class="variable">$HOME</span>/.npm-global&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PATH=&quot;$HOME/.npm-global/bin:$PATH&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line"></span><br><span class="line">HTTPS_PROXY=http://127.0.0.1:43897 \</span><br><span class="line">HTTP_PROXY=http://127.0.0.1:43897 \</span><br><span class="line">ALL_PROXY=http://127.0.0.1:43897 \</span><br><span class="line">npm install -g @openai/codex</span><br></pre></td></tr></table></figure>
+<h3 id="创建-Codex-代理启动脚本">创建 Codex 代理启动脚本</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ~/bin</span><br><span class="line"><span class="built_in">cat</span> &gt; ~/bin/codex-proxy &lt;&lt;<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line"><span class="comment">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HTTP_PROXY=http://127.0.0.1:43897</span><br><span class="line"><span class="built_in">export</span> HTTPS_PROXY=http://127.0.0.1:43897</span><br><span class="line"><span class="built_in">export</span> ALL_PROXY=http://127.0.0.1:43897</span><br><span class="line"><span class="built_in">export</span> NO_PROXY=localhost,127.0.0.1,::1</span><br><span class="line"></span><br><span class="line"><span class="built_in">exec</span> codex <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> +x ~/bin/codex-proxy</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PATH=&quot;$HOME/bin:$PATH&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<h3 id="启动-Codex">启动 Codex</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2026/05/08/vscode-devcontainer-codex%E6%8F%92%E4%BB%B6%E4%BB%A3%E7%90%86%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1189,80 +1469,6 @@ $$<br>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/01/pyinstaller%E6%89%93%E5%8C%85python%E4%B8%BAexe/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ouwenwu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ouwenwu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/08/01/pyinstaller%E6%89%93%E5%8C%85python%E4%B8%BAexe/" class="post-title-link" itemprop="url">pyinstaller打包python为exe</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-08-01 09:17:35 / 修改时间：10:23:53" itemprop="dateCreated datePublished" datetime="2025-08-01T09:17:35+08:00">2025-08-01</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>pyinstaller常用参数</h1>
-<ul>
-<li>
-<p>-F: 打包为一整个exe</p>
-</li>
-<li>
-<p>-D: 打包为一个文件夹</p>
-</li>
-<li>
-<p>-w: 运行时不显示命令行窗口(仅对windows有效)</p>
-</li>
-<li>
-<p>-i: 图标路径</p>
-</li>
-</ul>
-<h2 id="基础命令">基础命令</h2>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1332,20 +1538,20 @@ $$<br>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">46</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">38</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
