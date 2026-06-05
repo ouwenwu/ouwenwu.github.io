@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2026-05-24T03:32:16.189Z</updated>
+  <updated>2026-06-04T12:55:16.584Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,44 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>服务器 Codex Device Code 切换账户登录说明</title>
+    <link href="http://example.com/2026/06/04/%E6%9C%8D%E5%8A%A1%E5%99%A8CodexDeviceCode%E5%88%87%E6%8D%A2%E8%B4%A6%E6%88%B7%E7%99%BB%E5%BD%95%E8%AF%B4%E6%98%8E/"/>
+    <id>http://example.com/2026/06/04/%E6%9C%8D%E5%8A%A1%E5%99%A8CodexDeviceCode%E5%88%87%E6%8D%A2%E8%B4%A6%E6%88%B7%E7%99%BB%E5%BD%95%E8%AF%B4%E6%98%8E/</id>
+    <published>2026-06-03T16:00:00.000Z</published>
+    <updated>2026-06-04T12:55:16.584Z</updated>
+    
+    <content type="html"><![CDATA[<h1>服务器 Codex Device Code 切换账户登录说明</h1><p>本文记录在服务器环境中使用 <code>codex-proxy login --device-auth</code> 退出旧账户并登录新账户的流程。</p><p>这篇文章和《服务器 Codex 反向代理使用说明》是同一套使用场景：服务器本身无法直接访问 OpenAI，需要先通过本地 Windows 电脑的 v2rayN、Clash、Clash Verge 等代理建立 SSH 反向隧道，再让服务器上的 Codex 通过 <code>codex-proxy</code> 访问外网。</p><p>适用场景：</p><ol><li>服务器已经安装 <code>codex</code> 和 <code>codex-proxy</code>。</li><li>本地电脑已经建立 SSH 反向代理。</li><li>需要从旧 ChatGPT/Codex 账户切换到新账户。</li><li>服务器没有浏览器，需要使用 device code 在本地浏览器完成登录。</li></ol><h2 id="1-前提条件">1. 前提条件</h2><p>开始前，建议先确认上一篇文章中的反向代理链路已经可用。</p><p>本地 Windows PowerShell 中需要保持 SSH 反向隧道窗口打开：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="literal">-N</span> <span class="literal">-T</span> <span class="literal">-o</span> ExitOnForwardFailure=yes <span class="literal">-R</span> <span class="number">43897</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7897</span> your_user@your_server_ip</span><br></pre></td></tr></table></figure><p>其中：</p><ul><li><code>43897</code>：服务器端监听端口；</li><li><code>7897</code>：本地代理端口，例如 v2rayN、Clash、Clash Verge 等；</li><li><code>your_user</code>：服务器用户名；</li><li><code>your_server_ip</code>：服务器 IP 地址。</li></ul><p>注意：这个 PowerShell 窗口需要一直保持打开，关闭后服务器上的反向代理会断开。</p><h2 id="2-检查当前-Codex-状态">2. 检查当前 Codex 状态</h2><p>登录服务器后，先检查当前用户、Codex 命令位置和认证文件：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">whoami</span></span><br><span class="line"><span class="built_in">which</span> codex</span><br><span class="line"><span class="built_in">which</span> codex-proxy</span><br><span class="line">codex-proxy --version</span><br><span class="line"></span><br><span class="line"><span class="built_in">ls</span> -la ~/.codex</span><br><span class="line"><span class="built_in">ls</span> -l ~/.codex/auth.json 2&gt;/dev/null || <span class="built_in">echo</span> <span class="string">&quot;no auth.json&quot;</span></span><br></pre></td></tr></table></figure><p>如果需要查看 <code>auth.json</code> 的基本结构，但不暴露 token，可以执行：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">python3 - &lt;&lt;<span class="string">&#x27;PY&#x27;</span></span><br><span class="line">import json, os</span><br><span class="line"></span><br><span class="line">p = os.path.expanduser(<span class="string">&quot;~/.codex/auth.json&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> not os.path.exists(p):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;auth.json not found&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    with open(p) as f:</span><br><span class="line">        data = json.load(f)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;auth.json exists&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;top-level keys:&quot;</span>, list(data.keys()))</span><br><span class="line">PY</span><br></pre></td></tr></table></figure><h2 id="3-退出当前-Codex-账户">3. 退出当前 Codex 账户</h2><p>优先使用官方退出命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy <span class="built_in">logout</span></span><br></pre></td></tr></table></figure><p>然后检查认证文件是否仍然存在：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -l ~/.codex/auth.json 2&gt;/dev/null || <span class="built_in">echo</span> <span class="string">&quot;auth.json removed&quot;</span></span><br></pre></td></tr></table></figure><p>如果退出后仍然存在认证问题，可以手动备份并删除 <code>auth.json</code>：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ~/.codex_auth_backup</span><br><span class="line"><span class="built_in">cp</span> ~/.codex/auth.json ~/.codex_auth_backup/auth.json.$(<span class="built_in">date</span> +%Y%m%d_%H%M%S) 2&gt;/dev/null || <span class="literal">true</span></span><br><span class="line"><span class="built_in">rm</span> -f ~/.codex/auth.json</span><br></pre></td></tr></table></figure><h2 id="4-清理旧的-Codex-后台进程">4. 清理旧的 Codex 后台进程</h2><p>如果之前启动过 <code>codex app-server</code>，建议在重新登录前清理旧进程。</p><p>先查看当前用户下的 Codex 相关进程：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -u <span class="string">&quot;<span class="subst">$(whoami)</span>&quot;</span> -o pid=,cmd= | grep <span class="string">&#x27;[c]odex&#x27;</span> || <span class="built_in">echo</span> <span class="string">&quot;no codex process&quot;</span></span><br></pre></td></tr></table></figure><p>如果存在旧的 app-server 进程，可以只清理当前用户下的相关进程：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ps -u <span class="string">&quot;<span class="subst">$(whoami)</span>&quot;</span> -o pid=,cmd= \</span><br><span class="line">  | grep <span class="string">&#x27;codex app-server&#x27;</span> \</span><br><span class="line">  | grep -v grep \</span><br><span class="line">  | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> \</span><br><span class="line">  | xargs -r <span class="built_in">kill</span> -9</span><br></pre></td></tr></table></figure><p>不要在多用户服务器上直接使用不带用户限制的 <code>pkill -f codex</code>，否则可能误匹配其他用户的 Codex 进程。</p><p>再次检查是否还有残留进程：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -u <span class="string">&quot;<span class="subst">$(whoami)</span>&quot;</span> -o pid=,cmd= | grep <span class="string">&#x27;[c]odex&#x27;</span> || <span class="built_in">echo</span> <span class="string">&quot;no codex process&quot;</span></span><br></pre></td></tr></table></figure><h2 id="5-检查反向代理是否可用">5. 检查反向代理是否可用</h2><p>在服务器上测试 OpenAI 是否能通过反向代理访问：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -I -x http://127.0.0.1:43897 https://api.openai.com</span><br></pre></td></tr></table></figure><p>如果能看到 HTTP 响应，说明反向代理可用。</p><p>如果连接失败，先回到本地 Windows PowerShell，确认 SSH 反向隧道仍然打开：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="literal">-N</span> <span class="literal">-T</span> <span class="literal">-o</span> ExitOnForwardFailure=yes <span class="literal">-R</span> <span class="number">43897</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7897</span> your_user@your_server_ip</span><br></pre></td></tr></table></figure><p>也可以在本地电脑测试本地代理端口：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl.exe <span class="literal">-I</span> <span class="literal">-x</span> http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7897</span> https://www.google.com</span><br></pre></td></tr></table></figure><h2 id="6-使用-Device-Code-登录新账户">6. 使用 Device Code 登录新账户</h2><p>在服务器上执行：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy login --device-auth</span><br></pre></td></tr></table></figure><p>终端一般会输出：</p><ul><li>一个登录链接；</li><li>一个一次性 device code。</li></ul><p>操作步骤：</p><ol><li>在本地浏览器中打开终端显示的登录链接。</li><li>登录你要切换到的新 ChatGPT/Codex 账户。</li><li>输入服务器终端显示的 device code。</li><li>等待服务器终端显示登录成功。</li></ol><p>建议使用浏览器无痕窗口，避免浏览器自动复用旧账户。</p><h2 id="7-检查新账户登录状态">7. 检查新账户登录状态</h2><p>登录完成后，在服务器上执行：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -l ~/.codex/auth.json</span><br></pre></td></tr></table></figure><p>继续检查认证文件结构：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">python3 - &lt;&lt;<span class="string">&#x27;PY&#x27;</span></span><br><span class="line">import json, os</span><br><span class="line"></span><br><span class="line">p = os.path.expanduser(<span class="string">&quot;~/.codex/auth.json&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;exists:&quot;</span>, os.path.exists(p))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> os.path.exists(p):</span><br><span class="line">    with open(p) as f:</span><br><span class="line">        data = json.load(f)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;keys:&quot;</span>, list(data.keys()))</span><br><span class="line">PY</span><br></pre></td></tr></table></figure><p>如果 <code>auth.json</code> 存在，并且能正常读取，说明新的本地认证文件已经生成。</p><h2 id="8-启动-Codex">8. 启动 Codex</h2><p>进入你的项目目录：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/your/project</span><br></pre></td></tr></table></figure><p>通过代理启动 Codex：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy</span><br></pre></td></tr></table></figure><p>不要直接执行：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex</span><br></pre></td></tr></table></figure><p>因为直接运行 <code>codex</code> 可能不会带上你在 <code>codex-proxy</code> 中配置的代理环境变量。</p><h2 id="9-一键完整流程">9. 一键完整流程</h2><p>如果只是想快速完成“退出旧账户并登录新账户”，可以直接执行下面的完整命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;== current ==&quot;</span></span><br><span class="line"><span class="built_in">whoami</span></span><br><span class="line"><span class="built_in">which</span> codex || <span class="literal">true</span></span><br><span class="line"><span class="built_in">which</span> codex-proxy || <span class="literal">true</span></span><br><span class="line">codex-proxy --version || <span class="literal">true</span></span><br><span class="line"><span class="built_in">ls</span> -l ~/.codex/auth.json 2&gt;/dev/null || <span class="built_in">echo</span> <span class="string">&quot;no auth.json&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;== logout ==&quot;</span></span><br><span class="line">codex-proxy <span class="built_in">logout</span> || <span class="literal">true</span></span><br><span class="line"><span class="built_in">mkdir</span> -p ~/.codex_auth_backup</span><br><span class="line"><span class="built_in">cp</span> ~/.codex/auth.json ~/.codex_auth_backup/auth.json.$(<span class="built_in">date</span> +%Y%m%d_%H%M%S) 2&gt;/dev/null || <span class="literal">true</span></span><br><span class="line"><span class="built_in">rm</span> -f ~/.codex/auth.json</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;== kill old app-server ==&quot;</span></span><br><span class="line">ps -u <span class="string">&quot;<span class="subst">$(whoami)</span>&quot;</span> -o pid=,cmd= \</span><br><span class="line">  | grep <span class="string">&#x27;codex app-server&#x27;</span> \</span><br><span class="line">  | grep -v grep \</span><br><span class="line">  | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> \</span><br><span class="line">  | xargs -r <span class="built_in">kill</span> -9</span><br><span class="line">ps -u <span class="string">&quot;<span class="subst">$(whoami)</span>&quot;</span> -o pid=,cmd= | grep <span class="string">&#x27;[c]odex&#x27;</span> || <span class="built_in">echo</span> <span class="string">&quot;no codex process&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;== test proxy ==&quot;</span></span><br><span class="line">curl -I -x http://127.0.0.1:43897 https://api.openai.com</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;== login new account ==&quot;</span></span><br><span class="line">codex-proxy login --device-auth</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;== check auth ==&quot;</span></span><br><span class="line"><span class="built_in">ls</span> -l ~/.codex/auth.json</span><br></pre></td></tr></table></figure><h2 id="10-常见问题">10. 常见问题</h2><h3 id="10-1-codex-proxy-login-device-auth-无法打开登录页面">10.1 <code>codex-proxy login --device-auth</code> 无法打开登录页面</h3><p>可能原因：</p><ol><li>服务器代理不可用。</li><li>SSH 反向隧道未启动。</li><li>本地代理端口不正确。</li><li>本地代理软件未开启 HTTP 代理端口。</li></ol><p>检查命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -I -x http://127.0.0.1:43897 https://api.openai.com</span><br></pre></td></tr></table></figure><p>如果该命令失败，优先修复代理。</p><h3 id="10-2-登录后仍然是旧账户">10.2 登录后仍然是旧账户</h3><p>可能原因：</p><ol><li>旧的 <code>auth.json</code> 未删除。</li><li>旧的 <code>codex app-server</code> 进程仍在运行。</li><li>登录时浏览器自动使用了旧账户。</li></ol><p>处理方法：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy <span class="built_in">logout</span> || <span class="literal">true</span></span><br><span class="line"><span class="built_in">rm</span> -f ~/.codex/auth.json</span><br><span class="line">ps -u <span class="string">&quot;<span class="subst">$(whoami)</span>&quot;</span> -o pid=,cmd= \</span><br><span class="line">  | grep <span class="string">&#x27;codex app-server&#x27;</span> \</span><br><span class="line">  | grep -v grep \</span><br><span class="line">  | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> \</span><br><span class="line">  | xargs -r <span class="built_in">kill</span> -9</span><br><span class="line">codex-proxy login --device-auth</span><br></pre></td></tr></table></figure><p>登录时建议使用浏览器无痕窗口，确保登录的是新账户。</p><h3 id="10-3-auth-json-不存在">10.3 <code>auth.json</code> 不存在</h3><p>可能原因：</p><ol><li>device-code 登录没有完成。</li><li>登录过程中网络中断。</li><li>没有使用 <code>codex-proxy login --device-auth</code>。</li><li>登录成功后文件写入失败。</li></ol><p>重新登录：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy login --device-auth</span><br></pre></td></tr></table></figure><h3 id="10-4-启动-Codex-后网络错误">10.4 启动 Codex 后网络错误</h3><p>确认不是直接运行了 <code>codex</code>：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy</span><br></pre></td></tr></table></figure><p>同时确认代理可用：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -I -x http://127.0.0.1:43897 https://api.openai.com</span><br></pre></td></tr></table></figure><p>如果 <code>codex-proxy</code> 仍然无法访问网络，可以回到《服务器 Codex 反向代理使用说明》中重新检查 SSH 反向隧道、代理端口和 <code>codex-proxy</code> 包装脚本。</p><h2 id="11-日常使用流程">11. 日常使用流程</h2><h3 id="第一步：本地电脑打开-SSH-反向隧道">第一步：本地电脑打开 SSH 反向隧道</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="literal">-N</span> <span class="literal">-T</span> <span class="literal">-o</span> ExitOnForwardFailure=yes <span class="literal">-R</span> <span class="number">43897</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7897</span> your_user@your_server_ip</span><br></pre></td></tr></table></figure><p>保持该窗口不关闭。</p><h3 id="第二步：登录服务器并进入项目目录">第二步：登录服务器并进入项目目录</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh your_user@your_server_ip</span><br></pre></td></tr></table></figure><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/your/project</span><br></pre></td></tr></table></figure><h3 id="第三步：启动-Codex">第三步：启动 Codex</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy</span><br></pre></td></tr></table></figure><h3 id="第四步：需要换号时重新登录">第四步：需要换号时重新登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy <span class="built_in">logout</span></span><br><span class="line"><span class="built_in">rm</span> -f ~/.codex/auth.json</span><br><span class="line">codex-proxy login --device-auth</span><br></pre></td></tr></table></figure><h2 id="12-最小命令汇总">12. 最小命令汇总</h2><h3 id="本地电脑">本地电脑</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="literal">-N</span> <span class="literal">-T</span> <span class="literal">-o</span> ExitOnForwardFailure=yes <span class="literal">-R</span> <span class="number">43897</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">7897</span> your_user@your_server_ip</span><br></pre></td></tr></table></figure><h3 id="服务器测试代理">服务器测试代理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -I -x http://127.0.0.1:43897 https://api.openai.com</span><br></pre></td></tr></table></figure><h3 id="服务器切换账户">服务器切换账户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy <span class="built_in">logout</span> || <span class="literal">true</span></span><br><span class="line"><span class="built_in">rm</span> -f ~/.codex/auth.json</span><br><span class="line">codex-proxy login --device-auth</span><br></pre></td></tr></table></figure><h3 id="服务器启动-Codex">服务器启动 Codex</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codex-proxy</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1&gt;服务器 Codex Device Code 切换账户登录说明&lt;/h1&gt;
+&lt;p&gt;本文记录在服务器环境中使用 &lt;code&gt;codex-proxy login --device-auth&lt;/code&gt; 退出旧账户并登录新账户的流程。&lt;/p&gt;
+&lt;p&gt;这篇文章和《服务器 Codex</summary>
+      
+    
+    
+    
+    <category term="服务器" scheme="http://example.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+    
+    <category term="Codex" scheme="http://example.com/tags/Codex/"/>
+    
+    <category term="SSH" scheme="http://example.com/tags/SSH/"/>
+    
+    <category term="反向代理" scheme="http://example.com/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/"/>
+    
+    <category term="v2rayN" scheme="http://example.com/tags/v2rayN/"/>
+    
+    <category term="Clash" scheme="http://example.com/tags/Clash/"/>
+    
+    <category term="Device Code" scheme="http://example.com/tags/Device-Code/"/>
+    
+    <category term="账户切换" scheme="http://example.com/tags/%E8%B4%A6%E6%88%B7%E5%88%87%E6%8D%A2/"/>
+    
+  </entry>
   
   <entry>
     <title>服务器 Codex 反向代理使用说明</title>
@@ -153,30 +191,6 @@
   </entry>
   
   <entry>
-    <title>我的世界特性</title>
-    <link href="http://example.com/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C%E7%89%B9%E6%80%A7/"/>
-    <id>http://example.com/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C%E7%89%B9%E6%80%A7/</id>
-    <published>2025-10-07T08:02:59.000Z</published>
-    <updated>2025-10-08T02:25:07.915Z</updated>
-    
-    <content type="html"><![CDATA[<h1>本篇介绍我的世界的各种特性</h1><p>**铁傀儡刷新机制:**村民被吓+区域内5个以上村民,僵尸吓村民表现为晚上上床后立马起床</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1&gt;本篇介绍我的世界的各种特性&lt;/h1&gt;
-&lt;p&gt;**铁傀儡刷新机制:**村民被吓+区域内5个以上村民,僵尸吓村民表现为晚上上床后立马起床&lt;/p&gt;
-</summary>
-      
-    
-    
-    
-    
-    <category term="我的世界" scheme="http://example.com/tags/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/"/>
-    
-  </entry>
-  
-  <entry>
     <title>简易刷铁机</title>
     <link href="http://example.com/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/"/>
     <id>http://example.com/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E7%AE%80%E6%98%93%E5%88%B7%E9%93%81%E6%9C%BA/</id>
@@ -194,6 +208,30 @@
 &lt;h2 id=&quot;收集装置&quot;&gt;收集装置&lt;/h2&gt;
 &lt;p&gt;首先搭建下面的装置,一格深的装置,两个小箱子组成的大箱子----箱子*2 方块*15&lt;/p&gt;
 &lt;p</summary>
+      
+    
+    
+    
+    
+    <category term="我的世界" scheme="http://example.com/tags/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我的世界特性</title>
+    <link href="http://example.com/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C%E7%89%B9%E6%80%A7/"/>
+    <id>http://example.com/2025/10/07/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C%E7%89%B9%E6%80%A7/</id>
+    <published>2025-10-07T08:02:59.000Z</published>
+    <updated>2025-10-08T02:25:07.915Z</updated>
+    
+    <content type="html"><![CDATA[<h1>本篇介绍我的世界的各种特性</h1><p>**铁傀儡刷新机制:**村民被吓+区域内5个以上村民,僵尸吓村民表现为晚上上床后立马起床</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1&gt;本篇介绍我的世界的各种特性&lt;/h1&gt;
+&lt;p&gt;**铁傀儡刷新机制:**村民被吓+区域内5个以上村民,僵尸吓村民表现为晚上上床后立马起床&lt;/p&gt;
+</summary>
       
     
     
@@ -516,32 +554,6 @@
     
     
     <category term="常见的错误" scheme="http://example.com/tags/%E5%B8%B8%E8%A7%81%E7%9A%84%E9%94%99%E8%AF%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>手势识别-mmpose</title>
-    <link href="http://example.com/2023/07/31/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/%E6%89%8B%E5%8A%BF%E8%AF%86%E5%88%AB-mmpose/"/>
-    <id>http://example.com/2023/07/31/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/%E6%89%8B%E5%8A%BF%E8%AF%86%E5%88%AB-mmpose/</id>
-    <published>2023-07-31T07:49:51.000Z</published>
-    <updated>2023-08-03T04:08:23.287Z</updated>
-    
-    <content type="html"><![CDATA[<h1>环境配置</h1><p><a href="https://mmpose.readthedocs.io/zh_CN/latest/installation.html">安装 — MMPose 1.1.0 文档</a></p><p>***注意：***python版本使用3.7的，要不然opencv会出错，什么原因不知道</p><p><a href>错误明细</a></p><h1>手势识别运行</h1><ul><li>图片手势识别</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/topdown_demo_with_mmdet.py demo/mmdetection_cfg/cascade_rcnn_x101_64x4d_fpn_1class.py cascade_rcnn_x101_64x4d_fpn_20e_onehand10k-dac19597_20201030.pth configs/hand_2d_keypoint/topdown_heatmap/onehand10k/td-hm_hrnetv2-w18_8xb64-210e_onehand10k-256x256.py hrnetv2_w18_onehand10k_256x256-30bc9c6b_20210330.pth --input tests/data/onehand10k/9.jpg --show --draw-heatmap</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1&gt;环境配置&lt;/h1&gt;
-&lt;p&gt;&lt;a href=&quot;https://mmpose.readthedocs.io/zh_CN/latest/installation.html&quot;&gt;安装 — MMPose 1.1.0 文档&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;***注意：***python版本使用3</summary>
-      
-    
-    
-    
-    <category term="手势识别" scheme="http://example.com/categories/%E6%89%8B%E5%8A%BF%E8%AF%86%E5%88%AB/"/>
-    
-    
-    <category term="mmpose" scheme="http://example.com/tags/mmpose/"/>
     
   </entry>
   

@@ -188,6 +188,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/01/docker%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ouwenwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ouwenwu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/08/01/docker%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" class="post-title-link" itemprop="url">docker使用手册</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-08-01 11:21:24" itemprop="dateCreated datePublished" datetime="2025-08-01T11:21:24+08:00">2025-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-10-09 15:04:13" itemprop="dateModified" datetime="2025-10-09T15:04:13+08:00">2025-10-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>常见命令</h1>
+<h2 id="拉取容器">拉取容器</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull image_name</span><br></pre></td></tr></table></figure>
+<h2 id="创建镜像">创建镜像</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -i -d --gpus all --shm-size=24g -v F:/ubuntu/docker_data/fast-livo2:/data --name fast-livo2 cuda_11_8</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-d: 容器在后台运行,并返回容器的id</li>
+<li>–gpus all: 该镜像可以访问到的gpu设置为全部</li>
+<li>–shm-size=24g: 设置容器的共享内存,默认为64MB,对于深度学习等应用来说,不够</li>
+<li>-v local_path:image_path : 将容器路径映射到本地路径,用于存放代码和数据等等</li>
+<li>–name: 容器名称</li>
+<li>cuda_11_8: 镜像名称</li>
+</ul>
+<h2 id="进入已有容器的命令行进行操作">进入已有容器的命令行进行操作</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br><span class="line">docker <span class="built_in">exec</span> -it &lt;容器<span class="built_in">id</span>或名称&gt; /bin/bash</span><br></pre></td></tr></table></figure>
+<h2 id="删除容器和镜像">删除容器和镜像</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="加载本地镜像">加载本地镜像</h2>
+<h1>常见问题</h1>
+<h3 id="vscode连接远程docker权限问题">vscode连接远程docker权限问题</h3>
+<p>Failed to connect. Is Docker runing?</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">chmod</span> 777 /var/run/docker.sock</span><br></pre></td></tr></table></figure>
+<h2 id="vscode连接远程本地docker版本冲突">vscode连接远程本地docker版本冲突</h2>
+<p>Failed to connect to the remote extension host server (Error: Connection error: Client refused: version mismatch)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pkill -f vscode-server || true</span><br><span class="line">rm -rf ~/.vscode-server ~/.vscode-server-insiders</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/01/pyinstaller%E6%89%93%E5%8C%85python%E4%B8%BAexe/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -929,88 +1018,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/%E6%89%8B%E5%8A%BF%E8%AF%86%E5%88%AB-mmpose/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ouwenwu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ouwenwu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/31/%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95/%E6%89%8B%E5%8A%BF%E8%AF%86%E5%88%AB-mmpose/" class="post-title-link" itemprop="url">手势识别-mmpose</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-07-31 15:49:51" itemprop="dateCreated datePublished" datetime="2023-07-31T15:49:51+08:00">2023-07-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-03 12:08:23" itemprop="dateModified" datetime="2023-08-03T12:08:23+08:00">2023-08-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%89%8B%E5%8A%BF%E8%AF%86%E5%88%AB/" itemprop="url" rel="index"><span itemprop="name">手势识别</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1>环境配置</h1>
-<p><a target="_blank" rel="noopener" href="https://mmpose.readthedocs.io/zh_CN/latest/installation.html">安装 — MMPose 1.1.0 文档</a></p>
-<p>***注意：***python版本使用3.7的，要不然opencv会出错，什么原因不知道</p>
-<p><a href>错误明细</a></p>
-<h1>手势识别运行</h1>
-<ul>
-<li>图片手势识别</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/topdown_demo_with_mmdet.py demo/mmdetection_cfg/cascade_rcnn_x101_64x4d_fpn_1class.py cascade_rcnn_x101_64x4d_fpn_20e_onehand10k-dac19597_20201030.pth configs/hand_2d_keypoint/topdown_heatmap/onehand10k/td-hm_hrnetv2-w18_8xb64-210e_onehand10k-256x256.py hrnetv2_w18_onehand10k_256x256-30bc9c6b_20210330.pth --input tests/data/onehand10k/9.jpg --show --draw-heatmap</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1080,7 +1087,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1093,7 +1100,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
