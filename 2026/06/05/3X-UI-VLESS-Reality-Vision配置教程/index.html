@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="3X-UI 最新版配置 VLESS + Reality + Vision 教程 本文记录一次在 3X-UI v3.2.8 中配置 VLESS + Reality + Vision 的完整过程，包含端口放行检查、入站创建、Reality 参数、Sniffing、Client 创建与连通性测试。 说明：本文用于个人学习与自用环境记录。请遵守服务器所在地、网络所在地及服务商的使用规则。   1. 安装">
+  <meta name="description" content="3X-UI 最新版配置 VLESS + Reality + Vision 教程  本文记录一次在 3X-UI v3.2.8 中配置 VLESS + Reality + Vision 的完整过程，包含端口放行检查、入站创建、Reality 参数、Sniffing、Client 创建与连通性测试。 说明：本文用于个人学习与自用环境记录。请遵守服务器所在地、网络所在地及服务商的使用规则。   1. 安装">
 <meta property="og:type" content="article">
 <meta property="og:title" content="3X-UI VLESS Reality Vision 配置教程">
 <meta property="og:url" content="http://example.com/2026/06/05/3X-UI-VLESS-Reality-Vision%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/index.html">
 <meta property="og:site_name" content="Ouwenwu">
-<meta property="og:description" content="3X-UI 最新版配置 VLESS + Reality + Vision 教程 本文记录一次在 3X-UI v3.2.8 中配置 VLESS + Reality + Vision 的完整过程，包含端口放行检查、入站创建、Reality 参数、Sniffing、Client 创建与连通性测试。 说明：本文用于个人学习与自用环境记录。请遵守服务器所在地、网络所在地及服务商的使用规则。   1. 安装">
+<meta property="og:description" content="3X-UI 最新版配置 VLESS + Reality + Vision 教程  本文记录一次在 3X-UI v3.2.8 中配置 VLESS + Reality + Vision 的完整过程，包含端口放行检查、入站创建、Reality 参数、Sniffing、Client 创建与连通性测试。 说明：本文用于个人学习与自用环境记录。请遵守服务器所在地、网络所在地及服务商的使用规则。   1. 安装">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2026/06/05/3X-UI-VLESS-Reality-Vision%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/01-add-inbound-initial.png">
 <meta property="og:image" content="http://example.com/2026/06/05/3X-UI-VLESS-Reality-Vision%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/02-ufw-iptables-443-allow.png">
@@ -265,38 +265,47 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="3X-UI-最新版配置-VLESS-Reality-Vision-教程"><a href="#3X-UI-最新版配置-VLESS-Reality-Vision-教程" class="headerlink" title="3X-UI 最新版配置 VLESS + Reality + Vision 教程"></a>3X-UI 最新版配置 VLESS + Reality + Vision 教程</h1><blockquote>
+        <h1>3X-UI 最新版配置 VLESS + Reality + Vision 教程</h1>
+<blockquote>
 <p>本文记录一次在 3X-UI v3.2.8 中配置 <code>VLESS + Reality + Vision</code> 的完整过程，包含端口放行检查、入站创建、Reality 参数、Sniffing、Client 创建与连通性测试。</p>
 <p>说明：本文用于个人学习与自用环境记录。请遵守服务器所在地、网络所在地及服务商的使用规则。</p>
 </blockquote>
 <hr>
-<h2 id="1-安装-3X-UI-面板"><a href="#1-安装-3X-UI-面板" class="headerlink" title="1. 安装 3X-UI 面板"></a>1. 安装 3X-UI 面板</h2><h3 id="1-1-更新系统并安装基础工具"><a href="#1-1-更新系统并安装基础工具" class="headerlink" title="1.1 更新系统并安装基础工具"></a>1.1 更新系统并安装基础工具</h3><p>在服务器中执行：</p>
+<h2 id="1-安装-3X-UI-面板">1. 安装 3X-UI 面板</h2>
+<h3 id="1-1-更新系统并安装基础工具">1.1 更新系统并安装基础工具</h3>
+<p>在服务器中执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get install -y wget curl</span><br></pre></td></tr></table></figure>
-<h3 id="1-2-放行面板和相关端口"><a href="#1-2-放行面板和相关端口" class="headerlink" title="1.2 放行面板和相关端口"></a>1.2 放行面板和相关端口</h3><p>先放行 HTTP 端口：</p>
+<h3 id="1-2-放行面板和相关端口">1.2 放行面板和相关端口</h3>
+<p>先放行 HTTP 端口：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ufw allow 80</span><br></pre></td></tr></table></figure>
 <p>再放行 3X-UI 面板端口范围：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ufw allow 55555:56666/tcp</span><br></pre></td></tr></table></figure>
 <p>说明：这里后续会将 3X-UI 面板端口设置为 <code>55555</code>，因此需要提前放行该端口。端口范围 <code>55555:56666/tcp</code> 也便于后续测试或调整。</p>
-<h3 id="1-3-执行官方安装脚本"><a href="#1-3-执行官方安装脚本" class="headerlink" title="1.3 执行官方安装脚本"></a>1.3 执行官方安装脚本</h3><p>执行：</p>
+<h3 id="1-3-执行官方安装脚本">1.3 执行官方安装脚本</h3>
+<p>执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash &lt;(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)</span><br></pre></td></tr></table></figure>
 <p>安装过程中按以下方式选择：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">是否自选端口：输入 y</span><br><span class="line">端口：输入 55555</span><br><span class="line">面板证书类型：输入 2</span><br><span class="line">后续选项（如果有）：直接回车跳过</span><br></pre></td></tr></table></figure>
 <p>安装完成后，终端会显示面板访问地址、用户名和密码。请立即保存这些信息。</p>
-<h3 id="1-4-浏览器登录-3X-UI"><a href="#1-4-浏览器登录-3X-UI" class="headerlink" title="1.4 浏览器登录 3X-UI"></a>1.4 浏览器登录 3X-UI</h3><p>打开浏览器，访问：</p>
+<h3 id="1-4-浏览器登录-3X-UI">1.4 浏览器登录 3X-UI</h3>
+<p>打开浏览器，访问：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://你的服务器公网IP:55555</span><br></pre></td></tr></table></figure>
 <p>然后使用安装脚本输出的用户名和密码登录。</p>
 <p>登录后建议立即完成以下安全设置：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">修改默认用户名和密码</span><br><span class="line">修改面板访问路径</span><br><span class="line">确认面板端口不是代理端口</span><br><span class="line">只开放必要端口</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="2-配置目标"><a href="#2-配置目标" class="headerlink" title="2. 配置目标"></a>2. 配置目标</h2><p>最终目标配置为：</p>
+<h2 id="2-配置目标">2. 配置目标</h2>
+<p>最终目标配置为：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Protocol: VLESS</span><br><span class="line">Port: 443</span><br><span class="line">Transmission: RAW / TCP</span><br><span class="line">Security: Reality</span><br><span class="line">Flow: xtls-rprx-vision</span><br><span class="line">uTLS / Fingerprint: chrome</span><br><span class="line">SNI: www.amd.com</span><br><span class="line">Target: www.amd.com:443</span><br><span class="line">Sniffing: HTTP, TLS, QUIC</span><br><span class="line">Client: 绑定到 vless-reality-vision 入站</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="3-初始状态：进入-Add-Inbound"><a href="#3-初始状态：进入-Add-Inbound" class="headerlink" title="3. 初始状态：进入 Add Inbound"></a>3. 初始状态：进入 Add Inbound</h2><p>最开始进入 3X-UI 的 <code>Inbounds → Add Inbound</code> 页面时，默认协议可能是 <code>http</code>。</p>
+<h2 id="3-初始状态：进入-Add-Inbound">3. 初始状态：进入 Add Inbound</h2>
+<p>最开始进入 3X-UI 的 <code>Inbounds → Add Inbound</code> 页面时，默认协议可能是 <code>http</code>。</p>
 <p><img src="/2026/06/05/3X-UI-VLESS-Reality-Vision%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/01-add-inbound-initial.png" alt="初始 Add Inbound 界面"></p>
 <p>这里不要使用 <code>http</code> 作为最终代理协议，需要改为：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Protocol: vless</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="4-检查服务器本机防火墙是否放行-443"><a href="#4-检查服务器本机防火墙是否放行-443" class="headerlink" title="4. 检查服务器本机防火墙是否放行 443"></a>4. 检查服务器本机防火墙是否放行 443</h2><p>在服务器上执行：</p>
+<h2 id="4-检查服务器本机防火墙是否放行-443">4. 检查服务器本机防火墙是否放行 443</h2>
+<p>在服务器上执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -L -n -v</span><br><span class="line">sudo iptables -S | grep 443</span><br></pre></td></tr></table></figure>
 <p>当看到类似下面结果时，说明服务器本机 UFW / iptables 已经允许 TCP 443：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-A ufw-user-input -p tcp -m tcp --dport 443 -j ACCEPT</span><br></pre></td></tr></table></figure>
@@ -304,7 +313,8 @@
 <p><img src="/2026/06/05/3X-UI-VLESS-Reality-Vision%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/02-ufw-iptables-443-allow.png" alt="UFW / iptables 已放行 443"></p>
 <p>此时只能说明服务器本机防火墙放行了 443，还不能证明公网能访问 443。</p>
 <hr>
-<h2 id="5-未配置-3X-UI-入站前，公网测试-443-会失败"><a href="#5-未配置-3X-UI-入站前，公网测试-443-会失败" class="headerlink" title="5. 未配置 3X-UI 入站前，公网测试 443 会失败"></a>5. 未配置 3X-UI 入站前，公网测试 443 会失败</h2><p>在 Windows PowerShell 中测试：</p>
+<h2 id="5-未配置-3X-UI-入站前，公网测试-443-会失败">5. 未配置 3X-UI 入站前，公网测试 443 会失败</h2>
+<p>在 Windows PowerShell 中测试：</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Test-NetConnection</span> 你的服务器公网IP <span class="literal">-Port</span> <span class="number">443</span></span><br></pre></td></tr></table></figure>
 <p>如果此时 3X-UI 还没有创建监听 443 的入站，会出现：</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TcpTestSucceeded : False</span><br></pre></td></tr></table></figure>
@@ -312,7 +322,8 @@
 <p><img src="/2026/06/05/3X-UI-VLESS-Reality-Vision%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/03-windows-test-443-failed-before-config.png" alt="未配置入站前 443 测试失败"></p>
 <p>这个结果是正常的，因为服务器虽然放行了 443，但还没有程序监听 443。</p>
 <hr>
-<h2 id="6-创建-VLESS-入站：Basics-页面"><a href="#6-创建-VLESS-入站：Basics-页面" class="headerlink" title="6. 创建 VLESS 入站：Basics 页面"></a>6. 创建 VLESS 入站：Basics 页面</h2><p>进入：</p>
+<h2 id="6-创建-VLESS-入站：Basics-页面">6. 创建 VLESS 入站：Basics 页面</h2>
+<p>进入：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Inbounds → Add Inbound → Basics</span><br></pre></td></tr></table></figure>
 <p>填写：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Enabled: 开启</span><br><span class="line">Remark: vless-reality-vision</span><br><span class="line">Protocol: vless</span><br><span class="line">Address: 留空</span><br><span class="line">Port: 443</span><br><span class="line">Total Flow: 0</span><br><span class="line">Traffic Reset: Never</span><br><span class="line">Duration: 留空</span><br></pre></td></tr></table></figure>
@@ -325,7 +336,8 @@
 <li>如果 443 被 Nginx、Caddy、Apache 等占用，可以换成其他端口，例如 <code>8443</code>，但云服务器安全组也要对应放行。</li>
 </ul>
 <hr>
-<h2 id="7-Protocol-页面"><a href="#7-Protocol-页面" class="headerlink" title="7. Protocol 页面"></a>7. Protocol 页面</h2><p>进入：</p>
+<h2 id="7-Protocol-页面">7. Protocol 页面</h2>
+<p>进入：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Add Inbound → Protocol</span><br></pre></td></tr></table></figure>
 <p>保持：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Decryption: none</span><br><span class="line">Encryption: none</span><br><span class="line">Selected: None</span><br></pre></td></tr></table></figure>
@@ -337,7 +349,8 @@
 <li>Reality 密钥是在后面的 <code>Security</code> 页面配置，不是在这里配置。</li>
 </ul>
 <hr>
-<h2 id="8-Stream-页面"><a href="#8-Stream-页面" class="headerlink" title="8. Stream 页面"></a>8. Stream 页面</h2><p>进入：</p>
+<h2 id="8-Stream-页面">8. Stream 页面</h2>
+<p>进入：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Add Inbound → Stream</span><br></pre></td></tr></table></figure>
 <p>设置：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Transmission: RAW</span><br><span class="line">Proxy Protocol: 关闭</span><br><span class="line">HTTP Obfuscation: 关闭</span><br><span class="line">External Proxy: 关闭</span><br><span class="line">Sockopt: 关闭</span><br><span class="line">TCP Masks: 不添加</span><br></pre></td></tr></table></figure>
@@ -349,7 +362,8 @@
 <li>本教程目标是 <code>VLESS + RAW/TCP + Reality + Vision</code>。</li>
 </ul>
 <hr>
-<h2 id="9-Security-页面：Reality-配置"><a href="#9-Security-页面：Reality-配置" class="headerlink" title="9. Security 页面：Reality 配置"></a>9. Security 页面：Reality 配置</h2><p>进入：</p>
+<h2 id="9-Security-页面：Reality-配置">9. Security 页面：Reality 配置</h2>
+<p>进入：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Add Inbound → Security</span><br></pre></td></tr></table></figure>
 <p>选择：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Security: Reality</span><br></pre></td></tr></table></figure>
@@ -367,7 +381,8 @@
 <p>也可以使用其他真实 HTTPS 站点，例如：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Target: www.microsoft.com:443</span><br><span class="line">SNI: www.microsoft.com</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="10-Sniffing-页面"><a href="#10-Sniffing-页面" class="headerlink" title="10. Sniffing 页面"></a>10. Sniffing 页面</h2><p>进入：</p>
+<h2 id="10-Sniffing-页面">10. Sniffing 页面</h2>
+<p>进入：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Add Inbound → Sniffing</span><br></pre></td></tr></table></figure>
 <p>建议设置：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Enabled: 开启</span><br><span class="line">HTTP: 勾选</span><br><span class="line">TLS: 勾选</span><br><span class="line">QUIC: 勾选</span><br><span class="line">FAKEDNS: 不勾选，或新手先关闭</span><br><span class="line">Metadata only: 关闭</span><br><span class="line">Route only: 关闭</span><br><span class="line">IPs excluded: 留空</span><br><span class="line">Domains excluded: 留空</span><br></pre></td></tr></table></figure>
@@ -379,14 +394,16 @@
 <li><code>FAKEDNS</code> 属于更复杂的 DNS 分流配置，新手阶段建议先关闭，避免增加排查难度。</li>
 </ul>
 <hr>
-<h2 id="11-Advanced-页面"><a href="#11-Advanced-页面" class="headerlink" title="11. Advanced 页面"></a>11. Advanced 页面</h2><p>进入：</p>
+<h2 id="11-Advanced-页面">11. Advanced 页面</h2>
+<p>进入：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Add Inbound → Advanced</span><br></pre></td></tr></table></figure>
 <p>新手保持默认即可。</p>
 <p>最后点击：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Create</span><br></pre></td></tr></table></figure>
 <p>创建完成后，服务器应开始监听 443。</p>
 <hr>
-<h2 id="12-检查-443-是否监听成功"><a href="#12-检查-443-是否监听成功" class="headerlink" title="12. 检查 443 是否监听成功"></a>12. 检查 443 是否监听成功</h2><p>在服务器上执行：</p>
+<h2 id="12-检查-443-是否监听成功">12. 检查 443 是否监听成功</h2>
+<p>在服务器上执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ss -lntp | grep <span class="string">&#x27;:443&#x27;</span></span><br></pre></td></tr></table></figure>
 <p>理想结果类似：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LISTEN 0 4096 0.0.0.0:443 0.0.0.0:* <span class="built_in">users</span>:((&quot;xray&quot;,pid=xxxx,fd=xx))</span><br></pre></td></tr></table></figure>
@@ -397,7 +414,8 @@
 <p>本次配置中最终测试结果为：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ComputerName     : 你的服务器公网IP</span><br><span class="line">RemoteAddress    : 你的服务器公网IP</span><br><span class="line">RemotePort       : 443</span><br><span class="line">InterfaceAlias   : 以太网</span><br><span class="line">SourceAddress    : 10.x.x.x</span><br><span class="line">TcpTestSucceeded : True</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="13-创建-Client-客户端"><a href="#13-创建-Client-客户端" class="headerlink" title="13. 创建 Client 客户端"></a>13. 创建 Client 客户端</h2><p>新版 3X-UI 中，创建入站后还需要创建客户端。</p>
+<h2 id="13-创建-Client-客户端">13. 创建 Client 客户端</h2>
+<p>新版 3X-UI 中，创建入站后还需要创建客户端。</p>
 <p>进入：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Clients</span><br></pre></td></tr></table></figure>
 <p>最开始可能显示 <code>Clients 0</code>：</p>
@@ -405,7 +423,8 @@
 <p>点击：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ Add Clients</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="14-Add-Client-页面配置"><a href="#14-Add-Client-页面配置" class="headerlink" title="14. Add Client 页面配置"></a>14. Add Client 页面配置</h2><p>填写：</p>
+<h2 id="14-Add-Client-页面配置">14. Add Client 页面配置</h2>
+<p>填写：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Email: demo-vless</span><br><span class="line">UUID: 自动生成</span><br><span class="line">Total Sent/Received(GB): 0</span><br><span class="line">Expiry: 留空</span><br><span class="line">Start After First Use: 关闭</span><br><span class="line">Auto Renew: 0</span><br><span class="line">Flow: xtls-rprx-vision</span><br><span class="line">Comment: 可留空</span><br><span class="line">Group: 可留空</span><br><span class="line">Attached inbounds: vless-reality-vision</span><br><span class="line">Enabled: 开启</span><br></pre></td></tr></table></figure>
 <p>截图记录：</p>
 <p><img src="/2026/06/05/3X-UI-VLESS-Reality-Vision%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/10-add-client.png" alt="Add Client 页面配置"></p>
@@ -424,40 +443,50 @@
 <p>最后点击：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Create</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="15-导出客户端链接"><a href="#15-导出客户端链接" class="headerlink" title="15. 导出客户端链接"></a>15. 导出客户端链接</h2><p>创建 Client 后，在客户端行的 <code>Actions</code> 中查找：</p>
+<h2 id="15-导出客户端链接">15. 导出客户端链接</h2>
+<p>创建 Client 后，在客户端行的 <code>Actions</code> 中查找：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">二维码 / QR Code / Copy Link / Share / Export</span><br></pre></td></tr></table></figure>
 <p>复制 VLESS 链接。</p>
 <p>链接中应包含以下关键字段：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vless://</span><br><span class="line">服务器IP:443</span><br><span class="line">security=reality</span><br><span class="line">type=tcp 或 type=raw</span><br><span class="line">flow=xtls-rprx-vision</span><br><span class="line">sni=www.amd.com</span><br><span class="line">fp=chrome</span><br><span class="line">pbk=</span><br><span class="line">sid=</span><br></pre></td></tr></table></figure>
 <p>如果缺少 <code>flow=xtls-rprx-vision</code>，客户端可能没有启用 Vision。</p>
 <hr>
-<h2 id="16-Windows-v2rayN-导入方式"><a href="#16-Windows-v2rayN-导入方式" class="headerlink" title="16. Windows v2rayN 导入方式"></a>16. Windows v2rayN 导入方式</h2><p>Windows 使用 v2rayN 时：</p>
+<h2 id="16-Windows-v2rayN-导入方式">16. Windows v2rayN 导入方式</h2>
+<p>Windows 使用 v2rayN 时：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">服务器 → 从剪贴板导入分享链接 → 选中节点 → 设为活动服务器 → 启动系统代理</span><br></pre></td></tr></table></figure>
 <p>导入后检查节点参数：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">地址: 你的服务器公网IP</span><br><span class="line">端口: 443</span><br><span class="line">协议: VLESS</span><br><span class="line">传输: TCP / RAW</span><br><span class="line">安全: Reality</span><br><span class="line">SNI: www.amd.com</span><br><span class="line">Fingerprint: chrome</span><br><span class="line">Public Key: 与 3X-UI 的 Public Key 一致</span><br><span class="line">Short ID: 与 3X-UI 的 Short ID 一致</span><br><span class="line">Flow: xtls-rprx-vision</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="17-Android-v2rayNG-导入方式"><a href="#17-Android-v2rayNG-导入方式" class="headerlink" title="17. Android v2rayNG 导入方式"></a>17. Android v2rayNG 导入方式</h2><p>Android 使用 v2rayNG 时：</p>
+<h2 id="17-Android-v2rayNG-导入方式">17. Android v2rayNG 导入方式</h2>
+<p>Android 使用 v2rayNG 时：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">右上角 + → 从剪贴板导入 → 选择新节点 → 点击右下角启动</span><br></pre></td></tr></table></figure>
 <p>如果连接失败，优先检查：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Flow 是否为 xtls-rprx-vision</span><br><span class="line">SNI 是否为 www.amd.com</span><br><span class="line">Fingerprint 是否为 chrome</span><br><span class="line">Public Key 是否正确</span><br><span class="line">Short ID 是否正确</span><br><span class="line">端口是否为 443</span><br><span class="line">服务器安全组是否放行 TCP 443</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="18-常见问题排查"><a href="#18-常见问题排查" class="headerlink" title="18. 常见问题排查"></a>18. 常见问题排查</h2><h3 id="18-1-TcpTestSucceeded-为-False"><a href="#18-1-TcpTestSucceeded-为-False" class="headerlink" title="18.1 TcpTestSucceeded 为 False"></a>18.1 TcpTestSucceeded 为 False</h3><p>可能原因：</p>
+<h2 id="18-常见问题排查">18. 常见问题排查</h2>
+<h3 id="18-1-TcpTestSucceeded-为-False">18.1 TcpTestSucceeded 为 False</h3>
+<p>可能原因：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 3X-UI 入站没有创建成功</span><br><span class="line">2. Xray 没有监听 443</span><br><span class="line">3. 服务器本机防火墙没有放行 443</span><br><span class="line">4. 云服务器安全组没有放行 443</span><br><span class="line">5. 443 被其他程序占用</span><br></pre></td></tr></table></figure>
 <p>排查命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo ss -lntp | grep <span class="string">&#x27;:443&#x27;</span></span><br><span class="line">sudo lsof -iTCP:443 -sTCP:LISTEN -P -n</span><br><span class="line">sudo ufw status</span><br><span class="line">sudo iptables -S | grep 443</span><br></pre></td></tr></table></figure>
-<h3 id="18-2-端口通，但客户端连不上"><a href="#18-2-端口通，但客户端连不上" class="headerlink" title="18.2 端口通，但客户端连不上"></a>18.2 端口通，但客户端连不上</h3><p>优先检查客户端参数是否一致：</p>
+<h3 id="18-2-端口通，但客户端连不上">18.2 端口通，但客户端连不上</h3>
+<p>优先检查客户端参数是否一致：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">security=reality</span><br><span class="line">flow=xtls-rprx-vision</span><br><span class="line">sni=www.amd.com</span><br><span class="line">fp=chrome</span><br><span class="line">pbk=Public Key</span><br><span class="line">sid=Short ID</span><br></pre></td></tr></table></figure>
-<h3 id="18-3-客户端提示-TLS-handshake-timeout"><a href="#18-3-客户端提示-TLS-handshake-timeout" class="headerlink" title="18.3 客户端提示 TLS handshake timeout"></a>18.3 客户端提示 TLS handshake timeout</h3><p>可能原因：</p>
+<h3 id="18-3-客户端提示-TLS-handshake-timeout">18.3 客户端提示 TLS handshake timeout</h3>
+<p>可能原因：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. SNI 与服务端 Reality 的 SNI 不一致</span><br><span class="line">2. Public Key 错误</span><br><span class="line">3. Short ID 错误</span><br><span class="line">4. Flow 没有设置为 xtls-rprx-vision</span><br><span class="line">5. 客户端版本过旧，不支持 Reality / Vision</span><br><span class="line">6. Min Client Ver / Max Client Ver 限制导致客户端被拒绝</span><br></pre></td></tr></table></figure>
-<h3 id="18-4-443-被其他程序占用"><a href="#18-4-443-被其他程序占用" class="headerlink" title="18.4 443 被其他程序占用"></a>18.4 443 被其他程序占用</h3><p>检查：</p>
+<h3 id="18-4-443-被其他程序占用">18.4 443 被其他程序占用</h3>
+<p>检查：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo lsof -iTCP:443 -sTCP:LISTEN -P -n</span><br></pre></td></tr></table></figure>
 <p>如果看到 <code>nginx</code>、<code>apache</code>、<code>caddy</code> 等占用 443，需要：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 改用其他端口，例如 8443；或</span><br><span class="line">2. 停止占用 443 的服务；或</span><br><span class="line">3. 做更复杂的反向代理 / 分流配置。</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="19-最终配置汇总"><a href="#19-最终配置汇总" class="headerlink" title="19. 最终配置汇总"></a>19. 最终配置汇总</h2><p>本次可用配置汇总如下：</p>
+<h2 id="19-最终配置汇总">19. 最终配置汇总</h2>
+<p>本次可用配置汇总如下：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Inbound Remark: vless-reality-vision</span><br><span class="line">Protocol: vless</span><br><span class="line">Port: 443</span><br><span class="line">Transmission: RAW</span><br><span class="line">Security: Reality</span><br><span class="line">uTLS: chrome</span><br><span class="line">Target: www.amd.com:443</span><br><span class="line">SNI: www.amd.com</span><br><span class="line">SpiderX: /</span><br><span class="line">Sniffing: HTTP, TLS, QUIC</span><br><span class="line">Client Email: demo-vless</span><br><span class="line">Client Flow: xtls-rprx-vision</span><br><span class="line">Attached Inbound: vless-reality-vision</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="20-安全建议"><a href="#20-安全建议" class="headerlink" title="20. 安全建议"></a>20. 安全建议</h2><ol>
+<h2 id="20-安全建议">20. 安全建议</h2>
+<ol>
 <li>面板默认账号密码必须修改。</li>
 <li>建议修改面板访问路径。</li>
 <li>面板端口不要和代理端口混用。</li>
@@ -493,7 +522,10 @@
     <a href="/2026/06/04/%E6%9C%8D%E5%8A%A1%E5%99%A8CodexDeviceCode%E5%88%87%E6%8D%A2%E8%B4%A6%E6%88%B7%E7%99%BB%E5%BD%95%E8%AF%B4%E6%98%8E/" rel="prev" title="服务器 Codex Device Code 切换账户登录说明">
       <i class="fa fa-chevron-left"></i> 服务器 Codex Device Code 切换账户登录说明
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2026/06/08/word%E9%87%8C%E9%9D%A2%E5%85%AC%E5%BC%8F%E7%9A%84%E5%86%99%E6%B3%95/" rel="next" title="Word里面公式的写法">
+      Word里面公式的写法 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -553,7 +585,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3X-UI-%E6%9C%80%E6%96%B0%E7%89%88%E9%85%8D%E7%BD%AE-VLESS-Reality-Vision-%E6%95%99%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">3X-UI 最新版配置 VLESS + Reality + Vision 教程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85-3X-UI-%E9%9D%A2%E6%9D%BF"><span class="nav-number">1.1.</span> <span class="nav-text">1. 安装 3X-UI 面板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E5%B9%B6%E5%AE%89%E8%A3%85%E5%9F%BA%E7%A1%80%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 更新系统并安装基础工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E6%94%BE%E8%A1%8C%E9%9D%A2%E6%9D%BF%E5%92%8C%E7%9B%B8%E5%85%B3%E7%AB%AF%E5%8F%A3"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 放行面板和相关端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E6%89%A7%E8%A1%8C%E5%AE%98%E6%96%B9%E5%AE%89%E8%A3%85%E8%84%9A%E6%9C%AC"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 执行官方安装脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%99%BB%E5%BD%95-3X-UI"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.4 浏览器登录 3X-UI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AE%E7%9B%AE%E6%A0%87"><span class="nav-number">1.2.</span> <span class="nav-text">2. 配置目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%88%9D%E5%A7%8B%E7%8A%B6%E6%80%81%EF%BC%9A%E8%BF%9B%E5%85%A5-Add-Inbound"><span class="nav-number">1.3.</span> <span class="nav-text">3. 初始状态：进入 Add Inbound</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%A3%80%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9C%AC%E6%9C%BA%E9%98%B2%E7%81%AB%E5%A2%99%E6%98%AF%E5%90%A6%E6%94%BE%E8%A1%8C-443"><span class="nav-number">1.4.</span> <span class="nav-text">4. 检查服务器本机防火墙是否放行 443</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%9C%AA%E9%85%8D%E7%BD%AE-3X-UI-%E5%85%A5%E7%AB%99%E5%89%8D%EF%BC%8C%E5%85%AC%E7%BD%91%E6%B5%8B%E8%AF%95-443-%E4%BC%9A%E5%A4%B1%E8%B4%A5"><span class="nav-number">1.5.</span> <span class="nav-text">5. 未配置 3X-UI 入站前，公网测试 443 会失败</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%88%9B%E5%BB%BA-VLESS-%E5%85%A5%E7%AB%99%EF%BC%9ABasics-%E9%A1%B5%E9%9D%A2"><span class="nav-number">1.6.</span> <span class="nav-text">6. 创建 VLESS 入站：Basics 页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Protocol-%E9%A1%B5%E9%9D%A2"><span class="nav-number">1.7.</span> <span class="nav-text">7. Protocol 页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Stream-%E9%A1%B5%E9%9D%A2"><span class="nav-number">1.8.</span> <span class="nav-text">8. Stream 页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Security-%E9%A1%B5%E9%9D%A2%EF%BC%9AReality-%E9%85%8D%E7%BD%AE"><span class="nav-number">1.9.</span> <span class="nav-text">9. Security 页面：Reality 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-Sniffing-%E9%A1%B5%E9%9D%A2"><span class="nav-number">1.10.</span> <span class="nav-text">10. Sniffing 页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Advanced-%E9%A1%B5%E9%9D%A2"><span class="nav-number">1.11.</span> <span class="nav-text">11. Advanced 页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-%E6%A3%80%E6%9F%A5-443-%E6%98%AF%E5%90%A6%E7%9B%91%E5%90%AC%E6%88%90%E5%8A%9F"><span class="nav-number">1.12.</span> <span class="nav-text">12. 检查 443 是否监听成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-%E5%88%9B%E5%BB%BA-Client-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">1.13.</span> <span class="nav-text">13. 创建 Client 客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-Add-Client-%E9%A1%B5%E9%9D%A2%E9%85%8D%E7%BD%AE"><span class="nav-number">1.14.</span> <span class="nav-text">14. Add Client 页面配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-%E5%AF%BC%E5%87%BA%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%93%BE%E6%8E%A5"><span class="nav-number">1.15.</span> <span class="nav-text">15. 导出客户端链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-Windows-v2rayN-%E5%AF%BC%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">1.16.</span> <span class="nav-text">16. Windows v2rayN 导入方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-Android-v2rayNG-%E5%AF%BC%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">1.17.</span> <span class="nav-text">17. Android v2rayNG 导入方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="nav-number">1.18.</span> <span class="nav-text">18. 常见问题排查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#18-1-TcpTestSucceeded-%E4%B8%BA-False"><span class="nav-number">1.18.1.</span> <span class="nav-text">18.1 TcpTestSucceeded 为 False</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-2-%E7%AB%AF%E5%8F%A3%E9%80%9A%EF%BC%8C%E4%BD%86%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E4%B8%8D%E4%B8%8A"><span class="nav-number">1.18.2.</span> <span class="nav-text">18.2 端口通，但客户端连不上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-3-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8F%90%E7%A4%BA-TLS-handshake-timeout"><span class="nav-number">1.18.3.</span> <span class="nav-text">18.3 客户端提示 TLS handshake timeout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-4-443-%E8%A2%AB%E5%85%B6%E4%BB%96%E7%A8%8B%E5%BA%8F%E5%8D%A0%E7%94%A8"><span class="nav-number">1.18.4.</span> <span class="nav-text">18.4 443 被其他程序占用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-%E6%9C%80%E7%BB%88%E9%85%8D%E7%BD%AE%E6%B1%87%E6%80%BB"><span class="nav-number">1.19.</span> <span class="nav-text">19. 最终配置汇总</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-%E5%AE%89%E5%85%A8%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.20.</span> <span class="nav-text">20. 安全建议</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">3X-UI 最新版配置 VLESS + Reality + Vision 教程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85-3X-UI-%E9%9D%A2%E6%9D%BF"><span class="nav-number">1.1.</span> <span class="nav-text">1. 安装 3X-UI 面板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E5%B9%B6%E5%AE%89%E8%A3%85%E5%9F%BA%E7%A1%80%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 更新系统并安装基础工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E6%94%BE%E8%A1%8C%E9%9D%A2%E6%9D%BF%E5%92%8C%E7%9B%B8%E5%85%B3%E7%AB%AF%E5%8F%A3"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 放行面板和相关端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E6%89%A7%E8%A1%8C%E5%AE%98%E6%96%B9%E5%AE%89%E8%A3%85%E8%84%9A%E6%9C%AC"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 执行官方安装脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%99%BB%E5%BD%95-3X-UI"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.4 浏览器登录 3X-UI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AE%E7%9B%AE%E6%A0%87"><span class="nav-number">1.2.</span> <span class="nav-text">2. 配置目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%88%9D%E5%A7%8B%E7%8A%B6%E6%80%81%EF%BC%9A%E8%BF%9B%E5%85%A5-Add-Inbound"><span class="nav-number">1.3.</span> <span class="nav-text">3. 初始状态：进入 Add Inbound</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%A3%80%E6%9F%A5%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9C%AC%E6%9C%BA%E9%98%B2%E7%81%AB%E5%A2%99%E6%98%AF%E5%90%A6%E6%94%BE%E8%A1%8C-443"><span class="nav-number">1.4.</span> <span class="nav-text">4. 检查服务器本机防火墙是否放行 443</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%9C%AA%E9%85%8D%E7%BD%AE-3X-UI-%E5%85%A5%E7%AB%99%E5%89%8D%EF%BC%8C%E5%85%AC%E7%BD%91%E6%B5%8B%E8%AF%95-443-%E4%BC%9A%E5%A4%B1%E8%B4%A5"><span class="nav-number">1.5.</span> <span class="nav-text">5. 未配置 3X-UI 入站前，公网测试 443 会失败</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%88%9B%E5%BB%BA-VLESS-%E5%85%A5%E7%AB%99%EF%BC%9ABasics-%E9%A1%B5%E9%9D%A2"><span class="nav-number">1.6.</span> <span class="nav-text">6. 创建 VLESS 入站：Basics 页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Protocol-%E9%A1%B5%E9%9D%A2"><span class="nav-number">1.7.</span> <span class="nav-text">7. Protocol 页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Stream-%E9%A1%B5%E9%9D%A2"><span class="nav-number">1.8.</span> <span class="nav-text">8. Stream 页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Security-%E9%A1%B5%E9%9D%A2%EF%BC%9AReality-%E9%85%8D%E7%BD%AE"><span class="nav-number">1.9.</span> <span class="nav-text">9. Security 页面：Reality 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-Sniffing-%E9%A1%B5%E9%9D%A2"><span class="nav-number">1.10.</span> <span class="nav-text">10. Sniffing 页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Advanced-%E9%A1%B5%E9%9D%A2"><span class="nav-number">1.11.</span> <span class="nav-text">11. Advanced 页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-%E6%A3%80%E6%9F%A5-443-%E6%98%AF%E5%90%A6%E7%9B%91%E5%90%AC%E6%88%90%E5%8A%9F"><span class="nav-number">1.12.</span> <span class="nav-text">12. 检查 443 是否监听成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-%E5%88%9B%E5%BB%BA-Client-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">1.13.</span> <span class="nav-text">13. 创建 Client 客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-Add-Client-%E9%A1%B5%E9%9D%A2%E9%85%8D%E7%BD%AE"><span class="nav-number">1.14.</span> <span class="nav-text">14. Add Client 页面配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-%E5%AF%BC%E5%87%BA%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%93%BE%E6%8E%A5"><span class="nav-number">1.15.</span> <span class="nav-text">15. 导出客户端链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-Windows-v2rayN-%E5%AF%BC%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">1.16.</span> <span class="nav-text">16. Windows v2rayN 导入方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-Android-v2rayNG-%E5%AF%BC%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">1.17.</span> <span class="nav-text">17. Android v2rayNG 导入方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="nav-number">1.18.</span> <span class="nav-text">18. 常见问题排查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#18-1-TcpTestSucceeded-%E4%B8%BA-False"><span class="nav-number">1.18.1.</span> <span class="nav-text">18.1 TcpTestSucceeded 为 False</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-2-%E7%AB%AF%E5%8F%A3%E9%80%9A%EF%BC%8C%E4%BD%86%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E4%B8%8D%E4%B8%8A"><span class="nav-number">1.18.2.</span> <span class="nav-text">18.2 端口通，但客户端连不上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-3-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8F%90%E7%A4%BA-TLS-handshake-timeout"><span class="nav-number">1.18.3.</span> <span class="nav-text">18.3 客户端提示 TLS handshake timeout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-4-443-%E8%A2%AB%E5%85%B6%E4%BB%96%E7%A8%8B%E5%BA%8F%E5%8D%A0%E7%94%A8"><span class="nav-number">1.18.4.</span> <span class="nav-text">18.4 443 被其他程序占用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-%E6%9C%80%E7%BB%88%E9%85%8D%E7%BD%AE%E6%B1%87%E6%80%BB"><span class="nav-number">1.19.</span> <span class="nav-text">19. 最终配置汇总</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-%E5%AE%89%E5%85%A8%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.20.</span> <span class="nav-text">20. 安全建议</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -567,7 +599,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-count">49</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -580,7 +612,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
